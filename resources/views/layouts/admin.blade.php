@@ -40,6 +40,13 @@
                     </a>
                 </li>
                 <li>
+                    <a href="{{ route('admin.category') }}"
+                       class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fa-solid fa-newspaper"></i>
+                        Category
+                    </a>
+                </li>
+                <li>
                     <a  
                        class="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-100 transition">
                         <i class="fa-solid fa-envelope"></i>

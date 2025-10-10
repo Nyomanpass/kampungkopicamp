@@ -215,15 +215,41 @@
 
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
+document.addEventListener('DOMContentLoaded', () => {
+    // Inisialisasi AOS pertama kali
     AOS.init({
-        duration: 1000, // durasi animasi (ms)
-        once: true, // animasi hanya sekali
+        duration: 1000,
+        once: true,
     });
 
-     window.addEventListener('load', function() {
-      AOS.refresh();
+    window.addEventListener('load', () => {
+        AOS.refresh();
     });
+
+    if (typeof Livewire !== 'undefined') {
+        Livewire.hook('message.processed', (message, component) => {
+            if (typeof AOS !== 'undefined') {
+                AOS.refreshHard(); // gunakan refreshHard supaya animasi elemen baru jalan
+            }
+        });
+    }
+});
 </script>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    window.addEventListener('scroll-to-paket', () => {
+        const section = document.getElementById('paket-wisata');
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+        }
+    });
+});
+</script>
+
+
+
 
 </body>
 </html>

@@ -59,7 +59,13 @@
 
                 <div>
                     <label class="text-sm">Kategori</label>
-                    <input type="text" wire:model="category" class="w-full border rounded px-3 py-2">
+                    <small class="text-gray-500">Kategori saat ini: {{ $category_id }}</small>
+                    <select wire:model="category_id" wire:key="category-select-{{ $uploadKey }}" class="w-full border rounded px-3 py-2">
+                        <option value="">-- Pilih Kategori --</option>
+                        @foreach ($categories as $cat)
+                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
                 <div class="md:col-span-2">
@@ -149,6 +155,8 @@
         });
     });
 </script>
+
+
 
 
     {{-- === MODE DETAIL === --}}

@@ -30,19 +30,39 @@
 
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p id="paket-wisata" class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
       Nikmati pengalaman unik dari tur kopi, homestay, hingga budaya lokal Bali yang autentik 
       bersama Kampung Kopi Camp.
     </p>
   </div>
 </section>
 
+<div class="flex justify-center flex-wrap gap-4 mt-10">
 
-    <!-- Daftar Paket -->
-<section class="py-16">
+    <button 
+        wire:click="filterPackages('all')"
+        class="flex items-center gap-2 px-6 py-3 rounded-full border font-medium text-sm md:text-base transition-all duration-300
+               {{ $activeCategory === 'all' ? 'bg-secondary text-white shadow-md' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100' }}">
+        <i class="fa-solid fa-layer-group"></i>
+        Semua
+    </button>
+
+    @foreach($categories as $cat)
+    <button 
+        wire:click="filterPackages('{{ $cat['id'] }}')"
+        class="flex items-center gap-2 px-6 py-3 rounded-full border font-medium text-sm md:text-base transition-all duration-300
+               {{ $activeCategory == $cat['id'] ? 'bg-secondary text-white shadow-md' : 'bg-white text-gray-700 border-gray-300 hover:bg-gray-100' }}">
+        {{ $cat['name'] }}
+    </button>
+    @endforeach
+</div>
+
+
+<section class="py-16"  >
   <div class="max-w-6xl mx-auto px-6">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-      @foreach ($this->filteredProducts as $index => $product)
+
+      @foreach ($filteredProducts as $index => $product)
         <div class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition transform hover:-translate-y-2 overflow-hidden"
              data-aos="fade-up"
              data-aos-delay="{{ $index * 100 }}">
@@ -172,6 +192,7 @@
     </div>
   </div>
 </section>
+
 
 
 </div>

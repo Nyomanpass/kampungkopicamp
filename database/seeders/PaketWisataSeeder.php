@@ -23,7 +23,7 @@ class PaketWisataSeeder extends Seeder
             'main_image' => 'coffee_main.jpg',
             'gallery' => ['coffee1.jpg', 'coffee2.jpg', 'coffee3.jpg', 'coffee4.jpg', 'coffee5.jpg', 'coffee6.jpg'],
             'fasilitas' => ['1 tenda glamping','2 kasur angin','2 sleeping bag','2 bantal','Sarapan pagi','Coffee cupping session'],
-            'category' => "glamping"
+            'category_id' => 1
         ]);
 
     }

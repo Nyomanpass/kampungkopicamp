@@ -11,6 +11,7 @@ use App\Livewire\ExplorePupuan;
 use App\Livewire\ArticleDetail;
 use App\Livewire\Admin\PaketWisataCrud;
 use App\Livewire\Admin\ArticleCrud;
+use App\Livewire\Admin\Category;
 
 
 Route::get('/', Home::class);
@@ -23,3 +24,4 @@ Route::get('/article', Article::class);
 Route::get('/article/{slug}', ArticleDetail::class)->name('article.detail');
 Route::get('/admin/paket-wisata', PaketWisataCrud::class)->name('admin.paket-wisata');
 Route::get('/admin/article', ArticleCrud::class)->name('admin.article');
+Route::get('/admin/category', Category::class)->name('admin.category');

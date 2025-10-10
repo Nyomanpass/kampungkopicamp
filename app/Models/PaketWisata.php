@@ -21,12 +21,18 @@ class PaketWisata extends Model
         'main_image',
         'gallery',
         'fasilitas',
-        'category'
+        'category_id',
     ];
 
     protected $casts = [
         'gallery' => 'array',
         'fasilitas' => 'array',
     ];
+
+    public function category()
+    {
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
 
 }

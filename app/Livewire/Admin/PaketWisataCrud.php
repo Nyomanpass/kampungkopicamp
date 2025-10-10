@@ -15,7 +15,7 @@ class PaketWisataCrud extends Component
     #[Layout('layouts.admin')]
 
     // Form fields
-    public $title, $description, $price, $max_person, $location, $duration, $category;
+    public $title, $description, $price, $max_person, $location, $duration, $category_id, $categories;
     public $main_image;
     public $gallery = [];
     public $fasilitas = '';
@@ -23,6 +23,8 @@ class PaketWisataCrud extends Component
     public $uploadKey;
     public $paket_id; // untuk edit
     public $viewMode = 'list'; // 'list', 'form', 'detail'
+    public $selectedCategory = null;
+
 
     protected $rules = [
         'title' => 'required|string|max:255',
@@ -31,7 +33,7 @@ class PaketWisataCrud extends Component
         'max_person' => 'required|integer|min:1',
         'location' => 'required|string',
         'duration' => 'required|string',
-        'category' => 'nullable|string',
+        'category_id' => 'nullable|string',
         'main_image' => 'nullable|image|max:10240', // maks 10MB
         'gallery.*' => 'nullable|image|max:10240', // maks 10MB per fi
     ];
@@ -39,14 +41,22 @@ class PaketWisataCrud extends Component
     public function mount()
     {
         $this->uploadKey = rand();
+        $this->categories = \App\Models\Category::all(); // ✅ tambahkan ini
     }
     
+    public function getFilteredProductsProperty()
+    {
+        return PaketWisata::when($this->selectedCategory, function($query) {
+            $query->where('category_id', $this->selectedCategory);
+        })->get();
+    }
+
 
     public function create()
-{
-    $this->resetForm(); // kosongkan field
-    $this->viewMode = 'form'; // tampilkan form
-}
+    {
+        $this->resetForm(); // kosongkan field
+        $this->viewMode = 'form'; // tampilkan form
+    }
 
 
     // === CREATE ===
@@ -74,7 +84,7 @@ class PaketWisataCrud extends Component
             'max_person'  => $this->max_person,
             'location'    => $this->location,
             'duration'    => $this->duration,
-            'category'    => $this->category,
+            'category_id'    => $this->category_id,
             'main_image'  => $mainImagePath,
             'gallery'     => $galleryPaths,
             'fasilitas'   => $fasilitasArray,
@@ -108,7 +118,7 @@ class PaketWisataCrud extends Component
         $this->max_person = $paket->max_person;
         $this->location  = $paket->location;
         $this->duration  = $paket->duration;
-        $this->category  = $paket->category;
+        $this->category_id  = $paket->category_id;
         $this->fasilitas = implode(',', $paket->fasilitas ?? []);
         $this->viewMode = 'form';
     }
@@ -143,7 +153,7 @@ class PaketWisataCrud extends Component
             'max_person' => $this->max_person,
             'location' => $this->location,
             'duration' => $this->duration,
-            'category' => $this->category,
+            'category_id' => $this->category_id,
             'fasilitas' => array_filter(array_map('trim', explode(',', $this->fasilitas))),
         ]);
 
@@ -184,7 +194,7 @@ class PaketWisataCrud extends Component
     {
         $this->reset([
             'title', 'description', 'price', 'max_person', 'location',
-            'duration', 'category', 'main_image', 'gallery', 'fasilitas', 'paket_id'
+            'duration', 'category_id', 'main_image', 'gallery', 'fasilitas', 'paket_id'
         ]);
         $this->uploadKey = rand();
         $this->resetValidation();
@@ -194,8 +204,8 @@ class PaketWisataCrud extends Component
     public function render()
     {
         return view('livewire.admin.paket-wisata-crud', [
-            'paketList' => $this->getPaketWisata(),
-            'selectedPaket' => $this->paket_id ? PaketWisata::find($this->paket_id) : null
+            'paketList' => $this->filteredProducts, // pakai filteredProducts
+            'selectedPaket' => $this->paket_id ? PaketWisata::find($this->paket_id) : null,
         ]);
     }
 }

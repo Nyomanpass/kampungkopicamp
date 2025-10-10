@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('main_image')->nullable(); // Foto utama
             $table->json('gallery')->nullable();    // Array foto tambahan
             $table->json('fasilitas')->nullable();  // Array fasilitas
-            $table->string('category')->nullable();    
+            $table->foreignId('category_id')->nullable()->constrained('categories')->onDelete('set null');
             $table->timestamps();
         });
     }

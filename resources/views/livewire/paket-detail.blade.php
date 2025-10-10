@@ -86,7 +86,7 @@
       </h1>
       <p class="text-gray-600 mb-6 flex items-center gap-2">
         <i class="fa-solid fa-map-marker-alt text-secondary"></i> 
-        {{ $paket->location }} 
+        {{ $paket->location }} |  {{ $paket->category->name ?? '-' }}
       </p>
 
       <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-xl">
@@ -130,6 +130,8 @@
           {{ $paket->description }}
         </p>
 
+
+
         <div class="block md:hidden mt-6">
           <h4 class="text-2xl font-bold mb-3 text-gray-700">Fasilitas yang Termasuk</h4>
           <ul class="list-disc list-inside text-gray-600 space-y-1">
@@ -140,7 +142,7 @@
       </div>
 
 
-        @if ($paket->category !== 'activity')
+        @if (optional($paket->category)->name !== 'activity')
         <!-- Konfirmasi Reservasi -->
           <div class="text-gray-900 py-6 rounded-2xl">
             <h4 class="text-xl font-bold mb-3 text-gray-700">Konfirmasi Reservasi</h4>
