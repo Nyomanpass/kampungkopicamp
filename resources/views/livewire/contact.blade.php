@@ -17,15 +17,15 @@
   <div class="absolute inset-0 bg-black/40"></div>
 
   <!-- Content -->
-  <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
+<div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
     <!-- Sub Heading -->
     <p class="uppercase text-white mb-3 tracking-wide" data-aos="fade-down" data-aos-delay="400">
-      Hubungi Kami
+      {{ $texts['contact_subheading'] }}
     </p>
 
     <!-- Title -->
     <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
-      Siap Membantu <span class="text-primary">Perjalanan Anda</span>
+      {{ $texts['contact_title_1'] }} <span class="text-primary">{{ $texts['contact_title_2'] }}</span>
     </h1>
 
     <!-- Decorative Line -->
@@ -33,9 +33,10 @@
 
     <!-- Description -->
     <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
-      Tim kami selalu siap membantu merencanakan pengalaman tak terlupakan di Pupuan, Bali.
+      {{ $texts['contact_desc'] }}
     </p>
-  </div>
+</div>
+
 </section>
 
 
@@ -52,13 +53,13 @@
                             <i class="fa-solid fa-phone"></i>
                         </span>
                     </div>
-                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Telepon / WhatsApp</h3>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_phone_title'] }}</h3>
                     <p class="text-gray-600 text-center font-medium mb-1">+62 813-3737-1234</p>
                     <p class="text-gray-600 text-center font-medium mb-4">+62 878-6543-2109</p>
                 </div>
                 <div class="text-center mt-4">
                     <a href="https://wa.me/6281337371234" target="_blank" class="w-full inline-flex items-center justify-center px-5 py-2.5 border border-secondary text-secondary font-semibold rounded-xl hover:bg-secondary hover:text-white transition">
-                        <i class="fa-brands fa-whatsapp mr-2"></i> Hubungi via WA
+                        <i class="fa-brands fa-whatsapp mr-2"></i> {{ $texts['contact_phone_btn'] }}
                     </a>
                 </div>
             </div>
@@ -72,13 +73,13 @@
                             <i class="fa-solid fa-envelope"></i>
                         </span>
                     </div>
-                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Email</h3>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_email_title'] }}</h3>
                     <p class="text-gray-600 text-center font-medium mb-1 truncate">info@kampungkopi.camp</p>
                     <p class="text-gray-600 text-center font-medium mb-4 truncate">booking@kampungkopi.camp</p>
                 </div>
                 <div class="text-center mt-4">
                     <a href="mailto:info@kampungkopi.camp" class="w-full inline-flex items-center justify-center px-5 py-2.5 border border-secondary text-secondary font-semibold rounded-xl hover:bg-secondary hover:text-white transition">
-                        <i class="fa-solid fa-paper-plane mr-2"></i> Kirim Email
+                        <i class="fa-solid fa-paper-plane mr-2"></i> {{ $texts['contact_email_btn'] }}
                     </a>
                 </div>
             </div>
@@ -92,7 +93,7 @@
                             <i class="fa-solid fa-map-marker-alt"></i>
                         </span>
                     </div>
-                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Alamat Kami</h3>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_address_title'] }}</h3>
                     <p class="text-gray-600 text-center mb-4">
                         Jl. Raya Pupuan - Antosari<br>
                         Desa Pupuan, Tabanan<br>
@@ -101,7 +102,7 @@
                 </div>
                 <div class="text-center mt-4">
                     <a href="https://maps.google.com" target="_blank" class="w-full inline-flex items-center justify-center px-5 py-2.5 border border-secondary text-secondary font-semibold rounded-xl hover:bg-secondary hover:text-white transition">
-                        <i class="fa-solid fa-location-dot mr-2"></i> Lihat di Maps
+                        <i class="fa-solid fa-location-dot mr-2"></i> {{ $texts['contact_address_btn'] }}
                     </a>
                 </div>
             </div>
@@ -115,7 +116,7 @@
                             <i class="fa-solid fa-clock"></i>
                         </span>
                     </div>
-                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">Jam Operasional</h3>
+                    <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_hours_title'] }}</h3>
                     <div class="space-y-1.5 text-center mb-4">
                         <p class="text-gray-600 font-medium">Senin - Minggu: 06:00 - 22:00</p>
                         <p class="text-sm text-gray-700">Check-in: 14:00</p>
@@ -124,13 +125,14 @@
                 </div>
                 <div class="text-center mt-4">
                     <button class="w-full inline-flex items-center justify-center px-5 py-2.5 border border-secondary text-secondary font-semibold rounded-xl hover:bg-secondary hover:text-white transition">
-                        <i class="fa-solid fa-info-circle mr-2"></i> Detail Layanan
+                        <i class="fa-solid fa-info-circle mr-2"></i> {{ $texts['contact_hours_btn'] }}
                     </button>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 
 <section class="max-w-7xl mx-auto bg-light py-12 px-6 lg:px-14 lg:py-16">
@@ -140,17 +142,17 @@
         <!-- Kolom Kiri: Kirim Pesan -->
         <div class="lg:col-span-2 bg-white rounded-xl p-6 md:p-10 shadow-lg"
              data-aos="fade-up" data-aos-delay="100">
-            <h3 class="text-2xl font-bold text-gray-800 mb-6">Kirim Pesan</h3>
+            <h3 class="text-2xl font-bold text-gray-800 mb-6">{{ $texts['contact_form_title'] }}</h3>
             <form class="space-y-6">
                 <!-- Baris 1: Nama Lengkap & Email -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="nama" class="block text-sm font-semibold text-gray-700 mb-2">Nama Lengkap *</label>
+                        <label for="nama" class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_fullname'] }} *</label>
                         <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap" required
                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
                     </div>
                     <div>
-                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">Email *</label>
+                        <label for="email" class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_email'] }} *</label>
                         <input type="email" id="email" name="email" placeholder="nama@email.com" required
                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
                     </div>
@@ -159,12 +161,12 @@
                 <!-- Baris 2: No. Telepon & Subjek -->
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
-                        <label for="telepon" class="block text-sm font-semibold text-gray-700 mb-2">No. Telepon *</label>
+                        <label for="telepon" class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_phone'] }} *</label>
                         <input type="tel" id="telepon" name="telepon" value="+62 812-3456-7890" required
                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
                     </div>
                     <div>
-                        <label for="subjek" class="block text-sm font-semibold text-gray-700 mb-2">Subjek *</label>
+                        <label for="subjek" class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_subject'] }} *</label>
                         <input type="text" id="subjek" name="subjek" placeholder="Booking / Informasi / Lainnya" required
                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
                     </div>
@@ -172,7 +174,7 @@
 
                 <!-- Baris 3: Pesan -->
                 <div>
-                    <label for="pesan" class="block text-sm font-semibold text-gray-700 mb-2">Pesan *</label>
+                    <label for="pesan" class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_message'] }} *</label>
                     <textarea id="pesan" name="pesan" rows="4" placeholder="Tulis pesan Anda di sini..." required
                               class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition"></textarea>
                 </div>
@@ -180,7 +182,7 @@
                 <!-- Tombol Kirim -->
                 <button type="submit" 
                         class="w-full bg-secondary md:w-auto inline-flex items-center justify-center px-8 py-3 bg-gray-800 text-white font-semibold rounded-xl hover:bg-gray-700 transition">
-                    <i class="fa-solid fa-paper-plane mr-3"></i> Kirim Pesan
+                    <i class="fa-solid fa-paper-plane mr-3"></i> {{ $texts['contact_send_btn'] }}
                 </button>
             </form>
         </div>
@@ -190,7 +192,7 @@
             
             <!-- Lokasi Kami -->
             <div class="bg-white rounded-xl p-6 shadow-lg" data-aos="zoom-in" data-aos-delay="100">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Lokasi Kami</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-4">{{ $texts['contact_location_title'] }}</h3>
                 
                 <div class="h-48 bg-gray-50 rounded-lg mb-4 overflow-hidden border border-gray-200">
                     <!-- Google Maps Embed -->
@@ -206,13 +208,13 @@
 
                 <a href="https://www.google.com/maps?ll=-8.342049,115.036913&z=14&t=m&hl=id&gl=ID&mapclient=embed&cid=9951410633565317211" target="_blank"
                     class="w-full inline-flex items-center justify-center px-4 py-2 border border-gray-300 text-gray-700 font-semibold rounded-lg hover:bg-gray-100 transition">
-                    Buka di Google Maps
+                    {{ $texts['contact_open_maps'] }}
                 </a>
             </div>
 
             <!-- Ikuti Kami -->
             <div class="bg-white rounded-xl p-6 shadow-lg" data-aos="zoom-in" data-aos-delay="200">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Ikuti Kami</h3>
+                <h3 class="text-xl font-bold text-gray-800 mb-4"> {{ $texts['contact_follow_title'] }}</h3>
                 
                 <ul class="space-y-4">
                     <li class="flex items-center justify-between p-3 rounded-lg hover:bg-gray-50 transition">

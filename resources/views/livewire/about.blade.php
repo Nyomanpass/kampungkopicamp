@@ -19,21 +19,21 @@
   <!-- Content -->
   <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
     <p class="text-white mb-3 uppercase tracking-wide" data-aos="fade-down" data-aos-delay="400">
-      Siapa Kami
+      {{ $texts['small'] }}
     </p>
 
     <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
-      Tentang Kampung<span class="text-primary"> Kopi Camp</span>
+      {!! $texts['heading'] !!}
     </h1>
 
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
     <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
-      Perjalanan kami dalam menghadirkan pengalaman kopi, budaya, dan wisata autentik 
-      di jantung Pupuan, Bali.
+      {{ $texts['description'] }}
     </p>
   </div>
 </section>
+
 
 
 
@@ -41,19 +41,19 @@
   <div class="max-w-6xl mx-auto px-6">
     <!-- Bagian Judul -->
     <div data-aos="fade-up" data-aos-duration="800">
-      <p class="text-sm font-semibold text-amber-800 mb-3">
-        ─ DARI DESA UNTUK DUNIA
-      </p>
+    <p class="text-sm font-semibold text-amber-800 mb-3">
+        {{ $texts['about_small'] }}
+    </p>
 
-      <h2 class="text-4xl font-extrabold text-secondary mb-4">
-        Lebih Dari Sekedar <span class="text-primary">Destinasi Kopi</span>
-      </h2>
+    <h2 class="text-4xl font-extrabold text-secondary mb-4">
+        {!! $texts['about_heading'] !!}
+    </h2>
 
-      <p class="text-lg max-w-4xl text-gray-600 mb-6">
-        Lebih dari sekadar tempat singgah, Kampung Kopi Camp adalah pengalaman —
-        di mana budaya, kopi, dan suasana pedesaan Bali berpadu jadi satu.
-      </p>
-    </div>
+    <p class="text-lg max-w-4xl text-gray-600 mb-6">
+        {{ $texts['about_description'] }}
+    </p>
+</div>
+
 
     <!-- Grid Gambar -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -95,26 +95,26 @@
     
     <!-- Bagian Teks -->
     <div data-aos="fade-right" data-aos-duration="1000">
-      <p class="text-sm font-semibold text-amber-800 mb-3">
-        ─ TENTANG KAMI
-      </p>
-      <h2 class="text-4xl text-secondary font-extrabold mb-4">
-        Kisah Dibalik <span class="text-primary">Kampung Kopi</span>
-      </h2>
-      <p class="text-lg text-gray-600 font-medium mb-6">
-        Jejak perjalanan kami dari homestay sederhana hingga destinasi wisata kopi terpercaya
-      </p>
+    <p class="text-sm font-semibold text-amber-800 mb-3">
+        {{ $texts['story_small'] }}
+    </p>
 
-      <p class="text-gray-700 leading-relaxed mb-4">
-        Kampung Kopi Camp lahir dari kecintaan mendalam terhadap keindahan alam Pupuan dan kekayaan tradisi kopi Bali. 
-        Dimulai sebagai homestay sederhana di tahun 2018, kami bermimpi menghadirkan pengalaman wisata yang tidak hanya menyenangkan, 
-        tetapi juga bermakna bagi para tamu.
-      </p>
-      <p class="text-gray-700 leading-relaxed">
-        Pupuan, dengan lanskap sawah terasering yang memukau dan perkebunan kopi yang subur, menawarkan pesona yang berbeda dari destinasi wisata Bali lainnya. 
-        Di sinilah kami membangun visi untuk menciptakan ruang di mana wisatawan dapat merasakan kehidupan otentik masyarakat lokal.
-      </p>
-    </div>
+    <h2 class="text-4xl text-secondary font-extrabold mb-4">
+        {!! $texts['story_heading'] !!}
+    </h2>
+
+    <p class="text-lg text-gray-600 font-medium mb-6">
+        {{ $texts['story_subheading'] }}
+    </p>
+
+    <p class="text-gray-700 leading-relaxed mb-4">
+        {{ $texts['story_paragraph1'] }}
+    </p>
+    <p class="text-gray-700 leading-relaxed">
+        {{ $texts['story_paragraph2'] }}
+    </p>
+</div>
+
 
     <!-- Bagian Gambar -->
     <div class="grid grid-cols-2 gap-5" data-aos="fade-left" data-aos-delay="200" data-aos-duration="1000">
@@ -127,17 +127,13 @@
   </div>
 </section>
 
-
-
 <section class="py-20 bg-[#f9f7f4]">
   <div class="max-w-6xl mx-auto px-6 text-center">
     
     <!-- Heading -->
     <div data-aos="fade-up" data-aos-duration="1000">
-      <h2 class="text-3xl text-secondary font-bold mb-4">Nilai-Nilai Kami</h2>
-      <p class="text-gray-600 max-w-2xl mx-auto mb-12">
-        Komitmen kami dalam menghadirkan pengalaman wisata yang autentik, berkelanjutan, dan bermakna
-      </p>
+      <h2 class="text-3xl text-secondary font-bold mb-4">{{ $texts['value_heading'] }}</h2>
+      <p class="text-gray-600 max-w-2xl mx-auto mb-12">{{ $texts['value_description'] }}</p>
     </div>
 
     <!-- Grid Nilai -->
@@ -151,10 +147,8 @@
             <i class="fa-solid fa-mug-hot text-white text-xl"></i>
           </div>
         </div>
-        <h3 class="font-semibold text-lg mb-2">Kopi Otentik</h3>
-        <p class="text-gray-600 text-sm">
-          Dari biji hingga cangkir, kami menyajikan kopi Pupuan asli yang dipetik langsung dari kebun lokal
-        </p>
+        <h3 class="font-semibold text-lg mb-2">{{ $texts['value_card1_title'] }}</h3>
+        <p class="text-gray-600 text-sm">{{ $texts['value_card1_desc'] }}</p>
       </div>
 
       <!-- Card 2 -->
@@ -165,10 +159,8 @@
             <i class="fa-solid fa-users text-white text-xl"></i>
           </div>
         </div>
-        <h3 class="font-semibold text-lg mb-2">Komunitas Lokal</h3>
-        <p class="text-gray-600 text-sm">
-          Berinteraksi langsung dengan petani kopi dan masyarakat Pupuan yang ramah dan berbudaya
-        </p>
+        <h3 class="font-semibold text-lg mb-2">{{ $texts['value_card2_title'] }}</h3>
+        <p class="text-gray-600 text-sm">{{ $texts['value_card2_desc'] }}</p>
       </div>
 
       <!-- Card 3 -->
@@ -179,10 +171,8 @@
             <i class="fa-solid fa-award text-white text-xl"></i>
           </div>
         </div>
-        <h3 class="font-semibold text-lg mb-2">Pengalaman Berkualitas</h3>
-        <p class="text-gray-600 text-sm">
-          Pelayanan terbaik dengan fasilitas nyaman untuk pengalaman menginap yang tak terlupakan
-        </p>
+        <h3 class="font-semibold text-lg mb-2">{{ $texts['value_card3_title'] }}</h3>
+        <p class="text-gray-600 text-sm">{{ $texts['value_card3_desc'] }}</p>
       </div>
 
       <!-- Card 4 -->
@@ -193,15 +183,14 @@
             <i class="fa-solid fa-leaf text-white text-xl"></i>
           </div>
         </div>
-        <h3 class="font-semibold text-lg mb-2">Cinta Alam</h3>
-        <p class="text-gray-600 text-sm">
-          Melestarikan keindahan alam Pupuan dengan praktik wisata berkelanjutan dan ramah lingkungan
-        </p>
+        <h3 class="font-semibold text-lg mb-2">{{ $texts['value_card4_title'] }}</h3>
+        <p class="text-gray-600 text-sm">{{ $texts['value_card4_desc'] }}</p>
       </div>
 
     </div>
   </div>
 </section>
+
 
 <!-- Perjalanan Kami -->
 <section class="py-20 bg-white">
@@ -209,70 +198,23 @@
     
     <!-- Heading -->
     <div data-aos="fade-up" data-aos-duration="1000">
-      <h2 class="text-3xl text-secondary font-bold text-center mb-4">Perjalanan Kami</h2>
-      <p class="text-gray-600 text-center mb-12">
-        Dari homestay sederhana hingga destinasi wisata kopi terpercaya
-      </p>
+      <h2 class="text-3xl text-secondary font-bold text-center mb-4">{{ $texts['journey_heading'] }}</h2>
+      <p class="text-gray-600 text-center mb-12">{{ $texts['journey_description'] }}</p>
     </div>
 
     <!-- Timeline -->
     <div class="relative border-l-2 border-amber-200" data-aos="fade-up" data-aos-duration="1200">
-      
-      <!-- Item 2018 -->
-      <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="100">
+      @foreach ($texts['journey'] as $item)
+      <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="{{ $loop->iteration * 100 }}">
         <span class="absolute -left-9 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white font-bold">
-          2018
+          {{ $item['year'] }}
         </span>
         <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
-          <h3 class="font-semibold">2018</h3>
-          <p class="text-gray-600 text-sm">Memulai homestay kecil dengan 2 kamar</p>
+          <h3 class="font-semibold">{{ $item['title'] }}</h3>
+          <p class="text-gray-600 text-sm">{{ $item['desc'] }}</p>
         </div>
       </div>
-
-      <!-- Item 2019 -->
-      <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="200">
-        <span class="absolute -left-9 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white font-bold">
-          2019
-        </span>
-        <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
-          <h3 class="font-semibold">2019</h3>
-          <p class="text-gray-600 text-sm">Menambah paket coffee tour pertama</p>
-        </div>
-      </div>
-
-      <!-- Item 2020 -->
-      <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="300">
-        <span class="absolute -left-9 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white font-bold">
-          2020
-        </span>
-        <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
-          <h3 class="font-semibold">2020</h3>
-          <p class="text-gray-600 text-sm">Berkembang menjadi 8 kamar dengan fasilitas camping</p>
-        </div>
-      </div>
-
-      <!-- Item 2021 -->
-      <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="400">
-        <span class="absolute -left-9 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white font-bold">
-          2021
-        </span>
-        <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
-          <h3 class="font-semibold">2021</h3>
-          <p class="text-gray-600 text-sm">Meluncurkan program cultural experience</p>
-        </div>
-      </div>
-
-      <!-- Item 2022 -->
-      <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="500">
-        <span class="absolute -left-9 flex items-center justify-center w-14 h-14 rounded-full bg-primary text-white font-bold">
-          2022
-        </span>
-        <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
-          <h3 class="font-semibold">2022</h3>
-          <p class="text-gray-600 text-sm">Meraih sertifikat eco-tourism dari Pemprov Bali</p>
-        </div>
-      </div>
-
+      @endforeach
     </div>
   </div>
 </section>
@@ -280,12 +222,15 @@
 
 <section class="py-16 bg-white pb-32">
   <div class="max-w-6xl mx-auto px-6 text-center mb-8">
-    <h2 class="text-3xl font-bold text-secondary" data-aos="fade-down" data-aos-duration="1000">Gallery</h2>
-    <p class="text-gray-600 mb-10" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-      Sejumlah momen yang mengabadikan keindahan Pupuan
-    </p>
+           <h2 class="text-3xl font-bold text-secondary text-center" 
+            data-aos="fade-down" data-aos-duration="1000">
+            {{ $texts['gallery_heading'] }}
+        </h2>
+        <p class="text-gray-600 mb-10 text-center mt-2" 
+           data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            {{ $texts['gallery_description'] }}
+        </p>
   
-
     <!-- Masonry grid -->
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 auto-rows-fr">
       <img src="https://picsum.photos/400/400?random=1" 
@@ -322,72 +267,38 @@
 
 <section class="pb-32 bg-white">
   <div class="max-w-6xl mx-auto px-6">
+    <!-- Heading -->
     <h2 class="text-3xl text-secondary font-bold text-center mb-4" 
         data-aos="fade-down" data-aos-duration="1000">
-      Apa Kata Mereka?
+      {{ $texts['testimonial_heading'] }}
     </h2>
     <p class="text-gray-600 text-center mb-12" 
        data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
-      Pengalaman tak terlupakan dari para pengunjung kami.
+      {{ $texts['testimonial_description'] }}
     </p>
 
     <!-- Grid Testimonial -->
     <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      
-      <!-- Testimonial 1 -->
-      <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary"
-           data-aos="fade-up" data-aos-delay="300">
-        <i class="fa-solid fa-quote-left text-2xl text-secondary mb-4"></i>
-        <p class="text-gray-700 italic mb-6">
-          "Homestay terbaik di Pupuan! Kopi yang disajikan benar-benar otentik dan kegiatan petik kopi sangat edukatif. Pemandangan sawah teraseringnya luar biasa indah."
-        </p>
-        <div class="flex items-center">
-          <img class="w-12 h-12 rounded-full object-cover mr-4" 
-               src="https://placehold.co/100x100/A0A0A0/FFFFFF?text=A" alt="Avatar Pengunjung A">
-          <div>
-            <p class="font-semibold text-gray-800">Ariana D.</p>
-            <p class="text-sm text-gray-500">Solo Traveler, Jakarta</p>
-          </div>
+        @foreach($texts['testimonials'] as $index => $testimonial)
+        <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary"
+             data-aos="fade-up" data-aos-delay="{{ 300 + ($index * 100) }}">
+            <i class="fa-solid fa-quote-left text-2xl text-secondary mb-4"></i>
+            <p class="text-gray-700 italic mb-6">{!! $testimonial['quote'] !!}</p>
+            <div class="flex items-center">
+                <img class="w-12 h-12 rounded-full object-cover mr-4" 
+                     src="https://placehold.co/100x100/A0A0A0/FFFFFF?text={{ substr($testimonial['name'], 0, 1) }}" 
+                     alt="Avatar {{ $testimonial['name'] }}">
+                <div>
+                    <p class="font-semibold text-gray-800">{{ $testimonial['name'] }}</p>
+                    <p class="text-sm text-gray-500">{{ $testimonial['role'] }}</p>
+                </div>
+            </div>
         </div>
-      </div>
-
-      <!-- Testimonial 2 -->
-      <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary"
-           data-aos="fade-up" data-aos-delay="400">
-        <i class="fa-solid fa-quote-left text-2xl text-secondary mb-4"></i>
-        <p class="text-gray-700 italic mb-6">
-          "Tempat yang sempurna untuk *healing*. Suasananya tenang, udaranya segar. Pelayanan dari tim Kampung Kopi juga sangat ramah dan membantu."
-        </p>
-        <div class="flex items-center">
-          <img class="w-12 h-12 rounded-full object-cover mr-4" 
-               src="https://placehold.co/100x100/A0A0A0/FFFFFF?text=J" alt="Avatar Pengunjung J">
-          <div>
-            <p class="font-semibold text-gray-800">Joko P.</p>
-            <p class="text-sm text-gray-500">Keluarga, Surabaya</p>
-          </div>
-        </div>
-      </div>
-
-      <!-- Testimonial 3 -->
-      <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary"
-           data-aos="fade-up" data-aos-delay="500">
-        <i class="fa-solid fa-quote-left text-2xl text-secondary mb-4"></i>
-        <p class="text-gray-700 italic mb-6">
-          "Sangat merekomendasikan *cultural experience* mereka! Anak-anak kami belajar banyak tentang pertanian dan tradisi Bali. Liburan yang edukatif dan menyenangkan."
-        </p>
-        <div class="flex items-center">
-          <img class="w-12 h-12 rounded-full object-cover mr-4" 
-               src="https://placehold.co/100x100/A0A0A0/FFFFFF?text=F" alt="Avatar Pengunjung F">
-          <div>
-            <p class="font-semibold text-gray-800">Fiona K.</p>
-            <p class="text-sm text-gray-500">Travel Blogger</p>
-          </div>
-        </div>
-      </div>
-
+        @endforeach
     </div>
   </div>
 </section>
+
 
 
 <section class="py-20 bg-[#f9f7f4] text-gray-800" id="contact">
@@ -402,14 +313,12 @@
           <span class="flex items-center justify-center w-10 h-10 bg-green-500 rounded-full mr-3">
             <i class="fa-brands fa-whatsapp text-white"></i>
           </span>
-          WhatsApp (Respon Cepat)
+          {{ $texts['whatsapp_heading'] }}
         </h4>
-        <p class="text-sm text-gray-600 mb-4">
-          Chat langsung dengan tim kami untuk booking dan informasi
-        </p>
+        <p class="text-sm text-gray-600 mb-4">{{ $texts['whatsapp_description'] }}</p>
         <a href="https://wa.me/628123456789" target="_blank"
            class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition">
-          <i class="fa-brands fa-whatsapp text-xl mr-2"></i> +62 812-3456-789
+          <i class="fa-brands fa-whatsapp text-xl mr-2"></i> {{ $texts['whatsapp_number'] }}
         </a>
       </div>
 
@@ -417,30 +326,27 @@
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="200">
           <h4 class="flex items-center font-semibold mb-2">
-            <i class="fa-solid fa-phone mr-2 text-secondary"></i> Telepon
+            <i class="fa-solid fa-phone mr-2 text-secondary"></i> {{ $texts['phone_heading'] }}
           </h4>
-          <p class="text-sm text-gray-600">+62 361-234567</p>
+          <p class="text-sm text-gray-600">{{ $texts['phone_number'] }}</p>
         </div>
         <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="300">
           <h4 class="flex items-center font-semibold mb-2">
-            <i class="fa-solid fa-envelope mr-2 text-secondary"></i> Email
+            <i class="fa-solid fa-envelope mr-2 text-secondary"></i> {{ $texts['email_heading'] }}
           </h4>
-          <p class="text-sm text-gray-600">hello@kampungkopicamp.com</p>
+          <p class="text-sm text-gray-600">{{ $texts['email_address'] }}</p>
         </div>
       </div>
 
       <!-- Alamat -->
       <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="400">
         <h4 class="flex items-center font-semibold mb-2">
-          <i class="fa-solid fa-location-dot mr-2 text-secondary"></i> Alamat
+          <i class="fa-solid fa-location-dot mr-2 text-secondary"></i> {{ $texts['address_heading'] }}
         </h4>
-        <p class="text-sm text-gray-600 mb-4">
-          Jl. Raya Pupuan No. 123, Desa Pupuan<br>
-          Kecamatan Tabanan, Bali 82163
-        </p>
+        <p class="text-sm text-gray-600 mb-4">{!! nl2br(e($texts['address_details'])) !!}</p>
         <a href="https://www.google.com/maps?ll=-8.342049,115.036913&z=14&t=m&hl=id&gl=ID&mapclient=embed&cid=9951410633565317211" target="_blank"
            class="inline-block bg-secondary hover:bg-secondary/90 px-4 py-2 rounded-lg font-medium transition text-white">
-          <i class="fa-solid fa-map-location-dot mr-2"></i> Buka Google Maps
+          <i class="fa-solid fa-map-location-dot mr-2"></i> {{ $texts['address_map_cta'] }}
         </a>
       </div>
     </div>
@@ -451,7 +357,7 @@
          data-aos-duration="1000" 
          data-aos-offset="200">
       <h3 class="flex items-center text-lg font-semibold mb-4 text-gray-900">
-        <i class="fa-solid fa-map text-secondary mr-2"></i> Lokasi Kami
+        <i class="fa-solid fa-map text-secondary mr-2"></i> {{ $texts['location_heading'] }}
       </h3>
       <iframe 
         src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7895.1750634993!2d115.03386611055907!3d-8.343715401760706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1759163429473!5m2!1sid!2sid" 
@@ -462,6 +368,7 @@
 
   </div>
 </section>
+
 
 
 </div>

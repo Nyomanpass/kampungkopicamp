@@ -21,12 +21,12 @@
   <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
     <!-- Sub Heading -->
     <p class="uppercase text-white mb-3 tracking-wide" data-aos="fade-down" data-aos-delay="400">
-      Detail Paket Wisata
+      {!! $texts['detail_paket_subheading'] !!}
     </p>
 
     <!-- Title -->
     <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
-      Kampung Kopi <span class="text-primary">Camp - Pupuan</span>
+      {!! $texts['detail_paket_title'] !!}
     </h1>
 
     <!-- Decorative Line -->
@@ -34,10 +34,10 @@
 
     <!-- Description -->
     <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
-      Temukan detail lengkap paket wisata mulai dari harga, fasilitas, jumlah peserta, 
-      hingga pilihan aktivitas seru yang bisa kamu nikmati.
+      {!! $texts['detail_paket_description'] !!}
     </p>
-  </div>
+</div>
+
 </section>
 
 <div class="max-w-6xl mx-auto py-20 px-6 grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -48,7 +48,7 @@
     <!-- Gambar Utama -->
     <div class="relative overflow-hidden rounded-2xl shadow-lg">
       <img :src="mainImage"
-           alt="{{ $paket->title }}"
+           
            class="w-full h-96 object-cover hover:scale-105 transition duration-500">
       {{-- <span class="absolute top-4 left-4 bg-green-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
         Best Seller
@@ -66,14 +66,19 @@
     </div>
 
 
-    <div class="hidden md:block mt-10">
-        <h4 class="text-2xl font-bold mb-3 text-gray-700">Fasilitas yang Termasuk</h4>
-        <ul class="list-disc list-inside text-gray-600 space-y-1">
-          @foreach ($paket->fasilitas as $item)
+   @php
+    $fasilitas = $paket->fasilitas[$lang] ?? [];
+@endphp
+
+<div class="hidden md:block mt-10">
+    <h4 class="text-2xl font-bold mb-3 text-gray-700">{{ $texts['fasilitas_dua'] }}</h4>
+    <ul class="list-disc list-inside text-gray-600 space-y-1">
+        @foreach ($fasilitas as $item)
             <li>{{ $item }}</li>
-          @endforeach
-        </ul>
-    </div>
+        @endforeach
+    </ul>
+</div>
+
 
 
 
@@ -82,12 +87,14 @@
   <!-- Detail kanan -->
     <div class="order-1 md:order-2">
       <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
-        {{ $paket->title }}
+    {{ is_array($paket->title) ? ($paket->title[$lang] ?? '') : $paket->title }}
+
       </h1>
-      <p class="text-gray-600 mb-6 flex items-center gap-2">
-        <i class="fa-solid fa-map-marker-alt text-secondary"></i> 
-        {{ $paket->location }} |  {{ $paket->category->name ?? '-' }}
+     <p class="text-gray-600 mb-6 flex items-center gap-2">
+          <i class="fa-solid fa-map-marker-alt text-secondary"></i> 
+          {{ $paket->location }} | {{ optional($paket->category)->name[$lang] ?? '-' }}
       </p>
+
 
       <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-xl">
         <p class="text-3xl font-extrabold text-primary mb-4">
@@ -96,7 +103,7 @@
 
         <p class="text-gray-600 text-sm flex items-center gap-2 mb-4">
             <i class="fa-solid fa-user-group"></i>
-            Max {{ $paket->max_person }} orang
+            Max {{ $paket->max_person }} {{ $texts['mak_person'] }}
         </p>
 
          <p class="text-gray-600 text-sm flex items-center gap-2 mb-4">
@@ -119,25 +126,30 @@
         <button
           class="mt-6 w-full bg-secondary text-white py-3 rounded-xl font-semibold 
                 shadow-lg hover:scale-[1.02] transition flex items-center justify-center gap-2">
-          Pesan Sekarang
+         {{ $texts['tombol_booking'] }}
         </button>
       </div>
 
       <!-- Tentang Paket -->
       <div class="mt-12 text-gray-700">
-        <h2 class="text-2xl font-bold mb-4">Tentang Paket</h2>
+        <h2 class="text-2xl font-bold mb-4">{{ $texts['about_paket'] }}</h2>
         <p class="leading-relaxed mb-6">
-          {{ $paket->description }}
+          {{ is_array($paket->description) ? ($paket->description[$lang] ?? '') : $paket->description }}
+
         </p>
 
 
 
-        <div class="block md:hidden mt-6">
-          <h4 class="text-2xl font-bold mb-3 text-gray-700">Fasilitas yang Termasuk</h4>
+         @php
+         $fasilitas = $paket->fasilitas[$lang] ?? [];
+         @endphp
+
+      <div class="md:hidden block mt-10">
+          <h4 class="text-2xl font-bold mb-3 text-gray-700">{{ $texts['fasilitas_dua'] }}</h4>
           <ul class="list-disc list-inside text-gray-600 space-y-1">
-            @foreach ($paket->fasilitas as $item)
-              <li>{{ $item }}</li>
-            @endforeach
+              @foreach ($fasilitas as $item)
+                  <li>{{ $item }}</li>
+              @endforeach
           </ul>
       </div>
 
@@ -145,15 +157,16 @@
         @if (optional($paket->category)->name !== 'activity')
         <!-- Konfirmasi Reservasi -->
           <div class="text-gray-900 py-6 rounded-2xl">
-            <h4 class="text-xl font-bold mb-3 text-gray-700">Konfirmasi Reservasi</h4>
+            <h4 class="text-xl font-bold mb-3 text-gray-700">{{ $texts['reservation_confirmation_title'] }}</h4>
             <ul class="space-y-2">
-              <li>✅ Check-in mulai pukul <span class="font-semibold">14:00</span></li>
-              <li>✅ Check-out maksimal pukul <span class="font-semibold">12:00</span></li>
+              <li>✅ {{ str_replace(':time', '14:00', $texts['checkin_time']) }}</li>
+              <li>✅ {{ str_replace(':time', '12:00', $texts['checkout_time']) }}</li>
             </ul>
             <p class="mt-4 text-sm text-secondary">
-              Harap tunjukkan bukti reservasi saat tiba di lokasi.
+              {{ $texts['show_reservation_proof'] }}
             </p>
         </div>
+
         @endif
 
       </div>

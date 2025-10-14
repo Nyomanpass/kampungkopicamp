@@ -25,8 +25,11 @@ class PaketWisata extends Model
     ];
 
     protected $casts = [
+        'title' => 'array',
+        'description' => 'array',
         'gallery' => 'array',
         'fasilitas' => 'array',
+        
     ];
 
     public function category()

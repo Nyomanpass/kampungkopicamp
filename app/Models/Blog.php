@@ -17,9 +17,13 @@ class Blog extends Model
         'published_at'
     ];
 
+    
+
 
     protected $casts = [
         'published_at' => 'datetime',
+        'title' => 'array',
+        'description' => 'array',
     ];
 
     // Hubungan ke blog_content

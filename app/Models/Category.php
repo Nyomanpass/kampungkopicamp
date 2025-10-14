@@ -8,6 +8,11 @@ class Category extends Model
 {
     protected $fillable = ['name'];
 
+
+     protected $casts = [
+        'name' => 'array',
+    ];
+
     // Kalau mau relasi ke PaketWisata:
     public function paketWisata()
     {

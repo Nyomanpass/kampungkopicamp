@@ -11,7 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        // KRUSIAL: Tambahkan Middleware Locale di sini ke dalam grup 'web'
+        $middleware->web(append: [
+            \App\Http\Middleware\SetAppLocale::class, 
+        ]);
+        
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

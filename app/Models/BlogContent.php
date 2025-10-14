@@ -17,6 +17,10 @@ class BlogContent extends Model
         'image'
     ];
 
+      protected $casts = [
+        'content' => 'array',
+    ];
+
     // Hubungan ke blog
     public function blog()
     {

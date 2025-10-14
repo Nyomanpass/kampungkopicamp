@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('paket_wisata', function (Blueprint $table) {
             $table->id();
-            $table->string('title');                // Judul paket
-            $table->text('description');            // Deskripsi paket
+            $table->json('title');       // {"id":"Judul ID", "en":"Title EN"}
+            $table->json('description'); // {"id":"Deskripsi ID", "en":"Description EN"}
             $table->decimal('price', 12, 2);        // Harga per paket
             $table->integer('max_person');          // Maksimal orang
             $table->string('location')->nullable(); // Lokasi

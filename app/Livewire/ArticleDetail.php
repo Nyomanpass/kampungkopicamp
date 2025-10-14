@@ -5,15 +5,33 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Blog;
+use Illuminate\Support\Facades\Session;
 
 class ArticleDetail extends Component
 {
     public $blog;
     public $relatedBlogs;
+    public $lang;
+    public $texts = [];
+
+    private function setTexts()
+    {
+        $this->texts = __('messages');
+    }
+
+    public function setLang($lang)
+    {
+        Session::put('locale', $lang);
+        $this->lang = $lang;
+        $this->setTexts();
+    }
+    
 
     public function mount($slug)
     {
         // Ubah slug menjadi title (misal: kampung-kopi-camp → kampung kopi camp)
+        $this->lang = Session::get('locale', 'id');
+        $this->setTexts();
         $title = str_replace('-', ' ', $slug);
 
         // Ambil blog beserta semua kontennya
@@ -25,7 +43,7 @@ class ArticleDetail extends Component
         $this->relatedBlogs = Blog::with('contents')
                                   ->where('id', '!=', $this->blog->id)
                                   ->orderBy('published_at', 'desc')
-                                  ->take(5)
+                                  ->take(6)
                                   ->get();
     }
 

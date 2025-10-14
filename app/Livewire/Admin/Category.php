@@ -8,10 +8,12 @@ use Livewire\Attributes\Layout;
 
 class Category extends Component
 {
-    public $name;
-    public $categoryId; // Untuk edit
+    public $name = ['id'=>'','en'=>''];
+    public $categoryId; // untuk edit
     public $categories;
     public $resetKey = 0;
+    public $lang;
+
 
 
     #[Layout('layouts.admin')]
@@ -21,14 +23,33 @@ class Category extends Component
         return view('livewire.admin.category');
     }
 
+        protected $listeners = [
+            'languageChanged' => 'updateLang'
+        ];
+
+        public function mount()
+        {
+            $this->lang = session('locale', 'id'); // default bahasa
+        }
+
+        public function updateLang($payload)
+        {
+            $this->lang = $payload['lang'] ?? 'id';
+        }
+
+
+
     public function save()
     {
         $this->validate([
-            'name' => 'required|min:3'
+            'name.id' => 'required|min:3',
+            'name.en' => 'required|min:3',
         ]);
 
         if ($this->categoryId) {
-            CategoryModel::where('id', $this->categoryId)->update(['name' => $this->name]);
+            CategoryModel::where('id', $this->categoryId)->update([
+                'name' => $this->name
+            ]);
             session()->flash('message', 'Kategori berhasil diperbarui!');
         } else {
             CategoryModel::create(['name' => $this->name]);
@@ -50,21 +71,15 @@ class Category extends Component
         CategoryModel::destroy($id);
         session()->flash('message', 'Kategori berhasil dihapus!');
 
-        // Kalau sedang dalam mode edit kategori yang dihapus, reset form
         if ($this->categoryId == $id) {
             $this->resetForm();
         }
     }
 
-    public function cancelEdit()
-    {
-        $this->resetForm();
-    }
-
     public function resetForm()
     {
-        $this->reset(['name', 'categoryId']);
-        $this->resetKey++; // Paksa re-render field input
+        $this->name = ['id'=>'','en'=>''];
+        $this->categoryId = null;
+        $this->resetKey++;
     }
-
 }

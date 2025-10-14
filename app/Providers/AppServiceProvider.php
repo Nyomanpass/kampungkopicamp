@@ -18,7 +18,12 @@ class AppServiceProvider extends ServiceProvider
      * Bootstrap any application services.
      */
     public function boot(): void
-    {
-        //
-    }
+{
+    // Jangan pakai session di sini, cukup default
+    app()->setLocale(config('app.locale'));
+}
+
+
+
+
 }

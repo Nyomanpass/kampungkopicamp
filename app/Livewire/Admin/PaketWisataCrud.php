@@ -7,6 +7,8 @@ use Livewire\WithFileUploads;
 use App\Models\PaketWisata;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Arr;
+
 
 class PaketWisataCrud extends Component
 {
@@ -15,10 +17,14 @@ class PaketWisataCrud extends Component
     #[Layout('layouts.admin')]
 
     // Form fields
-    public $title, $description, $price, $max_person, $location, $duration, $category_id, $categories;
+    public $price, $max_person, $location, $duration, $category_id, $categories;
     public $main_image;
     public $gallery = [];
-    public $fasilitas = '';
+    public $title = ['id'=>'','en'=>''];
+    public $description = ['id'=>'','en'=>''];
+    public $fasilitas = ['id'=>'','en'=>''];
+
+
 
     public $uploadKey;
     public $paket_id; // untuk edit
@@ -27,16 +33,21 @@ class PaketWisataCrud extends Component
 
 
     protected $rules = [
-        'title' => 'required|string|max:255',
-        'description' => 'required|string',
+        'title.id' => 'required|string|max:255',
+        'title.en' => 'required|string|max:255',
+        'description.id' => 'required|string',
+        'description.en' => 'required|string',
         'price' => 'required|numeric|min:0',
         'max_person' => 'required|integer|min:1',
         'location' => 'required|string',
         'duration' => 'required|string',
-        'category_id' => 'nullable|string',
-        'main_image' => 'nullable|image|max:10240', // maks 10MB
-        'gallery.*' => 'nullable|image|max:10240', // maks 10MB per fi
+        'category_id' => 'nullable',
+        'main_image' => 'nullable|image|max:10240',
+        'gallery.*' => 'nullable|image|max:10240',
+        'fasilitas.id' => 'nullable', // ✅ string comma-separated
+        'fasilitas.en' => 'nullable', // ✅ string comma-separated
     ];
+
 
     public function mount()
     {
@@ -60,39 +71,53 @@ class PaketWisataCrud extends Component
 
 
     // === CREATE ===
-    public function store()
-    {
-        $this->validate();
 
-        $mainImagePath = $this->main_image
-            ? $this->main_image->store('paket_wisata/main', 'public')
-            : null;
 
-        $galleryPaths = [];
-        if (!empty($this->gallery)) {
-            foreach ($this->gallery as $file) {
-                $galleryPaths[] = $file->store('paket_wisata/gallery', 'public');
-            }
+public function store()
+{
+    $this->validate();
+
+    $mainImagePath = $this->main_image
+        ? $this->main_image->store('paket_wisata/main', 'public')
+        : null;
+
+    $galleryPaths = [];
+    if (!empty($this->gallery)) {
+        foreach ($this->gallery as $file) {
+            $galleryPaths[] = $file->store('paket_wisata/gallery', 'public');
         }
-
-        $fasilitasArray = array_filter(array_map('trim', explode(',', $this->fasilitas)));
-
-        PaketWisata::create([
-            'title'       => $this->title,
-            'description' => $this->description,
-            'price'       => $this->price,
-            'max_person'  => $this->max_person,
-            'location'    => $this->location,
-            'duration'    => $this->duration,
-            'category_id'    => $this->category_id,
-            'main_image'  => $mainImagePath,
-            'gallery'     => $galleryPaths,
-            'fasilitas'   => $fasilitasArray,
-        ]);
-
-        session()->flash('message', '✅ Paket wisata berhasil ditambahkan.');
-        $this->resetForm();
     }
+
+    // 🧠 normalize fasilitas
+    $fasilitas_id = $this->fasilitas['id'] ?? [];
+    $fasilitas_en = $this->fasilitas['en'] ?? [];
+
+    PaketWisata::create([
+        'title' => $this->title,
+        'description' => $this->description,
+        'price' => $this->price,
+        'max_person' => $this->max_person,
+        'location' => $this->location,
+        'duration' => $this->duration,
+        'category_id' => $this->category_id,
+        'main_image' => $mainImagePath,
+        'gallery' => $galleryPaths,
+        'fasilitas' => [
+            'id' => is_array($fasilitas_id)
+                ? array_filter(Arr::flatten($fasilitas_id))
+                : array_filter(array_map('trim', explode(',', $fasilitas_id))),
+            'en' => is_array($fasilitas_en)
+                ? array_filter(Arr::flatten($fasilitas_en))
+                : array_filter(array_map('trim', explode(',', $fasilitas_en))),
+        ],
+    ]);
+
+    session()->flash('message', '✅ Paket wisata berhasil ditambahkan.');
+    $this->resetForm();
+    $this->viewMode = 'list';
+}
+
+
 
     // === READ ===
     public function getPaketWisata()
@@ -119,48 +144,64 @@ class PaketWisataCrud extends Component
         $this->location  = $paket->location;
         $this->duration  = $paket->duration;
         $this->category_id  = $paket->category_id;
-        $this->fasilitas = implode(',', $paket->fasilitas ?? []);
+        $this->fasilitas = $paket->fasilitas ?? ['id'=>'','en'=>''];
         $this->viewMode = 'form';
     }
 
+
+
     public function update()
-    {
-        $this->validate();
+{
+    $this->validate();
 
-        $paket = PaketWisata::findOrFail($this->paket_id);
+    $paket = PaketWisata::findOrFail($this->paket_id);
 
-        if ($this->main_image) {
-            if ($paket->main_image) Storage::disk('public')->delete($paket->main_image);
-            $paket->main_image = $this->main_image->store('paket_wisata/main', 'public');
-        }
-
-        if (!empty($this->gallery)) {
-            foreach ($paket->gallery ?? [] as $old) {
-                Storage::disk('public')->delete($old);
-            }
-
-            $newGallery = [];
-            foreach ($this->gallery as $file) {
-                $newGallery[] = $file->store('paket_wisata/gallery', 'public');
-            }
-            $paket->gallery = $newGallery;
-        }
-
-        $paket->update([
-            'title' => $this->title,
-            'description' => $this->description,
-            'price' => $this->price,
-            'max_person' => $this->max_person,
-            'location' => $this->location,
-            'duration' => $this->duration,
-            'category_id' => $this->category_id,
-            'fasilitas' => array_filter(array_map('trim', explode(',', $this->fasilitas))),
-        ]);
-
-        session()->flash('message', '✅ Paket wisata berhasil diperbarui.');
-        $this->resetForm();
-        $this->viewMode = 'list';
+    // === Handle main image ===
+    if ($this->main_image) {
+        if ($paket->main_image) Storage::disk('public')->delete($paket->main_image);
+        $paket->main_image = $this->main_image->store('paket_wisata/main', 'public');
     }
+
+    // === Handle gallery ===
+    if (!empty($this->gallery)) {
+        foreach ($paket->gallery ?? [] as $old) {
+            Storage::disk('public')->delete($old);
+        }
+
+        $newGallery = [];
+        foreach ($this->gallery as $file) {
+            $newGallery[] = $file->store('paket_wisata/gallery', 'public');
+        }
+        $paket->gallery = $newGallery;
+    }
+
+    // 🧠 normalize fasilitas
+    $fasilitas_id = $this->fasilitas['id'] ?? [];
+    $fasilitas_en = $this->fasilitas['en'] ?? [];
+
+    $paket->update([
+        'title' => $this->title,
+        'description' => $this->description,
+        'price' => $this->price,
+        'max_person' => $this->max_person,
+        'location' => $this->location,
+        'duration' => $this->duration,
+        'category_id' => $this->category_id,
+        'fasilitas' => [
+            'id' => is_array($fasilitas_id)
+                ? array_filter(Arr::flatten($fasilitas_id))
+                : array_filter(array_map('trim', explode(',', $fasilitas_id))),
+            'en' => is_array($fasilitas_en)
+                ? array_filter(Arr::flatten($fasilitas_en))
+                : array_filter(array_map('trim', explode(',', $fasilitas_en))),
+        ],
+    ]);
+
+    session()->flash('message', '✅ Paket wisata berhasil diperbarui.');
+    $this->resetForm();
+    $this->viewMode = 'list';
+}
+
 
     // === DELETE ===
     public function delete($id)
@@ -191,15 +232,25 @@ class PaketWisataCrud extends Component
 
     // === RESET FORM ===
     public function resetForm()
-    {
-        $this->reset([
-            'title', 'description', 'price', 'max_person', 'location',
-            'duration', 'category_id', 'main_image', 'gallery', 'fasilitas', 'paket_id'
-        ]);
-        $this->uploadKey = rand();
-        $this->resetValidation();
-        $this->dispatch('reset-file-inputs');
-    }
+{
+    $this->title = ['id' => '', 'en' => ''];
+    $this->description = ['id' => '', 'en' => ''];
+    $this->fasilitas = ['id' => '', 'en' => ''];
+
+    $this->price = null;
+    $this->max_person = null;
+    $this->location = null;
+    $this->duration = null;
+    $this->category_id = null;
+    $this->main_image = null;
+    $this->gallery = [];
+    $this->paket_id = null;
+
+    $this->uploadKey = rand();
+    $this->resetValidation();
+    $this->dispatch('reset-file-inputs');
+}
+
 
     public function render()
     {
