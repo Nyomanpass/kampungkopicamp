@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Products;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Livewire\Attributes\Computed;
@@ -16,7 +17,7 @@ class PaketWisata extends Component
     public $categories;
     public $lang;
     public $texts = [];
-        
+
 
     public function mount()
     {
@@ -61,7 +62,7 @@ class PaketWisata extends Component
             'custom_package_heading' => __('messages.custom_package_heading'),
             'custom_package_description' => __('messages.custom_package_description'),
             'custom_package_button' => __('messages.custom_package_button'),
-            
+
             'tombol_booking'   => __('messages.tombol_booking'),
             'tombol_detail'   => __('messages.tombol_detail'),
             'mak_person'       => __('messages.mak_person'),
@@ -72,7 +73,7 @@ class PaketWisata extends Component
     }
 
 
-        public function setLang($lang)
+    public function setLang($lang)
     {
         Session::put('locale', $lang);
         $this->lang = $lang;
@@ -80,14 +81,14 @@ class PaketWisata extends Component
     }
 
 
-        protected $listeners = [
-            'languageChanged' => 'updateLang'
-        ];
+    protected $listeners = [
+        'languageChanged' => 'updateLang'
+    ];
 
-        public function updateLang($payload)
-        {
-            $this->lang = $payload['lang'] ?? 'id';
-        }
+    public function updateLang($payload)
+    {
+        $this->lang = $payload['lang'] ?? 'id';
+    }
 
     // Mengubah kategori aktif
     public function filterPackages(string $categoryId): void
@@ -101,20 +102,19 @@ class PaketWisata extends Component
     public function filteredProducts()
     {
         if ($this->activeCategory === 'all') {
-            return PaketWisataModel::all();
+            return Products::all();
         }
 
-        return PaketWisataModel::where('category_id', $this->activeCategory)->get();
+        return Products::where('category_id', $this->activeCategory)->get();
     }
 
     #[Layout('layouts.app')]
     public function render()
     {
-        
+
         return view('livewire.paketwisata', [
             'filteredProducts' => $this->filteredProducts,
             'categories' => $this->categories,
         ]);
     }
-
 }
