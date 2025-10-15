@@ -1,17 +1,30 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
 @source '../../storage/framework/views/*.php';
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+@import "@fortawesome/fontawesome-free/css/all.min.css";
+
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
 
-     --color-primary: #e6c875;
-     --color-secondary: #563c29;
+    --font-jakarta: "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif,
+        "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
+        "Noto Color Emoji";
+
+    --color-primary: #5b7042;
+    --color-light-primary: #8ca67a;
+    --color-secondary: #eadfc8;
+    --color-accent: #c39b77;
+    --color-neutral: #e8e8e4;
+    --color-dark: #2f2f2f;
+    --color-success: #85b582;
+    --color-warning: #e0a15a;
+    --color-danger: #c2644f;
     /* --color-secondary: #214521; */
-     --color-light: #f9f7f4;
+    /* --color-light: #f9f7f4; */
 }
-

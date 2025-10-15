@@ -20,7 +20,7 @@ class Home extends Component
         $this->setTexts();
     }
 
-        private function setTexts()
+    private function setTexts()
     {
         $this->texts = [
             'badge' => __('messages.badge'),
@@ -93,11 +93,10 @@ class Home extends Component
             'address_map_cta' => __('messages.address_map_cta'),
             'location_heading' => __('messages.location_heading'),
         ];
-
     }
 
 
-        public function setLang($lang)
+    public function setLang($lang)
     {
         Session::put('locale', $lang);
         $this->lang = $lang;
@@ -107,8 +106,8 @@ class Home extends Component
 
     #[Layout('layouts.app')]
     public function render()
-    {   
-        $pakets = PaketWisata::oldest()->take(3)->get();
+    {
+        $pakets = \App\Models\Products::oldest()->take(3)->get();
         $blogs = Blog::latest()->take(3)->get();
         return view('livewire.home', [
             'pakets' => $pakets,

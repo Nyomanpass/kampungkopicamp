@@ -12,16 +12,34 @@ use App\Livewire\ArticleDetail;
 use App\Livewire\Admin\PaketWisataCrud;
 use App\Livewire\Admin\ArticleCrud;
 use App\Livewire\Admin\Category;
+use App\Livewire\Login;
+use App\Livewire\Register;
 
 
-Route::get('/', Home::class);
-Route::get('/about', About::class);
-Route::get('/contact', Contact::class);
-Route::get('/paket-wisata', Paketwisata::class);
+Route::get('/', Home::class)->name('home');
+Route::get('/about', About::class)->name('about');
+Route::get('/contact', Contact::class)->name('contact');
+Route::get('/paket-wisata', Paketwisata::class)->name('paket-wisata');
 Route::get('/paket/{slug}', PaketDetail::class)->name('paket.detail');
-Route::get('/explore-pupuan', ExplorePupuan::class);
-Route::get('/article', Article::class);
+Route::get('/explore-pupuan', ExplorePupuan::class)->name('explore-pupuan');
+Route::get('/article', Article::class)->name('article');
 Route::get('/article/{slug}', ArticleDetail::class)->name('article.detail');
-Route::get('/admin/paket-wisata', PaketWisataCrud::class)->name('admin.paket-wisata');
-Route::get('/admin/article', ArticleCrud::class)->name('admin.article');
-Route::get('/admin/category', Category::class)->name('admin.category');
+
+
+Route::middleware('guest')->group(function () {
+      Route::get('/login', action: Login::class)->name('login');
+      Route::get('/register', action: Register::class)->name('register');
+});
+
+
+// ========== AUTH ROUTES (For logged-in users) ==========
+Route::middleware('auth')->group(function () {
+      Route::get('/logout', [Login::class, 'logout'])->name('logout');
+});
+
+
+// ========== ADMIN ROUTES (Only for admin role) ==========
+Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
+      Route::get('/package', PaketWisataCrud::class)->name('admin.paket-wisata');
+      Route::get('/article', ArticleCrud::class)->name('admin.article');
+});
