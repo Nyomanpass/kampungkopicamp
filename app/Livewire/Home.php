@@ -107,7 +107,7 @@ class Home extends Component
     #[Layout('layouts.app')]
     public function render()
     {
-        $pakets = \App\Models\Products::oldest()->take(3)->get();
+        $pakets = \App\Models\Product::oldest()->take(3)->get();
         $blogs = Blog::latest()->take(3)->get();
         return view('livewire.home', [
             'pakets' => $pakets,
