@@ -18,7 +18,11 @@
         scrolled = window.pageYOffset > 50;
     });"
         class="fixed  top-0 left-0 w-full z-50 transition-all duration-300"
-        :class="scrolled ? 'bg-white shadow-md text-primary py-1' : 'bg-transparent text-white'">
+        :class="@if(request()->is('/'))
+        scrolled ? 'bg-white shadow-md text-primary py-1' : 'bg-transparent text-white'
+        @else
+            'bg-white shadow-md text-primary py-1'
+        @endif">
         <div class="relative h-16 max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-14 py-5">
             <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">

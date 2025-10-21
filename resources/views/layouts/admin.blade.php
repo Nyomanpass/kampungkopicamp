@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ session('locale', 'id') }}"> <!-- PERBAIKAN: Membuat atribut lang dinamis -->
+
 <head>
     <meta charset="UTF-8">
     <title>Dashboard Admin</title>
@@ -7,11 +8,12 @@
     @vite('resources/css/app.css')
     @livewireStyles
 </head>
+
 <body class="bg-gray-100 flex h-screen overflow-hidden">
 
     <!-- Sidebar -->
     <!-- Tambahkan 'flex-col' dan 'justify-between' agar konten bisa diatur ke atas/bawah -->
-    <aside class="w-64 bg-white shadow-lg flex flex-col justify-between"> 
+    <aside class="w-64 bg-white shadow-lg flex flex-col justify-between">
         <div>
             <div class="p-6 text-center border-b">
                 <h1 class="text-xl font-bold text-gray-800">Admin Dashboard</h1>
@@ -19,14 +21,14 @@
 
             <!-- Bagian ini berisi Navigasi dan tombol Logout (sesuai admin-sidebar.blade.php lama Anda) -->
             <livewire:layout.admin-sidebar :key="session('locale')" />
-             <!-- Language Switcher diletakkan di bagian paling bawah sidebar -->
-        <div class="p-6 border-t">
-            <livewire:language-switcher :key="session('locale')" />
-        </div>
+            <!-- Language Switcher diletakkan di bagian paling bawah sidebar -->
+            <div class="p-6 border-t">
+                <livewire:language-switcher :key="session('locale')" />
+            </div>
 
         </div>
 
-       
+
     </aside>
 
     <!-- Main Content -->
@@ -38,4 +40,5 @@
 
     @livewireScripts
 </body>
+
 </html>

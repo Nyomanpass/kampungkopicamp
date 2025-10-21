@@ -4,7 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use App\Models\Products;
+use App\Models\Product;
 
 class productsSeeder extends Seeder
 {
@@ -13,9 +13,9 @@ class productsSeeder extends Seeder
      */
     public function run(): void
     {
-        Products::create([
+        Product::create([
             'name' => 'Glamping Standar Package',
-            'type' => 'accomodation',
+            'type' => 'accommodation',
             'price' => 250000,
             'capacity_per_unit' => 3,
             'duration_type' => 'daily',
@@ -24,9 +24,9 @@ class productsSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        Products::create([
+        Product::create([
             'name' => 'Tenda Standar Package',
-            'type' => 'accomodation',
+            'type' => 'accommodation',
             'price' => 100000,
             'capacity_per_unit' => 2,
             'duration_type' => 'daily',
@@ -35,7 +35,7 @@ class productsSeeder extends Seeder
             'is_active' => true,
         ]);
 
-        Products::create([
+        Product::create([
             'name' => 'Kebun Kopi Tour',
             'type' => 'touring',
             'price' => 300000,

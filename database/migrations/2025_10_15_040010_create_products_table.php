@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->string('name', 150);
-            $table->enum('type', ['accomodation', 'touring']);
+            $table->string('slug', 150)->unique();
+            $table->enum('type', ['accommodation', 'touring', 'area_rental']); // 👈 FIX: "accommodation"
             $table->decimal('price', 12, 2)->default(0);
             $table->integer('capacity_per_unit')->nullable(); //for accomodation
             $table->integer('max_participant')->nullable(); //for touring
