@@ -10,17 +10,19 @@ class VoucherRedemption extends Model
         'voucher_id',
         'user_id',
         'booking_id',
+        'discount_amount',
+        'bonus_details',
         'redeemed_at',
-        'discount_value',
     ];
 
     protected $casts = [
+        'bonus_details' => 'array',
         'redeemed_at' => 'datetime',
-        'discount_value' => 'decimal:2',
     ];
 
     // ===== relationships =======
-    public function voucher(){
+    public function voucher()
+    {
         return $this->belongsTo(Voucher::class);
     }
 

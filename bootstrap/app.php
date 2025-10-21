@@ -16,6 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SetAppLocale::class,
         ]);
 
+        $middleware->validateCsrfTokens(except: [
+            'payment/webhook',
+            'payment/webhook/*',
+        ]);
+
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);

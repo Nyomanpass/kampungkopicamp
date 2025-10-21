@@ -22,6 +22,8 @@ return new class extends Migration
                 'per_slot'
             ]);
             $table->decimal('price', 12, 2)->default(0);
+            $table->text('description')->nullable();
+            $table->string('image')->nullable();
             $table->boolean('has_iventory')->default(false);
             $table->boolean('is_active')->default(true);
             $table->timestamps();

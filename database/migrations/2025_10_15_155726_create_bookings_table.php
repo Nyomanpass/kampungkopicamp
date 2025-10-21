@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('booking_token', 100)->unique();
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
-            $table->enum('product_type', ['accomodation', 'touring', 'area_rental']);
+            $table->enum('product_type', ['accommodation', 'touring', 'area_rental']);
             $table->date('start_date');
             $table->date('end_date');
             $table->integer('people_count')->default(1);

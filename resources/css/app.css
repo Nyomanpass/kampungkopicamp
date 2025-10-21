@@ -27,4 +27,19 @@
     --color-danger: #c2644f;
     /* --color-secondary: #214521; */
     /* --color-light: #f9f7f4; */
+
+    --animate-wiggle: wiggle 1s ease-in-out infinite;
+    @keyframes wiggle {
+        0%,
+        100% {
+            transform: rotate(-3deg);
+        }
+        50% {
+            transform: rotate(3deg);
+        }
+    }
+}
+
+[x-cloak] {
+    display: none !important;
 }

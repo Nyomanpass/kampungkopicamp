@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->date('date');
-            $table->integer('available_units')->nullable();
-            $table->integer('availability_unit')->nullable();
+            $table->integer('available_unit')->nullable();
+            $table->integer('available_seat')->nullable();
             $table->timestamps();
 
             $table->unique(['product_id', 'date']);

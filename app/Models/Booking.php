@@ -24,6 +24,9 @@ class Booking extends Model
         'customer_name',
         'customer_email',
         'customer_phone',
+        'bonus_meta',
+        'voucher_id',
+        'discount_amount',
     ];
 
     protected $casts = [
@@ -32,6 +35,7 @@ class Booking extends Model
         'subtotal' => 'decimal:2',
         'discount_total' => 'decimal:2',
         'total_price' => 'decimal:2',
+        'bonus_meta' => 'array',
     ];
 
     // ============================================
@@ -71,6 +75,11 @@ class Booking extends Model
     public function invoices()
     {
         return $this->hasMany(Invoice::class);
+    }
+
+    public function voucher()
+    {
+        return $this->belongsTo(Voucher::class);
     }
 
     public function voucherRedemptions()
@@ -143,6 +152,34 @@ class Booking extends Model
         $this->releaseAvailability();
     }
 
+    public function holdAvailability()
+    {
+        foreach ($this->bookingItems as $item) {
+            if ($item->item_type === 'product' && $item->product_id) {
+                $product = Product::find($item->product_id);
+
+                if ($product) {
+                    // Generate date range
+                    $period = Carbon::parse($this->start_date)->daysUntil($this->end_date);
+
+                    foreach ($period as $date) {
+                        $availability = Availability::where('product_id', $product->id)
+                            ->where('date', $date->format('Y-m-d'))
+                            ->first();
+
+                        if ($availability) {
+                            if ($product->type === 'touring') {
+                                $availability->decreaseSeats($this->seat_count ?? 0);
+                            } else {
+                                $availability->decreaseUnits($this->unit_count ?? 0);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /**
      * Release availability (return stock when cancelled/expired)
      */
@@ -197,5 +234,44 @@ class Booking extends Model
     public function isPaid()
     {
         return in_array($this->status, ['paid', 'confirmed', 'checked_in', 'completed']);
+    }
+
+    public function hasBonus()
+    {
+        return !empty($this->bonus_meta);
+    }
+
+    public function getBonusItems()
+    {
+        return $this->bonus_meta ?? [];
+    }
+
+    public function updateBonusRedemption($bonusIndex, $qtyRedeemed)
+    {
+        $bonusMeta = $this->bonus_meta;
+
+        if (isset($bonusMeta[$bonusIndex])) {
+            $bonusMeta[$bonusIndex]['qty_redeemed'] = min(
+                $qtyRedeemed,
+                $bonusMeta[$bonusIndex]['qty_total']
+            );
+
+            $this->update(['bonus_meta' => $bonusMeta]);
+        }
+    }
+
+    public function isBonusFullyRedeemed()
+    {
+        if (!$this->hasBonus()) {
+            return false;
+        }
+
+        foreach ($this->bonus_meta as $bonus) {
+            if ($bonus['qty_redeemed'] < $bonus['qty_total']) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

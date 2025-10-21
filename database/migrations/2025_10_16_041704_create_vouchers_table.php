@@ -13,20 +13,19 @@ return new class extends Migration
     {
         Schema::create('vouchers', function (Blueprint $table) {
             $table->id();
-            $table->string('code', 50)->unique();
-            $table->enum('type', ['percent', 'amount', 'addon_bonus']);
-            $table->decimal('value', 12, 2)->default(0);
-            $table->integer('min_night')->default(0);
-            $table->decimal("min_total", 12, 2)->default(0);
-            $table->date('start_date')->nullable();
-            $table->date('end_date')->nullable();
-            $table->integer('usage_limit')->default(0);
-            $table->enum('scope', ['registered_only', 'all'])->default('registered_only');
+            $table->string('code')->unique();
+            $table->string('name');
+            $table->enum('type', ['percentage', 'fixed', 'bonus']);
+            $table->integer('value');
+            $table->integer('min_order')->default(0);
+            $table->integer('max_discount')->nullable();
+            $table->integer('usage_limit')->nullable();
+            $table->integer('used_count')->default(0);
+            $table->dateTime('start_date');
+            $table->dateTime('end_date');
             $table->boolean('is_active')->default(true);
+            $table->text('description')->nullable();
             $table->timestamps();
-
-            $table->index('code');
-            $table->index('is_active');
         });
     }
 

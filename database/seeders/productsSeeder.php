@@ -15,7 +15,7 @@ class productsSeeder extends Seeder
     {
         Product::create([
             'name' => 'Glamping Standar Package',
-            'type' => 'accomodation',
+            'type' => 'accommodation',
             'price' => 250000,
             'capacity_per_unit' => 3,
             'duration_type' => 'daily',
@@ -26,7 +26,7 @@ class productsSeeder extends Seeder
 
         Product::create([
             'name' => 'Tenda Standar Package',
-            'type' => 'accomodation',
+            'type' => 'accommodation',
             'price' => 100000,
             'capacity_per_unit' => 2,
             'duration_type' => 'daily',
