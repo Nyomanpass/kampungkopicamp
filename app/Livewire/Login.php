@@ -34,7 +34,7 @@ class Login extends Component
 
             // Redirect berdasarkan role
             if (Auth::user()->role === 'admin') {
-                return redirect()->route('admin.paket-wisata');
+                return redirect()->route('admin.dashboard');
             }
 
             return redirect()->route('home')->with('success', 'Login berhasil!');
