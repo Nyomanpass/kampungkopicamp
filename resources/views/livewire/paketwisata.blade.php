@@ -1,21 +1,21 @@
 <div>
 <!-- Hero Section Paket Wisata -->
 <section 
-  class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden" 
+  class="relative w-full h-[60vh] flex items-center justify-center text-center text-white overflow-hidden" 
   data-aos="fade-zoom-in" 
   data-aos-duration="1200" 
   data-aos-easing="ease-in-out" 
   data-aos-once="true">
 
   <!-- Background -->
-  <img src="/images/gambarheader.jpg" 
+  <img src="/images/headerpaketwisata.webp" 
        alt="Paket Wisata Background" 
        class="absolute inset-0 w-full h-full object-cover" 
        data-aos="zoom-out" 
        data-aos-duration="1000">
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
 
   <!-- Content -->
  <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
@@ -23,13 +23,14 @@
       {!! $texts['subheading'] !!}
     </p>
 
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
       {!! $texts['title'] !!}
     </h1>
 
+
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
-    <p id="paket-wisata" class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p id="paket-wisata" class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
       {!! $texts['description'] !!}
     </p>
 </div>
@@ -71,17 +72,8 @@
           <div class="relative">
             <img src="{{ asset('storage/' . ($product['main_image'] ?? 'placeholder.jpg')) }}" 
                 alt="{{ is_array($product['name']) ? ($product['name'][$lang] ?? '') : $product['name'] }}" 
-                class="w-full h-72 object-cover">
-            
-            @if (!empty($product['is_popular']))
-              <span class="absolute top-3 left-3 bg-yellow-500 text-xs font-semibold text-white px-3 py-1 rounded-full shadow">
-                Populer
-              </span>
-            @endif
-
-            <button class="absolute top-3 right-3 bg-white p-2 rounded-full shadow hover:bg-gray-100">
-              <i class="fa-regular fa-heart text-gray-600"></i>
-            </button>
+                class="w-full h-70 object-cover">
+        
           </div>
 
           <!-- Konten Paket -->
@@ -147,45 +139,52 @@
 
 <section class="py-16 bg-white">
   <div class="max-w-6xl mx-auto px-6 text-center mb-12">
-    <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-3"
+    <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6"
         data-aos="fade-down"
         data-aos-duration="800"
         data-aos-delay="100">
      {{ $texts['how_to_order_heading'] }}
     </h2>
-    <p class="text-gray-600 mb-10"
+    <p class="text-gray-600 mb-10 text-sm md:text-lg"
       data-aos="fade-up"
       data-aos-duration="800"
       data-aos-delay="200">
       {{ $texts['how_to_order_description'] }}
     </p>
 
-    <div class="grid grid-cols-1 md:grid-cols-5 gap-8">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-8">
     @foreach ($texts['how_to_order_steps'] as $index => $step)
-    <div class="flex flex-col items-center">
-        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-white font-bold text-lg mb-4">
+    
+    <div class="flex flex-col items-center text-center">
+        
+        <div class="w-12 h-12 flex items-center justify-center rounded-full bg-primary text-white font-bold text-lg mb-4 flex-shrink-0 md:mb-6">
             {{ $index + 1 }}
         </div>
-        <h3>{{ $step['title'] }}</h3>
-        <p>{{ $step['desc'] }}</p>
+        
+        <h3 class="text-md font-semibold text-gray-900 mb-2">
+            {{ $step['title'] }}
+        </h3>
+        
+        <p class="text-base text-sm md:px-2 px-8 text-gray-600">
+            {{ $step['desc'] }}
+        </p>
     </div>
     @endforeach
 </div>
-
- 
+    
   </div>
 </section>
 
 
 <section class="bg-light py-20 mt-10">
   <div class="max-w-4xl mx-auto text-center px-6">
-    <h2 class="text-3xl md:text-4xl font-bold text-secondary mb-4"
+    <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6"
         data-aos="fade-down"
         data-aos-duration="800"
         data-aos-delay="100">
       {!! $texts['custom_package_heading'] !!}
     </h2>
-    <p class="text-gray-600 text-lg mb-8"
+    <p class="text-gray-600 md:text-lg mb-8 text-sm"
        data-aos="fade-up"
        data-aos-duration="800"
        data-aos-delay="200">
@@ -196,7 +195,7 @@
          data-aos-duration="800"
          data-aos-delay="300">
       <a href="https://wa.me/6281234567890" target="_blank"
-         class="px-8 py-3 bg-yellow-400 text-gray-900 font-semibold rounded-xl shadow-lg hover:bg-amber-900 transform hover:scale-105 transition duration-300">
+         class="px-8 py-3 bg-secondary text-white font-semibold rounded-xl shadow-lg hover:bg-primary transform hover:scale-103 transition duration-300">
          {{ $texts['custom_package_button'] }}
       </a>
     </div>

@@ -7,14 +7,14 @@
   data-aos-once="true">
 
   <!-- Background Image -->
-  <img src="/images/gambarheader.jpg" 
+  <img src="/images/article.webp" 
        alt="Article Background" 
        class="absolute inset-0 w-full h-full object-cover"
        data-aos="zoom-out"
        data-aos-duration="1000">
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
 
   <!-- Content -->
   <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
@@ -24,7 +24,7 @@
     </p>
 
     <!-- Title -->
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
       {!! str_replace(':place', '<span class="text-primary">Pupuan</span>', $texts['explore_inspiration']) !!}
     </h1>
 
@@ -32,7 +32,7 @@
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
     <!-- Description -->
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
       {{ $texts['explore_description'] }}
     </p>
   </div>
@@ -41,17 +41,17 @@
 
 <section class="max-w-7xl mx-auto px-6 lg:px-20 py-20">
   <!-- Header -->
-  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12" data-aos="fade-up">
+  <div class="grid grid-cols-1 md:grid-cols-2 md:gap-8 mb-12" data-aos="fade-up">
     <div>
       <p class="text-sm font-semibold text-secondary tracking-widest mb-2">
         {{ $texts['latest_news_events'] }}
       </p>
-      <h2 class="text-3xl md:text-4xl text-secondary font-extrabold text-gray-900">
+      <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6">
         {!! str_replace(':place', '<span class="text-primary">Pupuan</span>', $texts['latest_stories_heading']) !!}
       </h2>
     </div>
     <div>
-      <p class="text-gray-600 pt-5 leading-relaxed">
+      <p class="text-sm md:text-lg max-w-3xl text-gray-600 mb-6">
         {{ $texts['latest_stories_description'] }}
       </p>
     </div>
@@ -61,43 +61,54 @@
   <!-- Blog Grid -->
   <div class="grid grid-cols-1 md:grid-cols-3 gap-10">
  
-@foreach($blogs as $index => $blog)
-    <article class="bg-white rounded-xl shadow hover:shadow-lg transition overflow-hidden"
+ @foreach ($blogs as $index => $blog)
+        <div class="bg-white rounded-xl shadow-lg transition duration-300 hover:shadow-2xl overflow-hidden"
              data-aos="fade-up"
-             data-aos-delay="{{ $index * 150 }}">
-             
-        <img src="{{ $blog->main_image ? asset('storage/' . $blog->main_image) : 'https://picsum.photos/400/400?random=1' }}" 
-             alt="{{ $blog->title[$lang] ?? '' }}" 
-             class="w-full h-56 object-cover">
+             data-aos-delay="{{ $index * 150 }}"
+             data-aos-duration="1000"
+             data-aos-easing="ease-in-out">
 
-        <div class="py-6 px-4">
-             <div class="flex items-center text-xs text-gray-500 mb-2 space-x-2">
-              <span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded">
-                {{ $texts['article_type'] }}
-              </span>
-              <span>{{ $blog->created_at->format('d M Y') }}</span>
-              <span>•</span>
-              <span>By {{ $blog->author[$lang] ?? 'Admin' }}</span>
-              <span>•</span>
-              <span>{{ $blog->read_time ?? '3 min' }} read</span>
+            <img src="{{ $blog->main_image ? asset('storage/' . $blog->main_image) : 'https://picsum.photos/400/250?random=' . $index }}" 
+                 alt="{{ $blog->title[$lang] ?? '' }}" 
+                 class="w-full h-56 object-cover aspect-video">
+
+            <div class="p-6">
+                <div class="flex flex-wrap items-center text-xs font-medium text-gray-500 mb-3 space-x-3">
+                    
+                   
+                    <span class="bg-secondary/10 text-secondary px-2 py-0.5 rounded-full uppercase tracking-wider">
+                        {{ $texts['article_type'] }}
+                    </span>
+                    
+                    
+                    <span class="text-gray-400">•</span>
+                    <span>{{ $blog->created_at->format('d M Y') }}</span>
+                </div>
+
+                <h3 class="text-md font-semibold text-gray-700 leading-snug"
+                    data-aos="fade-right"
+                    data-aos-delay="{{ 100 + $index * 150 }}"
+                    data-aos-duration="900">
+                  {{ $blog->title[$lang] ?? '' }}
+                </h3>
+
+                <p class="text-base md:text-md text-sm text-gray-600 mt-3 mb-4"
+                   data-aos="fade-up"
+                   data-aos-delay="{{ 200 + $index * 150 }}"
+                   data-aos-duration="1000">
+                  {{ Str::limit($blog->description[$lang] ?? '', 120) }}
+                </p>
+
+                <a href="{{ route('article.detail', ['slug' => Str::slug($blog->title[$lang] ?? '')]) }}"
+                   class="inline-flex items-center text-sm font-semibold text-secondary hover:text-amber-900 transition"
+                   data-aos="zoom-in"
+                   data-aos-delay="{{ 300 + $index * 150 }}"
+                   data-aos-duration="800">
+                  {{ $lang === 'id' ? 'Baca Selengkapnya →' : 'Read More →' }}
+                </a>
             </div>
-
-            <h3 class="text-lg font-bold text-gray-900 mb-3">
-                {{ $blog->title[$lang] ?? '' }}
-            </h3>
-            <p class="text-gray-600 text-sm mb-4">
-                {{ Str::limit($blog->description[$lang] ?? '', 100) }}
-            </p>
-
-            <a href="{{ route('article.detail', [
-                    'slug' => Str::slug($blog->title[$lang] ?? '')
-                ]) }}" 
-                class="text-secondary font-semibold hover:underline">
-               {{ $lang === 'id' ? 'Baca Selengkapnya →' : 'Read More →' }}
-            </a>
         </div>
-    </article>
-@endforeach
+    @endforeach
 
   </div>
 </section>

@@ -7,14 +7,14 @@
   data-aos-once="true">
 
   <!-- Background Image -->
-  <img src="/images/gambarheader.jpg" 
+  <img src="/images/lampu.webp" 
        alt="Article Detail Background" 
        class="absolute inset-0 w-full h-full object-cover"
        data-aos="zoom-out"
        data-aos-duration="1000">
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
 
   <!-- Content -->
   <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
@@ -24,7 +24,7 @@
     </p>
 
     <!-- Title -->
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
          {!! __('messages.article_title') !!}
     </h1>
 
@@ -32,7 +32,7 @@
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
     <!-- Description -->
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
      {{ $texts['article_description'] }}
     </p>
   </div>
@@ -43,7 +43,7 @@
         
     {{-- Konten Utama --}}
     <div class="md:col-span-2">
-        <h1 class="text-2xl md:text-3xl font-bold mb-3">
+        <h1 class="text-2xl text-gray-700 md:text-3xl font-semibold mb-3">
             {{ $blog->title[$lang] ?? $blog->title }}
         </h1>
 
@@ -73,20 +73,11 @@
                 <p>{{ $content->content[$lang] ?? $content->content }}</p>
             @endforeach
         </div>
-
-        {{-- Tombol Share Sosial Media --}}
-        <div class="flex gap-3 mt-6">
-            <a href="#" class="text-blue-600">Facebook</a>
-            <a href="#" class="text-sky-500">Twitter</a>
-            <a href="#" class="text-green-500">WhatsApp</a>
-            <a href="#" class="text-gray-600">Email</a>
-        </div>
-
     </div>
 
     {{-- Sidebar Latest Blogs --}}
     <aside>
-        <h2 class="text-xl font-bold mb-4"> {{ $lang === 'id' ? 'Blog Terbaru' : '
+        <h2 class="text-md md:text-xl font-bold mb-4"> {{ $lang === 'id' ? 'Blog Terbaru' : '
 Latest Blogs
 ' }}</h2>
         <div class="space-y-5">
@@ -97,13 +88,13 @@ Latest Blogs
                     $descLocalized = $related->description[$lang] ?? $related->description;
                 @endphp
 
-                <div class="flex gap-4">
+                <div class="flex gap-6">
                     <img src="{{ $related->main_image ? asset('storage/' . $related->main_image) : 'https://picsum.photos/100/80?random=' . $related->id }}" 
                          class="w-24 h-20 rounded object-cover" 
                          alt="{{ $titleLocalized }}">
                     <div>
-                        <h3 class="font-semibold text-gray-800">{{ $titleLocalized }}</h3>
-                        <p class="text-sm text-gray-500">{{ Str::limit($descLocalized, 50) }}</p>
+                        <h3 class="font-semibold text-md text-gray-700">{{ Str::limit($titleLocalized, 30) }}</h3>
+                        <p class="text-sm text-gray-500">{{ Str::limit($descLocalized, 40) }}</p>
                         <a href="{{ route('article.detail', ['slug' => Str::slug($titleLocalized)]) }}" 
                            class="text-secondary text-sm hover:underline">
                              {{ $lang === 'id' ? 'Baca Selengkapnya →' : 'Read More →' }}

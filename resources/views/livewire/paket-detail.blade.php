@@ -8,14 +8,14 @@
   data-aos-once="true">
 
   <!-- Background -->
-  <img src="/images/gambarheader.jpg" 
+  <img src="/images/headerdetail.webp"
        alt="Detail Paket Wisata" 
        class="absolute inset-0 w-full h-full object-cover"
        data-aos="zoom-out"
        data-aos-duration="1000">
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
 
   <!-- Content -->
   <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
@@ -25,7 +25,7 @@
     </p>
 
     <!-- Title -->
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
       {!! $texts['detail_paket_title'] !!}
     </h1>
 
@@ -33,7 +33,7 @@
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
     <!-- Description -->
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
       {!! $texts['detail_paket_description'] !!}
     </p>
 </div>
@@ -61,7 +61,7 @@
         <img 
           src="{{ asset('storage/' . $img) }}"
           @click="mainImage = '{{ asset('storage/' . $img) }}'"
-          class="w-full h-24 object-cover rounded-lg cursor-pointer hover:ring-2 hover:ring-secondary transition">
+          class="w-full h-24 object-cover rounded-lg cursor-pointer  hover:scale-105 transition duration-500">
       @endforeach
     </div>
 
@@ -71,7 +71,7 @@
 @endphp
 
 <div class="hidden md:block mt-10">
-    <h4 class="text-2xl font-bold mb-3 text-gray-700">{{ $texts['fasilitas_dua'] }}</h4>
+    <h4 class="text-2xl font-semibold mb-3 text-gray-700">{{ $texts['fasilitas_dua'] }}</h4>
     <ul class="list-disc list-inside text-gray-600 space-y-1">
         @foreach ($fasilitas as $item)
             <li>{{ $item }}</li>
@@ -86,7 +86,7 @@
 
   <!-- Detail kanan -->
     <div class="order-1 md:order-2">
-      <h1 class="text-3xl font-extrabold text-gray-900 mb-3">
+      <h1 class="text-3xl font-semibold text-gray-700 mb-3">
     {{ is_array($paket->title) ? ($paket->title[$lang] ?? '') : $paket->title }}
 
       </h1>
@@ -97,7 +97,7 @@
 
 
       <div class="bg-white border-2 border-gray-100 rounded-2xl p-6 shadow-xl">
-        <p class="text-3xl font-extrabold text-primary mb-4">
+        <p class=" text-2xl md:text-3xl font-extrabold text-primary mb-4">
           Rp {{ number_format($paket->price, 0, ',', '.') }} 
         </p>
 
@@ -132,7 +132,7 @@
 
       <!-- Tentang Paket -->
       <div class="mt-12 text-gray-700">
-        <h2 class="text-2xl font-bold mb-4">{{ $texts['about_paket'] }}</h2>
+        <h2 class="text-2xl font-semibold mb-4">{{ $texts['about_paket'] }}</h2>
         <p class="leading-relaxed mb-6">
           {{ is_array($paket->description) ? ($paket->description[$lang] ?? '') : $paket->description }}
 
@@ -145,7 +145,7 @@
          @endphp
 
       <div class="md:hidden block mt-10">
-          <h4 class="text-2xl font-bold mb-3 text-gray-700">{{ $texts['fasilitas_dua'] }}</h4>
+          <h4 class="text-2xl font-semibold mb-3 text-gray-700">{{ $texts['fasilitas_dua'] }}</h4>
           <ul class="list-disc list-inside text-gray-600 space-y-1">
               @foreach ($fasilitas as $item)
                   <li>{{ $item }}</li>

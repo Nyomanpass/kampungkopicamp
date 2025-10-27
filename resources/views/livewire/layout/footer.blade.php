@@ -3,10 +3,11 @@
 
     <!-- Logo & Deskripsi -->
     <div>
-      <div class="flex items-center mb-4">
-        <h2 class="text-lg font-semibold">{{ $texts['brand'] }}</h2>
-      </div>
-      <p class="text-sm mb-6 text-white">{{ $texts['desc'] }}</p>
+     <div class="flex items-center mb-4 space-x-2">
+        <img src="/images/logo.png" alt="Logo" class="w-42 h-16">
+    </div>
+    <p class="text-sm mb-6 text-white">{{ $texts['desc'] }}</p>
+
 
       <!-- Sosmed -->
       <div class="flex space-x-4">
@@ -25,7 +26,7 @@
     <!-- Quick Links -->
     <div>
       <h3 class="font-semibold text-lg mb-4">{{ $texts['quick_links'] }}</h3>
-      <ul class="space-y-2">
+      <ul class="space-y-2 text-sm">
         <li><a href="#" class="hover:text-white/40">Home</a></li>
         <li><a href="#" class="hover:text-white/40">About</a></li>
         <li><a href="#" class="hover:text-white/40">Paket Wisata</a></li>
@@ -89,7 +90,7 @@
 
   <!-- Bottom -->
   <div class="border-t border-white mt-10 pt-6 px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
-    <p class="text-white">{{ $texts['copyright'] }}</p>
+    <p class="text-white text-center">{{ $texts['copyright'] }}</p>
     <div class="flex space-x-6 mt-4 md:mt-0">
       <a href="#" class="hover:text-secondary text-white">{{ $texts['privacy'] }}</a>
       <a href="#" class="hover:text-secondary text-white">{{ $texts['terms'] }}</a>

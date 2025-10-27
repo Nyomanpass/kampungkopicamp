@@ -7,14 +7,14 @@
   data-aos-once="true">
 
   <!-- Background Image -->
-  <img src="/images/gambarheader.jpg" 
+  <img src="/images/contactpupuan.webp" 
        alt="Contact Background" 
        class="absolute inset-0 w-full h-full object-cover"
        data-aos="zoom-out"
        data-aos-duration="1000">
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
 
   <!-- Content -->
 <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
@@ -24,7 +24,7 @@
     </p>
 
     <!-- Title -->
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
       {{ $texts['contact_title_1'] }} <span class="text-primary">{{ $texts['contact_title_2'] }}</span>
     </h1>
 
@@ -32,7 +32,7 @@
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
     <!-- Description -->
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
       {{ $texts['contact_desc'] }}
     </p>
 </div>
@@ -44,7 +44,6 @@
     <div class="max-w-7xl mx-auto px-6 lg:px-14">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             
-            <!-- Telepon / WhatsApp -->
             <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] flex flex-col justify-between"
                  data-aos="fade-up" data-aos-delay="100">
                 <div>
@@ -54,8 +53,8 @@
                         </span>
                     </div>
                     <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_phone_title'] }}</h3>
-                    <p class="text-gray-600 text-center font-medium mb-1">+62 813-3737-1234</p>
-                    <p class="text-gray-600 text-center font-medium mb-4">+62 878-6543-2109</p>
+                    <p class="text-gray-600 text-center font-medium mb-1 text-base sm:text-sm md:text-base">+62 813-3737-1234</p>
+                    <p class="text-gray-600 text-center font-medium mb-4 text-base sm:text-sm md:text-base">+62 878-6543-2109</p>
                 </div>
                 <div class="text-center mt-4">
                     <a href="https://wa.me/6281337371234" target="_blank" class="w-full inline-flex items-center justify-center px-5 py-2.5 border border-secondary text-secondary font-semibold rounded-xl hover:bg-secondary hover:text-white transition">
@@ -64,7 +63,6 @@
                 </div>
             </div>
 
-            <!-- Email -->
             <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] flex flex-col justify-between"
                  data-aos="fade-up" data-aos-delay="200">
                 <div>
@@ -74,8 +72,8 @@
                         </span>
                     </div>
                     <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_email_title'] }}</h3>
-                    <p class="text-gray-600 text-center font-medium mb-1 truncate">info@kampungkopi.camp</p>
-                    <p class="text-gray-600 text-center font-medium mb-4 truncate">booking@kampungkopi.camp</p>
+                    <p class="text-gray-600 text-center font-medium mb-1 truncate text-base sm:text-sm md:text-base">info@kampungkopi.camp</p>
+                    <p class="text-gray-600 text-center font-medium mb-4 truncate text-base sm:text-sm md:text-base">booking@kampungkopi.camp</p>
                 </div>
                 <div class="text-center mt-4">
                     <a href="mailto:info@kampungkopi.camp" class="w-full inline-flex items-center justify-center px-5 py-2.5 border border-secondary text-secondary font-semibold rounded-xl hover:bg-secondary hover:text-white transition">
@@ -84,7 +82,6 @@
                 </div>
             </div>
 
-            <!-- Alamat -->
             <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] flex flex-col justify-between"
                  data-aos="fade-up" data-aos-delay="300">
                 <div>
@@ -94,7 +91,7 @@
                         </span>
                     </div>
                     <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_address_title'] }}</h3>
-                    <p class="text-gray-600 text-center mb-4">
+                    <p class="text-gray-600 text-center mb-4 text-base sm:text-sm md:text-base">
                         Jl. Raya Pupuan - Antosari<br>
                         Desa Pupuan, Tabanan<br>
                         Bali 82163, Indonesia
@@ -107,7 +104,6 @@
                 </div>
             </div>
 
-            <!-- Jam Operasional -->
             <div class="bg-white rounded-3xl p-8 shadow-xl hover:shadow-2xl transition duration-300 transform hover:scale-[1.02] flex flex-col justify-between"
                  data-aos="fade-up" data-aos-delay="400">
                 <div>
@@ -118,9 +114,10 @@
                     </div>
                     <h3 class="text-xl font-bold text-center mb-2 text-gray-800">{{ $texts['contact_hours_title'] }}</h3>
                     <div class="space-y-1.5 text-center mb-4">
-                        <p class="text-gray-600 font-medium">Senin - Minggu: 06:00 - 22:00</p>
-                        <p class="text-sm text-gray-700">Check-in: 14:00</p>
-                        <p class="text-sm text-gray-700">Check-out: 12:00</p>
+                        <p class="text-gray-600 font-medium text-base sm:text-sm md:text-base">Senin - Minggu: 06:00 - 22:00</p>
+                        
+                        <p class="text-sm text-gray-700 sm:text-xs md:text-sm">Check-in: 14:00</p>
+                        <p class="text-sm text-gray-700 sm:text-xs md:text-sm">Check-out: 12:00</p>
                     </div>
                 </div>
                 <div class="text-center mt-4">
@@ -162,7 +159,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="telepon" class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_phone'] }} *</label>
-                        <input type="tel" id="telepon" name="telepon" value="+62 812-3456-7890" required
+                        <input type="tel" id="telepon" name="telepon" required
                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
                     </div>
                     <div>
