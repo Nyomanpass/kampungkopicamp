@@ -2,8 +2,7 @@
     <!-- Hero Section with Large Image -->
     <section class="relative h-[70vh]">
         @if ($selectedImage)
-            <img src="{{ asset('storage/' . $selectedImage) }}" alt="{{ $product->name }}"
-                class="w-full h-full object-cover">
+            <img src="{{ $selectedImage }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
         @else
             <div class="w-full h-full flex items-center justify-center bg-gray-200 text-gray-400">
                 <i class="fas fa-image text-6xl"></i>
@@ -49,13 +48,12 @@
                 </div>
             </div>
             <div class=" hidden lg:flex flex-col gap-2">
-                @if ($product->images && count($product->images) > 1)
+                @if (!empty($product->images) && isset($product->images[0]))
                     @foreach ($product->images as $image)
                         <button wire:click="selectImage('{{ $image }}')"
                             class="flex-shrink-0 size-24 rounded-lg overflow-hidden border-2 transition-all
                                    {{ $selectedImage === $image ? 'border-white ring-2 ring-white/50' : 'border-white/30 hover:border-white/60' }}">
-                            <img src="{{ asset('storage/' . $image) }}" alt="Gallery"
-                                class="w-full h-full object-cover">
+                            <img src="{{ $image }}" alt="Gallery" class="w-full h-full object-cover">
                         </button>
                     @endforeach
                 @endif
@@ -64,7 +62,8 @@
     </section>
 
     <!-- Thumbnail Gallery -->
-    @if ($product->images && count($product->images) > 1)
+
+    @if (!empty($product->images) && isset($product->images[0]))
         <section class="bg-white lg:hidden">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
                 <div class="flex gap-3 overflow-x-auto scrollbar-hide">
@@ -72,8 +71,7 @@
                         <button wire:click="selectImage('{{ $image }}')"
                             class="flex-shrink-0 size-24 md:size-28 lg:size-32 rounded-lg overflow-hidden border-2 transition-all
                                    {{ $selectedImage === $image ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200 hover:border-gray-300' }}">
-                            <img src="{{ asset('storage/' . $image) }}" alt="Gallery"
-                                class="w-full h-full object-cover">
+                            <img src="{{ $product->images[0] }}" alt="Gallery" class="w-full h-full object-cover">
                         </button>
                     @endforeach
                 </div>

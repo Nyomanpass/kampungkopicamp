@@ -28,6 +28,7 @@ class VoucherSeeder extends Seeder
                 'end_date' => Carbon::now()->addMonths(1),
                 'is_active' => true,
                 'description' => 'Diskon 10% khusus untuk pengguna baru. Maksimum potongan Rp50.000.',
+                'show_in_dashboard' => true,
             ],
             [
                 'code' => 'WEEKEND50K',
@@ -41,7 +42,8 @@ class VoucherSeeder extends Seeder
                 'start_date' => Carbon::now()->subDay(),
                 'end_date' => Carbon::now()->addDays(10),
                 'is_active' => true,
-                'description' => 'Potongan langsung Rp50.000 untuk minimal transaksi Rp300.000 selama akhir pekan.'
+                'description' => 'Potongan langsung Rp50.000 untuk minimal transaksi Rp300.000 selama akhir pekan.',
+                'show_in_dashboard' => true,
             ],
             [
                 'code' => 'CAMPFEST2025',
@@ -55,7 +57,8 @@ class VoucherSeeder extends Seeder
                 'start_date' => Carbon::now()->addDays(5),
                 'end_date' => Carbon::now()->addDays(30),
                 'is_active' => true,
-                'description' => 'Diskon 20% dalam rangka acara Camp Fest 2025! Berlaku mulai minggu depan.'
+                'description' => 'Diskon 20% dalam rangka acara Camp Fest 2025! Berlaku mulai minggu depan.',
+                'show_in_dashboard' => true,
             ],
             [
                 'code' => 'EXPIREDTEST',
@@ -69,7 +72,8 @@ class VoucherSeeder extends Seeder
                 'start_date' => Carbon::now()->subDays(20),
                 'end_date' => Carbon::now()->subDays(5),
                 'is_active' => false,
-                'description' => 'Contoh voucher kadaluarsa untuk testing validasi tanggal.'
+                'description' => 'Contoh voucher kadaluarsa untuk testing validasi tanggal.',
+                'show_in_dashboard' => false,
             ],
             [
                 'code' => 'LIMITED5',
@@ -83,7 +87,8 @@ class VoucherSeeder extends Seeder
                 'start_date' => Carbon::now()->subDay(),
                 'end_date' => Carbon::now()->addDays(15),
                 'is_active' => true,
-                'description' => 'Diskon 15% hanya untuk 5 pemakaian pertama.'
+                'description' => 'Diskon 15% hanya untuk 5 pemakaian pertama.',
+                'show_in_dashboard' => true,
             ],
         ];
 

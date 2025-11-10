@@ -18,6 +18,16 @@ use App\Livewire\Register;
 use App\Livewire\PackageDetail;
 use App\Livewire\BookingFlow;
 
+use App\Livewire\Admin\Dashboard;
+use App\Livewire\Admin\Bookings;
+use App\Livewire\Admin\Payments;
+use App\Livewire\Admin\Products;
+use App\Livewire\Admin\Articles;
+use App\Livewire\Admin\Reports;
+use App\Livewire\Admin\Users;
+use App\Livewire\Admin\Vouchers;
+use App\Livewire\Admin\Availabilities;
+
 use App\Http\Controllers\InvoiceController;
 
 use App\Http\Controllers\PaymentController;
@@ -55,13 +65,44 @@ Route::middleware('guest')->group(function () {
 
 
 // ========== AUTH ROUTES (For logged-in users) ==========
-Route::middleware('auth')->group(function () {
+Route::middleware('auth')->group(function () {});
+
+
+
+
+Route::middleware(['auth'])->group(function () {
+      // ========== ADMIN ROUTES (Only for admin role) ==========
+      Route::middleware(['role:admin'])->prefix('admin')->group(function () {
+            Route::get('/dashboard', Dashboard::class)->name('admin.dashboard');
+            Route::get('/bookings', Bookings::class)->name('admin.bookings');
+            Route::get('/addons', \App\Livewire\Admin\Addons::class)->name('admin.addons');
+            Route::get('/payments', Payments::class)->name('admin.payments');
+            Route::get('/products', Products::class)->name('admin.products');
+            Route::get('/articles', Articles::class)->name('admin.articles');
+
+            Route::get('/users', Users::class)->name('admin.users');
+            Route::get('/vouchers', Vouchers::class)->name('admin.vouchers');
+            Route::get('/availability', Availabilities::class)
+                  ->middleware(['auth'])
+                  ->name('admin.availability');
+
+            Route::prefix('reports')->group(function () {
+                  Route::get('/overview', \App\Livewire\Admin\Reports\Overview::class)->name('admin.reports.overview');
+                  Route::get('/revenue', \App\Livewire\Admin\Reports\Revenue::class)->name('admin.reports.revenue');
+                  Route::get('/bookings', \App\Livewire\Admin\Reports\Bookings::class)->name('admin.reports.bookings');
+                  Route::get('/customers', \App\Livewire\Admin\Reports\Customers::class)->name('admin.reports.customers');
+                  Route::get('/financial', \App\Livewire\Admin\Reports\Financial::class)->name('admin.reports.financial');
+            });
+      });
+
+      Route::middleware(['role:user'])->group(function () {
+            Route::get('/dashboard', \App\Livewire\User\Dashboard::class)->name('user.dashboard');
+            Route::get('/bookings', \App\Livewire\User\MyBooking::class)->name('user.bookings');
+            Route::get('/rewards', \App\Livewire\User\Rewards::class)->name('user.rewards');
+            Route::get('/account', \App\Livewire\User\Account::class)->name('user.account');
+      });
+
+
+      // Logout route
       Route::get('/logout', [Login::class, 'logout'])->name('logout');
-});
-
-
-// ========== ADMIN ROUTES (Only for admin role) ==========
-Route::middleware(['auth', 'admin'])->prefix('admin')->group(function () {
-      Route::get('/package', PaketWisataCrud::class)->name('admin.paket-wisata');
-      Route::get('/article', ArticleCrud::class)->name('admin.article');
 });

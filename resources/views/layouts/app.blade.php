@@ -42,13 +42,13 @@
             <!-- Right: Login + Language -->
             <div class="hidden lg:flex items-center relative z-50">
                 @if (Auth::check() && Auth::user()->role === 'admin')
-                    <a href=""
+                    <a href="{{ route('admin.dashboard') }}"
                         class="px-5 py-2 rounded-full text-sm font-medium border transition hover:bg-secondary"
                         :class="scrolled ? 'bg-white border text-secondary hover:text-white' : 'text-white'">
                         Admin Dashboard
                     </a>
                 @elseif(Auth::check() && Auth::user()->role === 'user')
-                    <a href=""
+                    <a href="{{ route('user.dashboard') }}"
                         class="px-5 py-2 rounded-full text-sm font-medium border transition hover:bg-secondary"
                         :class="scrolled ? 'bg-white border text-secondary hover:text-white' : 'text-white'">
                         User Dashboard

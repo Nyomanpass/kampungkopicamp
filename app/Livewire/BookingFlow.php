@@ -262,25 +262,26 @@ class BookingFlow extends Component
     // EMAIL CHECKING
     // ============================================
 
-    public function updatedCustomerEmail($value){
-        if(Auth::check()){
+    public function updatedCustomerEmail($value)
+    {
+        if (Auth::check()) {
             return;
         }
 
         $this->emailExists = false;
         $this->existingUserEmail = null;
 
-        if(!filter_var($value, FILTER_VALIDATE_EMAIL)){
+        if (!filter_var($value, FILTER_VALIDATE_EMAIL)) {
             return;
         }
 
-         if (empty($value) || strlen($value) < 5) {
-        return;
-    }
+        if (empty($value) || strlen($value) < 5) {
+            return;
+        }
 
         $user = User::where('email', $value)->first();
 
-        if($user){
+        if ($user) {
             $this->emailExists = true;
             $this->existingUserEmail = $value;
             $this->showEmailConfirmModal = true;
@@ -297,7 +298,7 @@ class BookingFlow extends Component
         $this->showEmailConfirmModal = false;
         $this->emailExists = false;
 
-         Log::info('User chose to continue as guest', [
+        Log::info('User chose to continue as guest', [
             'email' => $this->existingUserEmail,
         ]);
     }
@@ -457,29 +458,70 @@ class BookingFlow extends Component
 
     public function addAddon($addonId)
     {
+        $addon = Addon::find($addonId);
+
+        if (!$addon) {
+            session()->flash('error', 'Addon tidak ditemukan.');
+            return;
+        }
+
+        if (!$addon->is_active) {
+            session()->flash('error', 'Addon tidak tersedia saat ini.');
+            return;
+        }
+
         if (!isset($this->selectedAddons[$addonId])) {
             $this->selectedAddons[$addonId] = [
-                'qty' => 1,
-                'hours' => 0,
-                'slots' => 0,
+                'qty' => max(1, $addon->min_quantity),
             ];
+        }
+
+        if ($addon->has_inventory) {
+            $requestedQty = $this->selectedAddons[$addonId]['qty'];
+
+            if (!$addon->hasAvailableStock($requestedQty)) {
+                session()->flash('error', "{$addon->name} stock tidak mencukupi (tersedia: {$addon->getAvailableStock()}).");
+                unset($this->selectedAddons[$addonId]);
+                return;
+            }
         }
 
         $this->calculateAddonsTotal();
     }
-
     public function removeAddon($addonId)
     {
         unset($this->selectedAddons[$addonId]);
         $this->calculateAddonsTotal();
     }
 
-    public function updateAddonQty($addonId, $field, $value)
+    public function updateAddonQty($addonId, $value)
     {
-        if (isset($this->selectedAddons[$addonId])) {
-            $this->selectedAddons[$addonId][$field] = max(0, (int)$value);
-            $this->calculateAddonsTotal();
+        $addon = Addon::find($addonId);
+
+        if (!$addon || !isset($this->selectedAddons[$addonId])) {
+            return;
         }
+
+        $qty = max(0, (int)$value);
+
+        if ($qty < $addon->min_quantity) {
+            $qty = $addon->min_quantity;
+            session()->flash('error', "Minimum quantity untuk {$addon->name} adalah {$addon->min_quantity}.");
+        }
+
+        if ($addon->max_quantity && $qty > $addon->max_quantity) {
+            $qty = $addon->max_quantity;
+            session()->flash('error', "Maximum quantity untuk {$addon->name} adalah {$addon->max_quantity}.");
+        }
+
+        if ($addon->has_inventory && !$addon->hasAvailableStock($qty)) {
+            $availableStock = $addon->getAvailableStock();
+            $qty = $availableStock;
+            session()->flash('error', "Stock {$addon->name} hanya tersedia {$availableStock} unit.");
+        }
+
+        $this->selectedAddons[$addonId]['qty'] = $qty;
+        $this->calculateAddonsTotal();
     }
 
     public function calculateAddonsTotal()
@@ -490,12 +532,11 @@ class BookingFlow extends Component
             $addon = Addon::find($addonId);
 
             if ($addon) {
+                // ✅ Use new calculatePrice method
                 $subtotal = $addon->calculatePrice(
                     $data['qty'],
                     $this->nightCount,
-                    $this->peopleCount,
-                    $data['hours'],
-                    $data['slots']
+                    $this->peopleCount
                 );
 
                 $this->addonsTotal += $subtotal;
@@ -590,17 +631,16 @@ class BookingFlow extends Component
             $addon = Addon::find($addonId);
 
             if ($addon) {
+                // ✅ Use new calculatePrice method
                 $subtotal = $addon->calculatePrice(
                     $data['qty'],
                     $this->nightCount,
-                    $this->peopleCount,
-                    $data['hours'],
-                    $data['slots']
+                    $this->peopleCount
                 );
 
                 $details[] = [
                     'addon' => $addon,
-                    'data' => $data,
+                    'qty' => $data['qty'],
                     'subtotal' => $subtotal,
                 ];
             }
@@ -620,7 +660,7 @@ class BookingFlow extends Component
 
         try {
             // ✅ Check jika guest user sudah punya pending booking
-            if (!auth()->check()) {
+            if (!Auth::check()) {
                 // ✅ FIX: Gunakan where dengan closure untuk grouping OR condition
                 $existingPendingBooking = Booking::where(function ($query) {
                     $query->where('customer_email', $this->customerEmail)
@@ -691,13 +731,18 @@ class BookingFlow extends Component
             // Add selected add-ons
             foreach ($this->selectedAddons as $addonId => $data) {
                 $addon = Addon::find($addonId);
+
                 if ($addon) {
+                    // ✅ Validate stock availability before booking
+                    if ($addon->has_inventory && !$addon->hasAvailableStock($data['qty'])) {
+                        throw new \Exception("Stock {$addon->name} tidak mencukupi.");
+                    }
+
+                    // ✅ Calculate subtotal correctly
                     $subtotal = $addon->calculatePrice(
                         $data['qty'],
                         $this->nightCount,
-                        $this->peopleCount,
-                        $data['hours'],
-                        $data['slots']
+                        $this->peopleCount
                     );
 
                     $bookingData['addons'][] = [
@@ -707,7 +752,10 @@ class BookingFlow extends Component
                         'qty' => $data['qty'],
                         'unit_price' => $addon->price,
                         'subtotal' => $subtotal,
-                        'notes' => json_encode($data),
+                        'notes' => json_encode([
+                            'nights' => $this->nightCount,
+                            'people' => $this->peopleCount,
+                        ]),
                     ];
                 }
             }
@@ -765,6 +813,7 @@ class BookingFlow extends Component
         }
     }
 
+    
 
     // ============================================
     // STEP NAVIGATION

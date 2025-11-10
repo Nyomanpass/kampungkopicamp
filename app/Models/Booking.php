@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 
@@ -27,6 +28,12 @@ class Booking extends Model
         'bonus_meta',
         'voucher_id',
         'discount_amount',
+        'booking_source',
+        'payment_method',
+        'payment_notes',
+        'status_note',
+        'addon_history',
+        'bonus_meta',
     ];
 
     protected $casts = [
@@ -34,7 +41,7 @@ class Booking extends Model
         'end_date' => 'date',
         'subtotal' => 'decimal:2',
         'discount_total' => 'decimal:2',
-        'total_price' => 'decimal:2',
+        'total_price' => 'integer',
         'bonus_meta' => 'array',
     ];
 
@@ -65,6 +72,21 @@ class Booking extends Model
     public function bookingItems()
     {
         return $this->hasMany(BookingItem::class);
+    }
+
+    public function items()
+    {
+        return $this->hasMany(BookingItem::class);
+    }
+
+    public function productItems()
+    {
+        return $this->hasMany(BookingItem::class)->where('item_type', 'product');
+    }
+
+    public function addonItems()
+    {
+        return $this->hasMany(BookingItem::class)->where('item_type', 'addon');
     }
 
     public function payments()
@@ -273,5 +295,99 @@ class Booking extends Model
         }
 
         return true;
+    }
+
+    /**
+     * Check if booking is walk-in
+     */
+    public function isWalkIn()
+    {
+        return $this->booking_source === 'walk-in';
+    }
+
+    /**
+     * Check if booking is online
+     */
+    public function isOnline()
+    {
+        return $this->booking_source === 'online';
+    }
+
+    /**
+     * Get status badge color
+     */
+    public function getStatusColorAttribute()
+    {
+        $colors = [
+            'draft' => 'gray',
+            'pending_payment' => 'yellow',
+            'paid' => 'green',
+            'checked_in' => 'blue',
+            'completed' => 'purple',
+            'cancelled' => 'red',
+            'expired' => 'gray',
+            'refunded' => 'orange',
+        ];
+
+        return $colors[$this->status] ?? 'gray';
+    }
+
+    /**
+     * Get formatted date range
+     */
+    public function getDateRangeAttribute()
+    {
+        return $this->start_date->format('d M Y') . ' - ' . $this->end_date->format('d M Y');
+    }
+
+    /**
+     * Get duration in nights/days
+     */
+    public function getDurationAttribute()
+    {
+        $days = $this->start_date->diffInDays($this->end_date);
+        return $days . ($this->product_type === 'touring' ? ' day(s)' : ' night(s)');
+    }
+
+    /**
+     * Get total nights/days
+     */
+    public function getTotalNightsAttribute()
+    {
+        return $this->start_date->diffInDays($this->end_date);
+    }
+
+    /**
+     * Check if booking has bonus items
+     */
+    public function hasBonusItems()
+    {
+        return !empty($this->bonus_meta);
+    }
+
+    /**
+     * Get bonus redemption progress
+     */
+    public function getBonusProgressAttribute()
+    {
+        if (!$this->bonus_meta) {
+            return [];
+        }
+
+        return collect($this->bonus_meta)->map(function ($bonus) {
+            $total = $bonus['qty_total'] ?? 0;
+            $redeemed = $bonus['qty_redeemed'] ?? 0;
+            $remaining = $total - $redeemed;
+            $percentage = $total > 0 ? ($redeemed / $total) * 100 : 0;
+
+            return [
+                'name' => $bonus['name'],
+                'total' => $total,
+                'redeemed' => $redeemed,
+                'remaining' => $remaining,
+                'percentage' => round($percentage, 2),
+                'source' => $bonus['source'] ?? null,
+            ];
+        });
     }
 }

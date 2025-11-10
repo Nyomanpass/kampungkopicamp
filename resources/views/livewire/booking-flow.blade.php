@@ -295,219 +295,161 @@
             @endif
 
             <!-- STEP 3: Add-ons -->
-            @if ($currentStep == 3)
-                <div>
-                    <h3 class="text-2xl font-bold mb-6">Pilih Add-ons (Opsional)</h3>
+            @if ($currentStep === 3)
+                <div class="space-y-6">
+                    <h3 class="text-2xl font-bold">Pilih Add-ons (Opsional)</h3>
 
-                    <!-- Add-ons List -->
                     @if ($addons->isEmpty())
-                        <div class="text-center py-12">
-                            <p class="text-gray-500">Tidak ada add-ons tersedia</p>
-                            <button wire:click="nextToSummary"
-                                class="mt-4 bg-primary hover:bg-light-primary text-white font-semibold px-6 py-3 rounded-lg transition-all duration-200">
-                                Lanjut ke Summary →
-                            </button>
+                        <div class="text-center py-12 text-gray-500">
+                            <i class="fas fa-box-open text-5xl mb-4"></i>
+                            <p>Tidak ada addon tersedia untuk produk ini.</p>
                         </div>
                     @else
-                        <!-- Group by Pricing Type -->
-                        @php
-                            $groupedAddons = $addons->groupBy('pricing_type');
-                            $pricingLabels = [
-                                'per_booking' => 'Per Booking',
-                                'per_person' => 'Per Orang',
-                                'per_unit_per_night' => 'Per Unit Per Malam',
-                                'per_hour' => 'Per Jam',
-                                'per_slot' => 'Per Slot',
-                            ];
-                        @endphp
+                        <div class="grid grid-cols-1 gap-4">
+                            @foreach ($addons as $addon)
+                                <div
+                                    class="border rounded-lg p-4 {{ isset($selectedAddons[$addon->id]) ? 'border-primary bg-primary/10' : 'border-gray-200' }} transition duration-200 ease-in-out hover:shadow-lg">
+                                    <div class="flex items-start gap-4">
+                                        {{-- Image --}}
+                                        @if ($addon->image)
+                                            <img src="{{ $addon->image }}" alt="{{ $addon->name }}"
+                                                class="w-16 h-16 object-cover rounded-lg">
+                                        @else
+                                            <div
+                                                class="w-16 h-16 bg-gray-100 rounded-lg flex items-center justify-center">
+                                                <i class="fas fa-puzzle-piece text-gray-400 text-3xl"></i>
+                                            </div>
+                                        @endif
 
-                        @foreach ($groupedAddons as $pricingType => $groupAddons)
-                            <div class="mb-8">
-                                <h4 class="text-sm font-semibold text-gray-500 uppercase tracking-wider mb-4">
-                                    {{ $pricingLabels[$pricingType] ?? $pricingType }}
-                                </h4>
+                                        {{-- Info --}}
+                                        <div class="flex-1">
+                                            <h4 class="font-semibold text-gray-900 text-lg">{{ $addon->name }}</h4>
 
-                                <div class="relative">
-                                    <!-- Scroll Container -->
-                                    <div
-                                        class="overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-                                        <div class="flex gap-4 min-w-max px-1">
-                                            @foreach ($groupAddons as $addon)
-                                                @php
-                                                    $isSelected = isset($selectedAddons[$addon->id]);
-                                                    $addonData = $isSelected ? $selectedAddons[$addon->id] : null;
-                                                @endphp
+                                            {{-- Pricing Info --}}
+                                            <div class="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                                                <i class="fas {{ $addon->getPricingIcon() }}"></i>
+                                                <span>{{ $addon->formatted_price }}</span>
+                                                <span
+                                                    class="text-xs text-gray-500">({{ $addon->getPricingTypeLabel() }})</span>
+                                            </div>
 
-                                                <div
-                                                    class="w-72 flex-shrink-0 border rounded-xl overflow-hidden transition-all duration-200 
-                                                    {{ $isSelected ? 'border-primary shadow-md' : 'border-gray-200 hover:border-gray-300' }}">
-
-                                                    <!-- Image -->
-                                                    <div class="relative h-40 bg-gray-100">
-                                                        @if ($addon->image)
-                                                            <img src="{{ asset('storage/' . $addon->image) }}"
-                                                                alt="{{ $addon->name }}"
-                                                                class="w-full h-full object-cover">
-                                                        @else
-                                                            <div
-                                                                class="w-full h-full flex items-center justify-center">
-                                                                <svg class="w-12 h-12 text-gray-300" fill="none"
-                                                                    stroke="currentColor" viewBox="0 0 24 24">
-                                                                    <path stroke-linecap="round"
-                                                                        stroke-linejoin="round" stroke-width="2"
-                                                                        d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                                                                </svg>
-                                                            </div>
-                                                        @endif
-
-                                                        @if ($isSelected)
-                                                            <div
-                                                                class="absolute top-2 right-2 bg-primary text-white px-2 py-1 rounded-full text-xs font-semibold">
-                                                                ✓ Dipilih
-                                                            </div>
-                                                        @endif
-                                                    </div>
-
-                                                    <!-- Content -->
-                                                    <div class="p-4">
-                                                        <h5 class="font-semibold text-gray-900 mb-2">
-                                                            {{ $addon->name }}</h5>
-
-                                                        <p class="text-primary font-bold text-lg mb-3">
-                                                            Rp {{ number_format($addon->price, 0, ',', '.') }}
-                                                            <span class="text-xs text-gray-500 font-normal">/
-                                                                {{ $addon->getPricingLabel() }}</span>
-                                                        </p>
-
-                                                        <!-- Description Toggle -->
-                                                        @if ($addon->description)
-                                                            <div x-data="{ open: false }">
-                                                                <button @click="open = !open"
-                                                                    class="text-xs text-gray-500 hover:text-primary mb-3 flex items-center gap-1">
-                                                                    <i class="fas fa-info-circle"></i>
-                                                                    <span
-                                                                        x-text="open ? 'Sembunyikan detail' : 'Lihat detail'"></span>
-                                                                </button>
-
-                                                                <div x-show="open" x-collapse
-                                                                    class="text-xs text-gray-600 mb-3 bg-gray-50 p-2 rounded">
-                                                                    {{ $addon->description }}
-                                                                </div>
-                                                            </div>
-                                                        @endif
-
-                                                        <!-- Action Button or Controls -->
-                                                        @if (!$isSelected)
-                                                            <button wire:click="addAddon({{ $addon->id }})"
-                                                                class="w-full py-2 bg-primary text-white rounded-lg hover:bg-light-primary transition-colors text-sm font-medium">
-                                                                + Tambah
-                                                            </button>
-                                                        @else
-                                                            <div class="space-y-3">
-                                                                <!-- Qty Controls -->
-                                                                @if (in_array($addon->pricing_type, ['per_booking', 'per_unit_per_night']))
-                                                                    <div
-                                                                        class="flex items-center justify-between bg-gray-50 rounded-lg p-2">
-                                                                        <span
-                                                                            class="text-xs text-gray-600">Jumlah:</span>
-                                                                        <div class="flex items-center gap-2">
-                                                                            <button
-                                                                                wire:click="updateAddonQty({{ $addon->id }}, 'qty', {{ $addonData['qty'] - 1 }})"
-                                                                                class="w-7 h-7 rounded border border-gray-300 hover:bg-white text-sm">-</button>
-                                                                            <span
-                                                                                class="w-8 text-center font-semibold">{{ $addonData['qty'] }}</span>
-                                                                            <button
-                                                                                wire:click="updateAddonQty({{ $addon->id }}, 'qty', {{ $addonData['qty'] + 1 }})"
-                                                                                class="w-7 h-7 rounded border border-gray-300 hover:bg-white text-sm">+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-
-                                                                <!-- Hours Controls -->
-                                                                @if ($addon->pricing_type === 'per_hour')
-                                                                    <div
-                                                                        class="flex items-center justify-between bg-gray-50 rounded-lg p-2">
-                                                                        <span class="text-xs text-gray-600">Jam:</span>
-                                                                        <div class="flex items-center gap-2">
-                                                                            <button
-                                                                                wire:click="updateAddonQty({{ $addon->id }}, 'hours', {{ $addonData['hours'] - 1 }})"
-                                                                                class="w-7 h-7 rounded border border-gray-300 hover:bg-white text-sm">-</button>
-                                                                            <span
-                                                                                class="w-8 text-center font-semibold">{{ $addonData['hours'] }}</span>
-                                                                            <button
-                                                                                wire:click="updateAddonQty({{ $addon->id }}, 'hours', {{ $addonData['hours'] + 1 }})"
-                                                                                class="w-7 h-7 rounded border border-gray-300 hover:bg-white text-sm">+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-
-                                                                <!-- Slots Controls -->
-                                                                @if ($addon->pricing_type === 'per_slot')
-                                                                    <div
-                                                                        class="flex items-center justify-between bg-gray-50 rounded-lg p-2">
-                                                                        <span
-                                                                            class="text-xs text-gray-600">Slot:</span>
-                                                                        <div class="flex items-center gap-2">
-                                                                            <button
-                                                                                wire:click="updateAddonQty({{ $addon->id }}, 'slots', {{ $addonData['slots'] - 1 }})"
-                                                                                class="w-7 h-7 rounded border border-gray-300 hover:bg-white text-sm">-</button>
-                                                                            <span
-                                                                                class="w-8 text-center font-semibold">{{ $addonData['slots'] }}</span>
-                                                                            <button
-                                                                                wire:click="updateAddonQty({{ $addon->id }}, 'slots', {{ $addonData['slots'] + 1 }})"
-                                                                                class="w-7 h-7 rounded border border-gray-300 hover:bg-white text-sm">+</button>
-                                                                        </div>
-                                                                    </div>
-                                                                @endif
-
-                                                                <!-- Per Person Info -->
-                                                                @if ($addon->pricing_type === 'per_person')
-                                                                    <div
-                                                                        class="bg-gray-50 rounded-lg p-2 text-xs text-gray-600 text-center">
-                                                                        {{ $peopleCount }} orang × Rp
-                                                                        {{ number_format($addon->price, 0, ',', '.') }}
-                                                                    </div>
-                                                                @endif
-
-                                                                <button wire:click="removeAddon({{ $addon->id }})"
-                                                                    class="w-full py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm font-medium">
-                                                                    Hapus
-                                                                </button>
-                                                            </div>
-                                                        @endif
-                                                    </div>
+                                            {{-- Stock Info --}}
+                                            @if ($addon->has_inventory)
+                                                <div class="mt-2">
+                                                    @if ($addon->isOutOfStock())
+                                                        <span class="text-xs text-red-600 font-semibold">
+                                                            <i class="fas fa-ban"></i> Stok Habis
+                                                        </span>
+                                                    @elseif($addon->isLowStock())
+                                                        <span class="text-xs text-yellow-600 font-semibold">
+                                                            <i class="fas fa-exclamation-triangle"></i>
+                                                            Tersisa {{ $addon->stock_quantity }} unit
+                                                        </span>
+                                                    @else
+                                                        <span class="text-xs text-green-600">
+                                                            <i class="fas fa-check-circle"></i> Tersedia
+                                                        </span>
+                                                    @endif
                                                 </div>
-                                            @endforeach
+                                            @endif
+
+                                            {{-- Description --}}
+                                            @if ($addon->description)
+                                                <p class="text-xs text-gray-500 mt-1 line-clamp-2">
+                                                    {{ $addon->description }}</p>
+                                            @endif
+
+                                            {{-- Quantity Control --}}
+                                            <div class="mt-3 flex items-center gap-3">
+                                                @if (isset($selectedAddons[$addon->id]))
+                                                    <label class="text-sm font-medium text-gray-700">
+                                                        {{ $addon->getQuantityLabel() }}:
+                                                    </label>
+                                                    <div class="flex items-center gap-2">
+                                                        <button type="button"
+                                                            wire:click="updateAddonQty({{ $addon->id }}, {{ ($selectedAddons[$addon->id]['qty'] ?? 1) - 1 }})"
+                                                            class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center">
+                                                            <i class="fas fa-minus"></i>
+                                                        </button>
+                                                        <input type="number"
+                                                            wire:change="updateAddonQty({{ $addon->id }}, $event.target.value)"
+                                                            value="{{ $selectedAddons[$addon->id]['qty'] ?? 1 }}"
+                                                            min="{{ $addon->min_quantity }}"
+                                                            max="{{ $addon->max_quantity ?? 999 }}"
+                                                            class="w-16 text-center border border-gray-300 rounded-lg py-1">
+                                                        <button type="button"
+                                                            wire:click="updateAddonQty({{ $addon->id }}, {{ ($selectedAddons[$addon->id]['qty'] ?? 1) + 1 }})"
+                                                            class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center">
+                                                            <i class="fas fa-plus"></i>
+                                                        </button>
+                                                    </div>
+
+                                                    {{-- Remove Button --}}
+                                                    <button type="button"
+                                                        wire:click="removeAddon({{ $addon->id }})"
+                                                        class="ml-auto text-red-600 hover:text-red-800 text-sm">
+                                                        <i class="fas fa-trash"></i> Hapus
+                                                    </button>
+                                                @else
+                                                    {{-- Add Button --}}
+                                                    <button type="button" wire:click="addAddon({{ $addon->id }})"
+                                                        class="mt-3 w-full bg-primary hover:bg-light-primary text-white py-2 rounded-lg font-semibold transition-all"
+                                                        @if ($addon->isOutOfStock()) disabled @endif>
+                                                        <i class="fas fa-plus"></i> Tambahkan
+                                                    </button>
+                                                @endif
+                                            </div>
+
+                                            {{-- Price Calculation Example --}}
+                                            @if (isset($selectedAddons[$addon->id]))
+                                                <div class="mt-2 text-xs text-gray-600 bg-blue-50 rounded p-2">
+                                                    <i class="fas fa-calculator"></i>
+                                                    @php
+                                                        $qty = $selectedAddons[$addon->id]['qty'] ?? 1;
+                                                        $subtotal = $addon->calculatePrice(
+                                                            $qty,
+                                                            $nightCount,
+                                                            $peopleCount,
+                                                        );
+                                                    @endphp
+                                                    @if ($addon->pricing_type === 'per_booking')
+                                                        {{ $addon->formatted_price }} × {{ $qty }} = Rp
+                                                        {{ number_format($subtotal, 0, ',', '.') }}
+                                                    @elseif($addon->pricing_type === 'per_unit_per_night')
+                                                        {{ $addon->formatted_price }} × {{ $qty }} unit ×
+                                                        {{ $nightCount }} malam = Rp
+                                                        {{ number_format($subtotal, 0, ',', '.') }}
+                                                    @elseif($addon->pricing_type === 'per_person')
+                                                        {{ $addon->formatted_price }} × {{ $peopleCount }} orang ×
+                                                        {{ $qty }} = Rp
+                                                        {{ number_format($subtotal, 0, ',', '.') }}
+                                                    @elseif($addon->pricing_type === 'per_hour')
+                                                        {{ $addon->formatted_price }} × {{ $qty }} jam = Rp
+                                                        {{ number_format($subtotal, 0, ',', '.') }}
+                                                    @elseif($addon->pricing_type === 'per_slot')
+                                                        {{ $addon->formatted_price }} × {{ $qty }} slot = Rp
+                                                        {{ number_format($subtotal, 0, ',', '.') }}
+                                                    @endif
+                                                </div>
+                                            @endif
                                         </div>
                                     </div>
-
-                                    <!-- Scroll Indicator (optional) -->
-                                    <div class="text-center text-xs text-gray-500 mt-2">
-                                        <i class="fas fa-arrows-alt-h"></i> Geser untuk melihat lebih banyak
-                                    </div>
                                 </div>
-                            </div>
-                        @endforeach
-
-                        <!-- Add-ons Total (Only if addons selected) -->
-                        @if ($addonsTotal > 0)
-                            <div class="bg-primary/5 border border-primary/20 rounded-lg p-4 mb-6">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-700">Total Add-ons:</span>
-                                    <span class="text-xl font-bold text-primary">
-                                        Rp {{ number_format($addonsTotal, 0, ',', '.') }}
-                                    </span>
-                                </div>
-                            </div>
-                        @endif
-
-                        <!-- Action Button -->
-                        <button wire:click="nextToSummary" @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
-                            class="w-full bg-primary hover:bg-light-primary text-white font-semibold py-4 rounded-lg transition-all duration-200 active:scale-95">
-                            Lanjut ke Summary
-                            <i class="fas fa-arrow-right ml-2"></i>
-                        </button>
+                            @endforeach
+                        </div>
                     @endif
+
+                    {{-- Navigation --}}
+                    <div class="flex items-center justify-between mt-8 gap-4">
+                        <button type="button" wire:click="goToStep(2)"
+                            class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-4 rounded-lg font-semibold">
+                            Kembali
+                        </button>
+                        <button type="button" wire:click="nextToSummary"
+                            class="w-3/4 bg-primary hover:bg-light-primary text-white px-6 py-4 rounded-lg font-semibold">
+                            Lanjut ke Summary <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
             @endif
 
@@ -609,42 +551,30 @@
 
                             <!-- Selected Add-ons -->
                             @if (!empty($selectedAddons))
-                                <div class="bg-white border border-gray-200 rounded-lg py-6 md:p-6">
-                                    <div class="flex  items-center justify-between  mb-4">
-                                        <h4 class="font-semibold text-lg w-max">Add-ons Dipilih</h4>
-                                        <button wire:click="goToStep(3)"><i
-                                                class="text-accent fa-solid fa-pen-to-square active:scale-95 transition-all cursor-pointer"></i></button>
-                                    </div>
-
+                                <div class="bg-white rounded-lg shadow p-6">
+                                    <h4 class="font-semibold text-lg mb-4">Add-ons Terpilih</h4>
                                     <div class="space-y-3">
-                                        @foreach ($this->getSelectedAddonsDetails() as $item)
-                                            <div class="flex justify-between items-start">
+                                        @foreach ($this->getSelectedAddonsDetails() as $detail)
+                                            <div
+                                                class="flex items-center justify-between py-3 border-b border-gray-200">
                                                 <div>
-                                                    <p class="font-medium">{{ $item['addon']->name }}</p>
-                                                    <p class="text-sm text-gray-600">
-                                                        @if ($item['addon']->pricing_type === 'per_booking')
-                                                            {{ $item['data']['qty'] }}x @ Rp
-                                                            {{ number_format($item['addon']->price, 0, ',', '.') }}
-                                                        @elseif($item['addon']->pricing_type === 'per_unit_per_night')
-                                                            {{ $item['data']['qty'] }}x {{ $nightCount }} malam @ Rp
-                                                            {{ number_format($item['addon']->price, 0, ',', '.') }}
-                                                        @elseif($item['addon']->pricing_type === 'per_person')
-                                                            {{ $peopleCount }} orang @ Rp
-                                                            {{ number_format($item['addon']->price, 0, ',', '.') }}
-                                                        @elseif($item['addon']->pricing_type === 'per_hour')
-                                                            {{ $item['data']['hours'] }} jam @ Rp
-                                                            {{ number_format($item['addon']->price, 0, ',', '.') }}
-                                                        @elseif($item['addon']->pricing_type === 'per_slot')
-                                                            {{ $item['data']['slots'] }} slot @ Rp
-                                                            {{ number_format($item['addon']->price, 0, ',', '.') }}
-                                                        @endif
+                                                    <p class="font-medium text-gray-900">{{ $detail['addon']->name }}
+                                                    </p>
+                                                    <p class="text-sm text-gray-500">
+                                                        {{ $detail['qty'] }}
+                                                        {{ $detail['addon']->getQuantityLabel() }}
+                                                        ({{ $detail['addon']->getPricingTypeLabel() }})
                                                     </p>
                                                 </div>
-                                                <span class="font-medium">Rp
-                                                    {{ number_format($item['subtotal'], 0, ',', '.') }}
-                                                </span>
+                                                <p class="font-semibold text-gray-900">Rp
+                                                    {{ number_format($detail['subtotal'], 0, ',', '.') }}</p>
                                             </div>
                                         @endforeach
+                                        <div class="flex items-center justify-between pt-2 font-semibold">
+                                            <span>Total Add-ons:</span>
+                                            <span class="text-lg text-primary">Rp
+                                                {{ number_format($addonsTotal, 0, ',', '.') }}</span>
+                                        </div>
                                     </div>
                                 </div>
                             @endif

@@ -16,6 +16,7 @@
         "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol",
         "Noto Color Emoji";
 
+    /* Primary Palette (existing) */
     --color-primary: #5b7042;
     --color-light-primary: #8ca67a;
     --color-secondary: #eadfc8;
@@ -25,8 +26,30 @@
     --color-success: #85b582;
     --color-warning: #e0a15a;
     --color-danger: #c2644f;
-    /* --color-secondary: #214521; */
-    /* --color-light: #f9f7f4; */
+
+    /* Updated Info Colors */
+    --color-info: #5f91a7;
+    --color-info-dark: #3f6e83;
+    --color-info-light: #e3edf1;
+    --color-info-2: #60b2a1;
+    --color-info-2-dark: #4d998a;
+    --color-info-2-light: #e4f3f0;
+
+    /* Status Colors */
+    --color-status-draft: #b1b1a4;
+    --color-status-draft-bg: #f1f1ee;
+    --color-status-checkedin: #6d9e72;
+    --color-status-checkedin-bg: #e5f3e5;
+    --color-status-completed: #4b7d6e;
+    --color-status-completed-bg: #e3f0eb;
+    --color-status-cancelled: #c2644f;
+    --color-status-cancelled-bg: #f8e8e5;
+    --color-status-expired: #e0a15a;
+    --color-status-expired-bg: #fcf2e5;
+    --color-status-noshow: #a06a44;
+    --color-status-noshow-bg: #f6ebe3;
+    --color-status-refunded: #5da6a4;
+    --color-status-refunded-bg: #e8f3f3;
 
     --animate-wiggle: wiggle 1s ease-in-out infinite;
     @keyframes wiggle {

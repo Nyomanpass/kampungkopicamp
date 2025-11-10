@@ -20,8 +20,10 @@ class BookingItem extends Model
     ];
 
     protected $casts = [
+        'notes' => 'array',
         'unit_price' => 'decimal:2',
         'subtotal' => 'decimal:2',
+        'qty' => 'integer',
     ];
 
     // ============================================
@@ -41,6 +43,21 @@ class BookingItem extends Model
     public function addon()
     {
         return $this->belongsTo(Addon::class);
+    }
+
+    public function isProduct()
+    {
+        return $this->item_type === 'product';
+    }
+
+    public function isAddon()
+    {
+        return $this->item_type === 'addon';
+    }
+
+    public function getDisplayNameAttribute()
+    {
+        return $this->name_snapshot ?? ($this->product ? $this->product->name : ($this->addon ? $this->addon->name : 'Unknown'));
     }
 
     // ============================================
@@ -68,7 +85,7 @@ class BookingItem extends Model
     {
         $this->subtotal = $this->qty * $this->unit_price;
         $this->save();
-        
+
         return $this->subtotal;
     }
 
@@ -126,5 +143,24 @@ class BookingItem extends Model
         }
 
         return 'Unknown Item';
+    }
+
+
+
+    /**
+     * Get icon based on item type
+     */
+    public function getIconAttribute()
+    {
+        if ($this->isProduct()) {
+            return match ($this->booking->product_type ?? '') {
+                'camping' => '🏕️',
+                'glamping' => '🏔️',
+                'touring' => '🚶',
+                default => '📦',
+            };
+        }
+
+        return '🎁'; // addon icon
     }
 }

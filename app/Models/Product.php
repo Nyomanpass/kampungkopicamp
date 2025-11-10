@@ -123,14 +123,6 @@ class Product extends Model
      * Calculate required units based on people count and capacity
      * For accommodation only
      */
-    public function calculateRequiredUnits($peopleCount)
-    {
-        if ($this->type !== 'accommodation' || !$this->capacity_per_unit) {
-            return 1;
-        }
-
-        return (int) ceil($peopleCount / $this->capacity_per_unit);
-    }
 
     /**
      * Calculate total price for date range
@@ -144,5 +136,23 @@ class Product extends Model
 
         // For touring (per seat/person)
         return $this->price * $qty;
+    }
+
+    public function getDefaultStockCapacity()
+    {
+        // Return default values based on product type
+        return [
+            'available_unit' => $this->type === 'touring' ? 0 : 10, // Default 10 units for accommodation
+            'available_seat' => $this->type === 'touring' ? 20 : 0, // Default 20 seats for touring
+        ];
+    }
+
+    public function calculateRequiredUnits($peopleCount)
+    {
+        if ($this->type === 'touring' || !$this->capacity_per_unit) {
+            return 0; // Touring doesn't use units
+        }
+
+        return (int) ceil($peopleCount / $this->capacity_per_unit);
     }
 }
