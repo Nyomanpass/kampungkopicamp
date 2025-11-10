@@ -65,11 +65,11 @@ class Payment extends Model
         return in_array($this->status, ['initiated', 'pending']);
     }
 
-    public function isExpired()
+    public function isExpired(): bool
     {
-        return $this->status === 'expire' ||
-            ($this->expired_at && Carbon::now()->isAfter($this->expired_at));
+        return $this->expired_at && $this->expired_at->isPast();
     }
+
 
     public function markAsSettled()
     {
@@ -123,5 +123,15 @@ class Payment extends Model
         }
 
         return 'Unknown';
+    }
+
+    public function canBeCancelled(): bool
+    {
+        return in_array($this->status, ['pending', 'initiated']);
+    }
+
+    public function canBeRefunded(): bool
+    {
+        return $this->status === 'settlement';
     }
 }

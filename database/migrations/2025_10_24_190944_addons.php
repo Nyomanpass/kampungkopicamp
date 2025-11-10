@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('addons', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->enum('pricing_type', [
                 'per_booking',
                 'per_unit_per_night',
@@ -24,8 +25,20 @@ return new class extends Migration
             $table->decimal('price', 12, 2)->default(0);
             $table->text('description')->nullable();
             $table->string('image')->nullable();
-            $table->boolean('has_iventory')->default(false);
+
+            // ✅ Fix typo: has_iventory → has_inventory
+            $table->boolean('has_inventory')->default(false);
+
+            // ✅ Inventory management fields
+            $table->integer('stock_quantity')->nullable();
+            $table->integer('low_stock_threshold')->default(5);
+
+            // ✅ Quantity limits
+            $table->integer('min_quantity')->default(1);
+            $table->integer('max_quantity')->nullable();
+
             $table->boolean('is_active')->default(true);
+            $table->softDeletes();
             $table->timestamps();
         });
     }

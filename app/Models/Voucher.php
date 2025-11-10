@@ -3,10 +3,13 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Carbon\Carbon;
 
 class Voucher extends Model
 {
+    // use SoftDeletes;
+
     protected $fillable = [
         'code',
         'name',
@@ -19,13 +22,15 @@ class Voucher extends Model
         'start_date',
         'end_date',
         'is_active',
+        'show_in_dashboard',
         'description',
     ];
 
-    protected $cast =  [
+    protected $casts =  [
         'start_date' => 'datetime',
         'end_date' => 'datetime',
         'is_active' => 'boolean',
+        'show_in_dashboard' => 'boolean',
     ];
 
     // ========== relationships ==========
@@ -69,6 +74,23 @@ class Voucher extends Model
             });
     }
 
+    public function scopeExpired($query)
+    {
+        return $query->whereNotNull('end_date')
+            ->where('end_date', '<', now());
+    }
+
+    public function scopeScheduled($query)
+    {
+        return $query->whereNotNull('start_date')
+            ->where('start_date', '>', now());
+    }
+
+    public function scopeType($query, string $type)
+    {
+        return $query->where('type', $type);
+    }
+
     public function scopeByCode($query, $code)
     {
         return $query->where('code', $code);
@@ -89,9 +111,15 @@ class Voucher extends Model
             return false;
         }
 
-        return !VoucherRedemption::where('voucher_id' . $this->id)
+        if (is_null($this->user_usage_limit)) {
+            return true; // No per-user limit
+        }
+
+        $userUsageCount = $this->redemptions()
             ->where('user_id', $userId)
-            ->exists();
+            ->count();
+
+        return $userUsageCount < $this->user_usage_limit;
     }
 
     public function calculateDiscount($subtotal)
@@ -160,11 +188,10 @@ class Voucher extends Model
         if ($this->usage_limit == 0) {
             return false;
         }
-
-        return $this->redemptions()->count() >= $this->usage_limt;
+        return $this->redemptions()->count() >= $this->usage_limit;
     }
 
-    
+
 
     public function applyToBooking(Booking $booking, $userId = null)
     {
@@ -201,5 +228,189 @@ class Voucher extends Model
 
         $used = $this->redemptions()->count();
         return max(0, $this->usage_limit - $used);
+    }
+
+
+    /**
+     * Get formatted discount value
+     */
+    public function getFormattedValueAttribute(): string
+    {
+        return match ($this->type) {
+            'percentage' => $this->value . '%',
+            'fixed' => 'Rp ' . number_format($this->value, 0, ',', '.'),
+            'bonus' => $this->value . ' item(s)',
+            default => $this->value,
+        };
+    }
+
+    /**
+     * Get type label
+     */
+    public function getTypeLabel(): string
+    {
+        return match ($this->type) {
+            'percentage' => 'Percentage Discount',
+            'fixed' => 'Fixed Amount',
+            'bonus' => 'Bonus Item',
+            default => ucfirst($this->type),
+        };
+    }
+
+    /**
+     * Get type icon
+     */
+    public function getTypeIcon(): string
+    {
+        return match ($this->type) {
+            'percentage' => 'fa-percent',
+            'fixed' => 'fa-dollar-sign',
+            'bonus' => 'fa-gift',
+            default => 'fa-tag',
+        };
+    }
+
+    /**
+     * Get status badge color
+     */
+    public function getStatusColor(): string
+    {
+        if (!$this->is_active) {
+            return 'gray'; // Inactive
+        }
+
+        $now = now();
+
+        // Scheduled (not started yet)
+        if ($this->start_date && $now->lt($this->start_date)) {
+            return 'yellow';
+        }
+
+        // Expired
+        if ($this->end_date && $now->gt($this->end_date)) {
+            return 'red';
+        }
+
+        // Usage limit reached
+        if ($this->hasReachedLimit()) {
+            return 'orange';
+        }
+
+        // Active
+        return 'green';
+    }
+
+    /**
+     * Get status label
+     */
+    public function getStatusLabel(): string
+    {
+        if (!$this->is_active) {
+            return 'Inactive';
+        }
+
+        $now = now();
+
+        if ($this->start_date && $now->lt($this->start_date)) {
+            return 'Scheduled';
+        }
+
+        if ($this->end_date && $now->gt($this->end_date)) {
+            return 'Expired';
+        }
+
+        if ($this->hasReachedLimit()) {
+            return 'Full';
+        }
+
+        return 'Active';
+    }
+
+    /**
+     * Get remaining uses
+     */
+    public function getRemainingUses(): ?int
+    {
+        if (is_null($this->usage_limit)) {
+            return null; // Unlimited
+        }
+
+        $used = $this->redemptions()->count();
+        return max(0, $this->usage_limit - $used);
+    }
+
+    /**
+     * Get usage percentage
+     */
+    public function getUsagePercentage(): float
+    {
+        if (is_null($this->usage_limit)) {
+            return 0;
+        }
+
+        $used = $this->redemptions()->count();
+        return ($used / $this->usage_limit) * 100;
+    }
+
+    /**
+     * Check if voucher is expired
+     */
+    public function isExpired(): bool
+    {
+        if (!$this->end_date) {
+            return false;
+        }
+
+        return now()->gt($this->end_date);
+    }
+
+    /**
+     * Check if voucher is scheduled (not started yet)
+     */
+    public function isScheduled(): bool
+    {
+        if (!$this->start_date) {
+            return false;
+        }
+
+        return now()->lt($this->start_date);
+    }
+
+    /**
+     * Get days until expiration
+     */
+    public function getDaysUntilExpiration(): ?int
+    {
+        if (!$this->end_date) {
+            return null;
+        }
+
+        $now = now();
+
+        if ($now->gt($this->end_date)) {
+            return 0;
+        }
+
+        return $now->diffInDays($this->end_date);
+    }
+
+    /**
+     * Redeem voucher for user
+     */
+    public function redeem($userId, $bookingId, float $discountAmount): bool
+    {
+        if (!$this->canBeUsedBy($userId)) {
+            return false;
+        }
+
+        VoucherRedemption::create([
+            'voucher_id' => $this->id,
+            'user_id' => $userId,
+            'booking_id' => $bookingId,
+            'discount_amount' => $discountAmount,
+            'redeemed_at' => now(),
+        ]);
+
+        return true;
     }
 }

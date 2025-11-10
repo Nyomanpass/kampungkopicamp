@@ -63,6 +63,10 @@ class ExpireBookings extends Command
                     Log::error('Error sending payment expired email: ' . $e->getMessage());
                 }
 
+                $this->releaseAvailability($booking);
+
+                \App\Services\NotificationService::bookingExpired($booking);
+
                 $count++;
 
                 Log::info("Booking expired", [

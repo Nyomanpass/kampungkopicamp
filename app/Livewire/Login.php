@@ -37,7 +37,7 @@ class Login extends Component
                 return redirect()->route('admin.dashboard');
             }
 
-            return redirect()->route('home')->with('success', 'Login berhasil!');
+            return redirect()->route('user.dashboard')->with('success', 'Login berhasil!');
         }
 
         session()->flash('error', 'Email atau password salah.');
