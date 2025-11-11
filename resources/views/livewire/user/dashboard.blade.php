@@ -17,16 +17,34 @@
     {{-- carousel banner --}}
     <div class="swiper mySwiper w-full aspect-[16/9] lg:aspect-[16/6]">
         <div class="swiper-wrapper">
-            <div class="swiper-slide bg-blue-400 flex items-center justify-center text-white text-xl font-bold">
-                banner 1
-            </div>
-            <div class="swiper-slide bg-green-400 flex items-center justify-center text-white text-xl font-bold">
-                banner 2
-            </div>
-            <div class="swiper-slide bg-pink-400 flex items-center justify-center text-white text-xl font-bold">
-                banner 3
-            </div>
+            @if (count($banners) > 0)
+
+                @foreach ($banners as $banner)
+                    <div class="swiper-slide">
+                        <img src="{{ asset('storage/' . $banner['image']) }}" alt="Banner"
+                            class="w-full h-full object-cover">
+                    </div>
+                @endforeach
+            @else
+                {{-- Fallback banners if no banners uploaded --}}
+                <div class="swiper-slide bg-blue-400 flex items-center justify-center text-white text-xl font-bold">
+                    Selamat Datang di Kampung Kopi Camp
+                </div>
+                <div class="swiper-slide bg-green-400 flex items-center justify-center text-white text-xl font-bold">
+                    Nikmati Pengalaman Wisata Terbaik
+                </div>
+                <div class="swiper-slide bg-pink-400 flex items-center justify-center text-white text-xl font-bold">
+                    Booking Sekarang!
+                </div>
+            @endif
         </div>
+
+        {{-- Navigation buttons --}}
+        @if (count($banners) > 1)
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
+        @endif
     </div>
 
     <div x-data="{ open: @entangle('openDisplayProducts'), active: @entangle('activeTab') }" x-cloak>

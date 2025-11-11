@@ -14,6 +14,7 @@ use App\Livewire\Admin\ArticleCrud;
 use App\Livewire\Admin\Category;
 use App\Livewire\Login;
 use App\Livewire\Register;
+use App\Livewire\Package;
 
 use App\Livewire\PackageDetail;
 use App\Livewire\BookingFlow;
@@ -28,6 +29,7 @@ use App\Livewire\Admin\Users;
 use App\Livewire\Admin\Vouchers;
 use App\Livewire\Admin\Availabilities;
 
+
 use App\Http\Controllers\InvoiceController;
 
 use App\Http\Controllers\PaymentController;
@@ -39,10 +41,10 @@ Route::get('/contact', Contact::class)->name('contact');
 Route::get('/paket-wisata', Paketwisata::class)->name('paket-wisata');
 Route::get('/paket/{slug}', PaketDetail::class)->name('paket.detail');
 Route::get('/explore-pupuan', ExplorePupuan::class)->name('explore-pupuan');
-Route::get('/article', Article::class)->name('article');
-Route::get('/article/{slug}', ArticleDetail::class)->name('article.detail');
+Route::get('/article', \App\Livewire\Blog::class)->name('article');
+Route::get('/article/{slug}', \App\Livewire\DetailBlog::class)->name('article.detail');
 
-
+Route::get('/package', Package::class)->name('package.product');
 Route::get('/package/{slug}', PackageDetail::class)->name('package.detail');
 Route::get('/booking/{slug}', BookingFlow::class)->name('booking.flow');
 
@@ -79,6 +81,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/payments', Payments::class)->name('admin.payments');
             Route::get('/products', Products::class)->name('admin.products');
             Route::get('/articles', Articles::class)->name('admin.articles');
+            Route::get('/profile', \App\Livewire\Admin\ProfileSettings::class)->name('admin.profile');
+            Route::get('/settings', \App\Livewire\Admin\Settings::class)->name('admin.settings');
 
             Route::get('/users', Users::class)->name('admin.users');
             Route::get('/vouchers', Vouchers::class)->name('admin.vouchers');

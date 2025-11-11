@@ -33,7 +33,7 @@
             <nav class="hidden lg:flex items-center space-x-8">
                 <a href="/" class="hover:text-light-primary transition-all">Home</a>
                 <a href="/about" class="hover:text-light-primary transition-all">About</a>
-                <a href="/paket-wisata" class="hover:text-light-primary transition-all">Tour Packages</a>
+                <a href="/package" class="hover:text-light-primary transition-all">Tour Packages</a>
                 <a href="/explore-pupuan" class="hover:text-light-primary transition-all">Explore Pupuan</a>
                 <a href="/article" class="hover:text-light-primary transition-all">Article</a>
                 <a href="/contact" class="hover:text-light-primary transition-all">Contact</a>
@@ -58,9 +58,7 @@
                         class="px-5 py-2 rounded-full text-sm font-medium border transition
                        hover:bg-secondary
                       "
-                        :class="scrolled ? 'bg-white border text-secondary hover:text-white' : 'text-white'
-                        }
-                        }">
+                        :class="scrolled ? 'bg-white border text-secondary hover:text-white' : 'text-white'">
                         Dapatkan Promo Menarik
                     </a>
                 @endif
@@ -88,7 +86,7 @@
             <nav class="px-6 py-6 space-y-4">
                 <a href="/" class="block py-2 text-secondary hover:text-warna-400">Home</a>
                 <a href="/about" class="block py-2 text-secondary hover:text-warna-400">About</a>
-                <a href="/paket-wisata" class="block py-2 text-secondary hover:text-warna-400">Tour Packages</a>
+                <a href="/package" class="block py-2 text-secondary hover:text-warna-400">Tour Packages</a>
                 <a href="/explore-pupuan" class="block py-2 text-secondary hover:text-warna-400">Explore Pupuan</a>
                 <a href="/article" class="block py-2 text-secondary hover:text-warna-400">Article</a>
                 <a href="/contact" class="block py-2 text-secondary hover:text-warna-400">Contact</a>
@@ -146,7 +144,7 @@
 
 
 
-
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 </body>
 
 </html>

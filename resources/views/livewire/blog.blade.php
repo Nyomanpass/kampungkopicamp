@@ -80,8 +80,8 @@
 
                         <!-- Image Container with Overlay -->
                         <div class="relative overflow-hidden h-56">
-                            <img src="{{ $blog->featured_image ? asset('storage/' . $blog->featured_image) : 'https://picsum.photos/400/400?random=' . $blog->id }}"
-                                alt="{{ $blog->title }}"
+                            <img src="{{ $blog->main_image ? asset('storage/' . $blog->main_image) : 'https://picsum.photos/400/400?random=' . $blog->id }}"
+                                alt="{{ $blog->title[$lang] ?? '' }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
 
                             <!-- Gradient Overlay -->
@@ -90,15 +90,13 @@
                             </div>
 
                             <!-- Category Badge -->
-                            @if ($blog->category)
-                                <div class="absolute top-4 left-4">
-                                    <span
-                                        class="bg-secondary/95 text-dark-primary px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
-                                        <i class="fas fa-bookmark mr-1"></i>
-                                        {{ ucfirst($blog->category) }}
-                                    </span>
-                                </div>
-                            @endif
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="bg-secondary/95 text-dark-primary px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
+                                    <i class="fas fa-bookmark mr-1"></i>
+                                    {{ $texts['article_type'] ?? 'Article' }}
+                                </span>
+                            </div>
 
                             <!-- Read More Icon (appears on hover) -->
                             <div
@@ -116,35 +114,29 @@
                             <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
                                 <span class="flex items-center gap-1">
                                     <i class="far fa-calendar text-accent"></i>
-                                    {{ $blog->published_at ? $blog->published_at->format('d M Y') : $blog->created_at->format('d M Y') }}
+                                    {{ $blog->published_at->format('d M Y') ?? '3 min' }}
                                 </span>
                                 <span class="text-gray-300">•</span>
                                 <span class="flex items-center gap-1">
                                     <i class="far fa-user text-accent"></i>
-                                    {{ $blog->author ? $blog->author->name : 'Admin' }}
+                                    Admin
                                 </span>
-                                @if ($blog->views)
-                                    <span class="text-gray-300">•</span>
-                                    <span class="flex items-center gap-1">
-                                        <i class="far fa-eye text-accent"></i>
-                                        {{ $blog->views }}
-                                    </span>
-                                @endif
+
                             </div>
 
                             <!-- Title -->
                             <h3
                                 class="text-xl font-bold text-dark-primary mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
-                                {{ $blog->title }}
+                                {{ $blog->title ?? '' }}
                             </h3>
 
                             <!-- Description -->
                             <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                                {{ Str::limit($blog->excerpt, 120) }}
+                                {{ Str::limit($blog->excerpt ?? '', 120) }}
                             </p>
 
                             <!-- Read More Link -->
-                            <a href="{{ route('article.detail', ['slug' => $blog->slug]) }}"
+                            <a href="{{ route('article.detail', $blog->slug) }}"
                                 class="inline-flex items-center gap-2 text-primary font-semibold hover:text-dark-primary transition-colors group/link">
                                 {{ $lang === 'id' ? 'Baca Selengkapnya' : 'Read More' }}
                                 <i

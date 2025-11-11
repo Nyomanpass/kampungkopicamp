@@ -192,7 +192,7 @@
 
                         <!-- Image Container -->
                         <div class="relative overflow-hidden aspect-[4/3]">
-                            <img src="{{ asset('storage/' . $paket->main_image) }}"
+                            <img src="{{ $paket->images[0] }}"
                                 alt="{{ is_array($paket->title) ? $paket->title[$lang] ?? '' : $paket->title }}"
                                 class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
 
@@ -252,7 +252,7 @@
 
                             <!-- CTA Buttons -->
                             <div class="flex gap-2">
-                                <a href="#"
+                                <a href="{{ Route('booking.flow', $paket->slug) }}"
                                     class="flex-1 text-center px-3 py-2.5 bg-primary hover:bg-light-primary text-white text-sm font-semibold rounded-lg transition-all duration-300 hover:shadow-lg">
                                     <i class="fa-solid fa-calendar-check mr-1"></i>
                                     {{ $texts['tombol_booking'] }}
@@ -503,58 +503,72 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
                 @foreach ($blogs as $index => $blog)
                     <article
-                        class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden"
+                        class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden"
                         data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
 
-                        <!-- Image -->
-                        <a href="{{ route('article.detail', ['slug' => Str::slug($blog->title[$lang] ?? '')]) }}"
-                            class="block relative overflow-hidden aspect-[4/3]">
-                            <img src="{{ $blog->main_image ? asset('storage/' . $blog->main_image) : 'https://picsum.photos/400/300?random=' . ($index + 1) }}"
+                        <!-- Image Container with Overlay -->
+                        <div class="relative overflow-hidden h-56">
+                            <img src="{{ $blog->featured_image ? asset('storage/' . $blog->featured_image) : 'https://picsum.photos/400/400?random=' . $blog->id }}"
                                 alt="{{ $blog->title[$lang] ?? '' }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+
+                            <!-- Gradient Overlay -->
+                            <div
+                                class="absolute inset-0 bg-gradient-to-t from-dark-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                            </div>
 
                             <!-- Category Badge -->
-                            <div
-                                class="absolute top-3 left-3 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold px-3 py-1 rounded-full">
-                                {{ $texts['article_type'] ?? 'Travel' }}
+                            <div class="absolute top-4 left-4">
+                                <span
+                                    class="bg-secondary/95 text-dark-primary px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
+                                    <i class="fas fa-bookmark mr-1"></i>
+                                    {{ $texts['article_type'] ?? 'Article' }}
+                                </span>
                             </div>
-                        </a>
+
+                            <!-- Read More Icon (appears on hover) -->
+                            <div
+                                class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
+                                <div
+                                    class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+                                    <i class="fas fa-arrow-right"></i>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Content -->
-                        <div class="p-4 sm:p-5">
-                            <!-- Meta Info -->
-                            <div class="flex flex-wrap items-center gap-2 text-xs text-gray-500 mb-3">
-                                <time datetime="{{ $blog->created_at->format('Y-m-d') }}">
-                                    <i class="fa-regular fa-calendar mr-1"></i>
-                                    {{ $blog->created_at->format('d M Y') }}
-                                </time>
-                                <span>•</span>
-                                <span>
-                                    <i class="fa-regular fa-clock mr-1"></i>
-                                    {{ $blog->read_time ?? '3 min' }}
+                        <div class="p-6">
+                            <!-- Meta Information -->
+                            <div class="flex flex-wrap items-center gap-3 text-xs text-gray-500 mb-3">
+                                <span class="flex items-center gap-1">
+                                    <i class="far fa-calendar text-accent"></i>
+                                    {{ $blog->published_at->format('d M Y') ?? '3 min' }}
                                 </span>
+                                <span class="text-gray-300">•</span>
+                                <span class="flex items-center gap-1">
+                                    <i class="far fa-user text-accent"></i>
+                                    Admin
+                                </span>
+
                             </div>
 
                             <!-- Title -->
                             <h3
-                                class="font-bold text-dark text-base sm:text-lg mb-2 line-clamp-2 min-h-[3rem] group-hover:text-primary transition-colors">
-                                <a
-                                    href="{{ route('article.detail', ['slug' => Str::slug($blog->title[$lang] ?? '')]) }}">
-                                    {{ $blog->title[$lang] ?? '' }}
-                                </a>
+                                class="text-xl font-bold text-dark-primary mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                                {{ $blog->title ?? '' }}
                             </h3>
 
-                            <!-- Excerpt -->
-                            <p class="text-xs sm:text-sm text-gray-600 mb-4 line-clamp-3">
-                                {{ Str::limit($blog->description[$lang] ?? '', 120) }}
+                            <!-- Description -->
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
+                                {{ Str::limit($blog->excerpt ?? '', 120) }}
                             </p>
 
-                            <!-- Read More -->
-                            <a href="{{ route('article.detail', ['slug' => Str::slug($blog->title[$lang] ?? '')]) }}"
-                                class="inline-flex items-center gap-2 text-sm font-semibold text-primary hover:text-light-primary transition-colors group">
+                            <!-- Read More Link -->
+                            <a href="{{ route('article.detail', $blog->slug) }}"
+                                class="inline-flex items-center gap-2 text-primary font-semibold hover:text-dark-primary transition-colors group/link">
                                 {{ $lang === 'id' ? 'Baca Selengkapnya' : 'Read More' }}
                                 <i
-                                    class="fa-solid fa-arrow-right text-xs group-hover:translate-x-1 transition-transform"></i>
+                                    class="fas fa-arrow-right text-xs group-hover/link:translate-x-1 transition-transform"></i>
                             </a>
                         </div>
                     </article>

@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 
 use App\Models\Product;
+use App\Models\SiteSetting;
 
 class PackageDetail extends Component
 {
@@ -17,6 +18,9 @@ class PackageDetail extends Component
     public $startDate;
     public $endDate;
     public $peopleCount = 1;
+    public $googleMaps = [];
+    public $faqs = [];
+    public $houseRules = [];
 
 
     public function mount($slug)
@@ -27,6 +31,19 @@ class PackageDetail extends Component
         if (!empty($this->product->images) && is_array($this->product->images)) {
             $this->selectedImage = $this->product->images[0];
         }
+
+        // Load settings
+        $this->loadSettings();
+    }
+
+    private function loadSettings()
+    {
+        $this->googleMaps = SiteSetting::get('google_maps', [
+            'embed_url' => '',
+        ]);
+
+        $this->faqs = SiteSetting::get('faqs', []);
+        $this->houseRules = SiteSetting::get('house_rules', []);
     }
 
     public function selectImage($image)

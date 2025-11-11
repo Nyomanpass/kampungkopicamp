@@ -108,7 +108,9 @@ class Home extends Component
     public function render()
     {
         $pakets = \App\Models\Product::oldest()->take(3)->get();
-        $blogs = Blog::latest()->take(3)->get();
+        $blogs = \App\Models\Article::where('status', 'published')
+            ->where('is_featured', true)
+            ->latest()->take(3)->get();
         return view('livewire.home', [
             'pakets' => $pakets,
             "blogs" => $blogs
