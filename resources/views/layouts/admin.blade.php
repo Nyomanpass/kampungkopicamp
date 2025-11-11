@@ -9,6 +9,7 @@
         'admin.vouchers' => 'Manajemen Voucher',
         'admin.articles' => 'Blog & Artikel',
         'admin.users' => 'Manajemen Pengguna',
+        'admin.profile' => 'Profile Settings',
         'admin.reports.revenue' => 'Laporan & Analisa Pendapatan',
         'admin.reports.bookings' => 'Laporan & Analisa Booking',
         'admin.reports.customers' => 'Laporan & Analisa Customer',
@@ -29,6 +30,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite('resources/css/app.css')
     @livewireStyles
+
+    {{-- Trix Editor --}}
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/trix@2.0.8/dist/trix.css">
+    <script type="text/javascript" src="https://unpkg.com/trix@2.0.8/dist/trix.umd.min.js"></script>
+
+    <style>
+        /* Trix Editor Custom Styling */
+        trix-toolbar .trix-button-row {
+            flex-wrap: wrap;
+        }
+
+        trix-toolbar .trix-button-group {
+            margin-bottom: 5px;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+        }
+
+        trix-toolbar .trix-button {
+            border-bottom: none;
+        }
+
+        trix-toolbar .trix-button--icon {
+            width: 2.5rem;
+            height: 2.5rem;
+        }
+
+        trix-editor {
+            background-color: #ffffff;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            min-height: 400px;
+            max-height: 600px;
+            overflow-y: auto;
+        }
+
+        trix-editor:focus {
+            outline: 2px solid #5b7042;
+            outline-offset: 2px;
+        }
+
+        trix-editor h1 {
+            font-size: 2em;
+            line-height: 1.2;
+            margin: 0.67em 0;
+        }
+
+        trix-editor a {
+            color: #5b7042;
+            text-decoration: underline;
+        }
+
+        trix-editor ul,
+        trix-editor ol {
+            padding-left: 2em;
+            margin: 1em 0;
+        }
+    </style>
 
     {{-- <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script> --}}
 </head>
@@ -159,8 +218,8 @@
                     </a>
                 </div>
             </div>
-            <a href="{{ route('admin.dashboard') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('home') ? 'bg-[#3f4e2e]' : '' }}">
+            <a href="{{ route('admin.settings') }}"
+                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.settings') ? 'bg-[#3f4e2e]' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-gear "></i>
                 </div>
@@ -309,8 +368,8 @@
                                 </a>
                             </div>
                         </div>
-                        <a href="{{ route('admin.dashboard') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('home') ? 'bg-[#3f4e2e]' : '' }}">
+                        <a href="{{ route('admin.settings') }}"
+                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.settings') ? 'bg-[#3f4e2e]' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-gear "></i>
                             </div>
@@ -346,7 +405,7 @@
                         x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95"
                         class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
 
-                        <a href=""
+                        <a href="{{ route('admin.profile') }}"
                             class="flex items-center px-4 py-3 text-sm text-gray-700 hover:bg-gray-100 transition-all">
                             <i class="fa-solid fa-user mr-3"></i>
                             Profile Settings

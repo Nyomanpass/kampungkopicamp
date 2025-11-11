@@ -117,11 +117,14 @@
                         <h2 class="text-xl font-bold mb-4 flex items-center">
                             Lokasi Kampung Kopi Camp
                         </h2>
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.604370894168!2d115.03691309999999!3d-8.342048799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1760613519348!5m2!1sid!2sid"
-                            style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade"
-                            class="w-full h-56 md:h-64 lg:h-80 rounded-lg"></iframe>
+                        {{-- google maps --}}
+                        <div>
+                            @if (!empty($googleMaps['embed_url']))
+                                <iframe src="{{ $googleMaps['embed_url'] }}" style="border:0;" allowfullscreen=""
+                                    loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                                    class="w-full h-56 md:h-64 lg:h-80 rounded-lg"></iframe>
+                            @endif
+                        </div>
                     </div>
 
                     {{-- kebijakan --}}
@@ -129,23 +132,35 @@
                         <h2 class="text-xl font-bold mb-4 flex items-center">
                             Peraturan & Kebijakan
                         </h2>
-                        <div class="space-y-8">
-                            <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                <h3 class="text-lg font-semibold lg:w-[30%]">Prosedur Check-in</h3>
-                                <p class="text-gray-600 lg:w-[70%]">Check-in mulai pukul 14.00 dan check-out sebelum
-                                    pukul 12.00.
-                                    Harap informasikan perkiraan waktu kedatangan Anda sebelumnya.</p>
+                        @if (count($houseRules) > 0)
+                            <div class="space-y-8">
+                                @foreach ($houseRules as $rule)
+                                    <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+                                        <h3 class="text-lg font-semibold lg:w-[30%]">{{ $rule['title'] }}</h3>
+                                        <p class="text-gray-600 lg:w-[70%] whitespace-pre-line">{{ $rule['content'] }}
+                                        </p>
+                                    </div>
+                                @endforeach
                             </div>
-                            <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                <h3 class="text-lg font-semibold lg:w-[30%]">Kebijakan Lainnya</h3>
-                                <p class="text-gray-600 lg:w-[70%]">
-                                    Dilarang merokok di area dalam ruangan. Harap jaga ketenangan dan hormati tamu lain.
-                                    Hewan peliharaan tidak diperbolehkan kecuali telah mendapatkan izin sebelumnya.
-                                    Harap ikuti semua peraturan yang ditetapkan oleh pengelola properti.
-                                </p>
+                        @else
+                            <div class="space-y-8">
+                                <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+                                    <h3 class="text-lg font-semibold lg:w-[30%]">Prosedur Check-in</h3>
+                                    <p class="text-gray-600 lg:w-[70%]">Check-in mulai pukul 14.00 dan check-out sebelum
+                                        pukul 12.00.
+                                        Harap informasikan perkiraan waktu kedatangan Anda sebelumnya.</p>
+                                </div>
+                                <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+                                    <h3 class="text-lg font-semibold lg:w-[30%]">Kebijakan Lainnya</h3>
+                                    <p class="text-gray-600 lg:w-[70%]">
+                                        Dilarang merokok di area dalam ruangan. Harap jaga ketenangan dan hormati tamu
+                                        lain.
+                                        Hewan peliharaan tidak diperbolehkan kecuali telah mendapatkan izin sebelumnya.
+                                        Harap ikuti semua peraturan yang ditetapkan oleh pengelola properti.
+                                    </p>
+                                </div>
                             </div>
-
-                        </div>
+                        @endif
                     </div>
 
                     {{-- Faq --}}
@@ -153,55 +168,78 @@
                         <h2 class="text-xl font-bold mb-4 flex items-center">
                             Pertanyaan yang sering ditanyakan
                         </h2>
-                        <div class="space-y-3">
-                            <!-- FAQ Item 1 -->
-                            <div x-data="{ open: false }"
-                                class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                <button @click="open = !open"
-                                    class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                    <span class="font-semibold text-gray-800">Bagaimana cara melakukan
-                                        pembayaran?</span>
-                                    <i class="fas fa-chevron-down transition-transform duration-200"
-                                        :class="{ 'rotate-180': open }"></i>
-                                </button>
-                                <div x-show="open" x-collapse class="px-4 pb-4">
-                                    <p class="text-gray-600">Kami menerima berbagai metode pembayaran, termasuk transfer
-                                        bank, kartu kredit, dan dompet digital.</p>
-                                </div>
+                        @if (count($faqs) > 0)
+                            <div class="space-y-3">
+                                @foreach ($faqs as $index => $faq)
+                                    <!-- FAQ Item {{ $index + 1 }} -->
+                                    <div x-data="{ open: false }"
+                                        class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                        <button @click="open = !open"
+                                            class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                            <span class="font-semibold text-gray-800">{{ $faq['question'] }}</span>
+                                            <i class="fas fa-chevron-down transition-transform duration-200"
+                                                :class="{ 'rotate-180': open }"></i>
+                                        </button>
+                                        <div x-show="open" x-collapse class="px-4 pb-4">
+                                            <p class="text-gray-600 whitespace-pre-line">{{ $faq['answer'] }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
+                        @else
+                            <div class="space-y-3">
+                                <!-- FAQ Item 1 -->
+                                <div x-data="{ open: false }"
+                                    class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                    <button @click="open = !open"
+                                        class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                        <span class="font-semibold text-gray-800">Bagaimana cara melakukan
+                                            pembayaran?</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-200"
+                                            :class="{ 'rotate-180': open }"></i>
+                                    </button>
+                                    <div x-show="open" x-collapse class="px-4 pb-4">
+                                        <p class="text-gray-600">Kami menerima berbagai metode pembayaran, termasuk
+                                            transfer
+                                            bank, kartu kredit, dan dompet digital.</p>
+                                    </div>
+                                </div>
 
-                            <!-- FAQ Item 2 -->
-                            <div x-data="{ open: false }"
-                                class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                <button @click="open = !open"
-                                    class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                    <span class="font-semibold text-gray-800">Apakah saya bisa membatalkan
-                                        reservasi?</span>
-                                    <i class="fas fa-chevron-down transition-transform duration-200"
-                                        :class="{ 'rotate-180': open }"></i>
-                                </button>
-                                <div x-show="open" x-collapse class="px-4 pb-4">
-                                    <p class="text-gray-600">Ya, Anda dapat membatalkan reservasi dengan gratis hingga
-                                        24 jam sebelum waktu check-in.</p>
+                                <!-- FAQ Item 2 -->
+                                <div x-data="{ open: false }"
+                                    class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                    <button @click="open = !open"
+                                        class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                        <span class="font-semibold text-gray-800">Apakah saya bisa membatalkan
+                                            reservasi?</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-200"
+                                            :class="{ 'rotate-180': open }"></i>
+                                    </button>
+                                    <div x-show="open" x-collapse class="px-4 pb-4">
+                                        <p class="text-gray-600">Ya, Anda dapat membatalkan reservasi dengan gratis
+                                            hingga
+                                            24 jam sebelum waktu check-in.</p>
+                                    </div>
                                 </div>
-                            </div>
 
-                            <!-- FAQ Item 3 -->
-                            <div x-data="{ open: false }"
-                                class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                <button @click="open = !open"
-                                    class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                    <span class="font-semibold text-gray-800">Apakah hewan peliharaan
-                                        diperbolehkan?</span>
-                                    <i class="fas fa-chevron-down transition-transform duration-200"
-                                        :class="{ 'rotate-180': open }"></i>
-                                </button>
-                                <div x-show="open" x-collapse class="px-4 pb-4">
-                                    <p class="text-gray-600">Mohon maaf, untuk saat ini kami belum menerima tamu yang
-                                        membawa hewan peliharaan.</p>
+                                <!-- FAQ Item 3 -->
+                                <div x-data="{ open: false }"
+                                    class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                    <button @click="open = !open"
+                                        class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                        <span class="font-semibold text-gray-800">Apakah hewan peliharaan
+                                            diperbolehkan?</span>
+                                        <i class="fas fa-chevron-down transition-transform duration-200"
+                                            :class="{ 'rotate-180': open }"></i>
+                                    </button>
+                                    <div x-show="open" x-collapse class="px-4 pb-4">
+                                        <p class="text-gray-600">Mohon maaf, untuk saat ini kami belum menerima tamu
+                                            yang
+                                            membawa hewan peliharaan.</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        @endif
                     </div>
                 </div>
 

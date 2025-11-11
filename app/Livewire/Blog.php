@@ -3,12 +3,13 @@
 namespace App\Livewire;
 
 use Livewire\Component;
+
 use Livewire\Attributes\Layout;
-use App\Models\Blog;
+
 use App\Models\Article;
 use Illuminate\Support\Facades\Session;
 
-class Article extends Component
+class Blog extends Component
 {
     #[Layout('layouts.app')]
 
@@ -21,7 +22,6 @@ class Article extends Component
         $this->lang = Session::get('locale', 'id');
         $this->setTexts();
         $this->blogs = Article::where('status', 'published')
-            ->with('author')
             ->orderBy('published_at', 'desc')
             ->get();
     }
@@ -45,11 +45,8 @@ class Article extends Component
         $this->lang = $lang;
         $this->setTexts();
     }
-
     public function render()
     {
-        return view('livewire.article', [
-            'blogs' => $this->blogs
-        ]);
+        return view('livewire.blog');
     }
 }

@@ -8,6 +8,7 @@ use App\Models\Voucher;
 use App\Models\Product;
 use App\Models\Booking;
 use App\Models\VoucherRedemption;
+use App\Models\SiteSetting;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,6 +25,7 @@ class Dashboard extends Component
     public $touringProducts = [];
     public $areaProducts = [];
     public $latestBookings = [];
+    public $banners = [];
 
     public function mount()
     {
@@ -34,6 +36,9 @@ class Dashboard extends Component
     {
         // Check if user should see welcome voucher section
         $this->checkWelcomeSection();
+
+        // Load banners
+        $this->banners = SiteSetting::get('banners', []);
 
         // Load popular products (for mobile display)
         $this->popularProducts = Product::where('is_active', true)
