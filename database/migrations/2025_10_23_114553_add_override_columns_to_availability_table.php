@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('availability', function (Blueprint $table) {
-            $table->boolean('is_overridden')->default(false)->after('is_available');
+            $table->boolean('is_overridden')->default(false)->after('available_seat');
             $table->text('override_reason')->nullable()->after('is_overridden');
             $table->unsignedBigInteger('overridden_by')->nullable()->after('override_reason');
             $table->timestamp('overridden_at')->nullable()->after('overridden_by');
