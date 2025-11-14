@@ -187,8 +187,8 @@ class Dashboard extends Component
         $this->lowStockItems = Availability::with('product')
             ->where('date', '>=', today())
             ->where('date', '<=', now()->addDays(7))
-            ->where('available_stock', '<', 3)
-            ->where('available_stock', '>', 0)
+            // ->where('available_stock', '<', 3)
+            // ->where('available_stock', '>', 0)
             ->orderBy('date')
             ->limit(5)
             ->get();
