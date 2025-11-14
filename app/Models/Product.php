@@ -7,14 +7,16 @@ use Illuminate\Support\Str;
 
 class Product extends Model
 {
-    protected $table = 'products';
-
     protected $casts = [
-        'images' => 'array',
-        'facilities' => 'array',
+
         'price' => 'decimal:2',
         'is_active' => 'boolean',
+        'images' => 'array',
+        'facilities' => 'array',
     ];
+    protected $table = 'products';
+
+
 
     protected $fillable = [
         'name',

@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('bookings', function (Blueprint $table) {
-             $table->json('bonus_meta')->nullable()->after('special_requests');
+            $table->json('bonus_meta')->nullable()->after('customer_phone');
             $table->foreignId('voucher_id')->nullable()->constrained('vouchers')->nullOnDelete()->after('bonus_meta');
         });
     }
