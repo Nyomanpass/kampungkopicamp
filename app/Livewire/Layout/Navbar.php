@@ -20,18 +20,9 @@ class Navbar extends Component
 
     private function setTexts()
     {
-        $this->texts = [
-            'home' => __('messages.home'),
-            'about' => __('messages.about'),
-            'tour_packages' => __('messages.tour_packages'),
-            'explore_pupuan' => __('messages.explore_pupuan'),
-            'article' => __('messages.article'),
-            'contact' => __('messages.contact'),
-            'booking_now' => __('messages.booking_now'),
-            'login' => __('messages.login'),
-            'bahasa' => __('messages.bahasa'),
-        ];
+        $this->texts = __('messages');
     }
+
 
     public function toggleMobileMenu()
     {

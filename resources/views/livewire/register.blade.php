@@ -2,8 +2,8 @@
     <div class="w-full max-w-xl p-8">
         <div class="mb-10 lg:mb-14">
             <a href="/"
-                class="mb-3 mx-auto w-24 h-24 bg-gray-300 flex items-center justify-center rounded-full p-1">
-                {{-- <img src="{{ asset('logo.png') }}" alt="Logo" class="w-full h-full object-cover"> --}}
+                >
+                <img src="/images/logodua.png" alt="Logo" class="w-52 h-full mb-6 mx-auto object-cover">
             </a>
             <h2 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-center mb-2">Hai Teman Kopi!</h2>
             <p class="text-center text-warna-300">Mau dapetin promo menarik? Ayo mulai daftar sekarang!</p>
@@ -42,7 +42,7 @@
                     class="block w-full px-3 py-2 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring-warna-400 focus:border-warna-400 sm:text-sm peer"
                     placeholder=" " required />
                 <label for="password"
-                    class="absolute text-sm text-gray-500 duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-warna-400 peer-focus:dark:text-indigo-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 left-3">Password</label>
+                    class="absolute text-sm text-secondary duration-300 transform -translate-y-6 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-warna-400 peer-focus:dark:text-indigo-400 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6 left-3">Password</label>
                 <button type="button" onclick="togglePassword()"
                     class="absolute inset-y-0 right-0 px-3 py-2 text-gray-500 focus:outline-none">
                     <span id="eyeIcon"><i class="fa-solid fa-eye"></i></span>
@@ -63,7 +63,7 @@
             </button>
 
             <p class="mt-4 text-sm">Sudah punya akun?
-                <a href="{{ route('login') }}" class="text-warna-400 hover:underline">Masuk</a>
+                <a href="{{ route('login') }}" class="text-accent hover:underline">Masuk</a>
             </p>
         </form>
     </div>

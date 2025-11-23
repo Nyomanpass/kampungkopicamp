@@ -69,9 +69,9 @@
                 <div class="flex gap-3 overflow-x-auto scrollbar-hide">
                     @foreach ($product->images as $image)
                         <button wire:click="selectImage('{{ $image }}')"
-                            class="flex-shrink-0 size-24 md:size-28 lg:size-32 rounded-lg overflow-hidden border-2 transition-all
-                                   {{ $selectedImage === $image ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200 hover:border-gray-300' }}">
-                            <img src="{{ $product->images[0] }}" alt="Gallery" class="w-full h-full object-cover">
+                            class="flex-shrink-0 size-24 rounded-lg overflow-hidden border-2 transition-all
+                                   {{ $selectedImage === $image ? 'border-white ring-2 ring-white/50' : 'border-white/30 hover:border-white/60' }}">
+                            <img src="{{ $image }}" alt="Gallery" class="w-full h-full object-cover">
                         </button>
                     @endforeach
                 </div>
