@@ -4,7 +4,7 @@
     <div class="relative max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-14 py-4">
         <!-- Logo -->
         <a href="/" class="flex items-center space-x-2">
-            <h1 class="font-semibold text-xl md:text-2xl leading-tight">Kampung Kopi</h1>
+            <h1 class="font-semibold text-xl md:text-2xl leading-tight">Kampung camppppppp</h1>
         </a>
 
         <!-- Navbar Desktop -->
@@ -19,12 +19,12 @@
 
         <!-- Right: Login + Language -->
         <div class="hidden lg:flex items-center relative z-50">
-        <a href="#"
-   class="px-5 py-2 rounded-full text-sm font-medium border transition
-           hover:bg-secondary
-          {{ $scrolled ? 'bg-white border text-secondary hover:text-white' : 'text-white' }}">
-   {{ $texts['login'] }}
-</a>
+                <a href="#"
+        class="px-5 py-2 rounded-full text-sm font-medium border transition
+                hover:bg-secondary
+                {{ $scrolled ? 'bg-white border text-secondary hover:text-white' : 'text-white' }}">
+        {{ $texts['login'] }}
+        </a>
 
 
 

@@ -70,8 +70,6 @@ Route::middleware('guest')->group(function () {
 Route::middleware('auth')->group(function () {});
 
 
-
-
 Route::middleware(['auth'])->group(function () {
       // ========== ADMIN ROUTES (Only for admin role) ==========
       Route::middleware(['role:admin'])->prefix('admin')->group(function () {

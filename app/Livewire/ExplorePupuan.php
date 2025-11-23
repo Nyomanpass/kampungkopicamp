@@ -17,7 +17,7 @@ class ExplorePupuan extends Component
         $this->setTexts();
     }
 
-     private function setTexts()
+   private function setTexts()
     {
         $this->texts = [
             'small' => __('messages.hero_pupuan_small'),        // Alam & Budaya Bali
@@ -53,29 +53,40 @@ class ExplorePupuan extends Component
 
             'cards' => [
                 [
-                    'image' => '/images/air-terjun-blemantung.jpg',
+                    'image' => '/images/airterjunpupuanblemantung.webp',
+                    'link' => '/explore-pupuan/airterjun',
                     'title' => __('messages.visit_card1_title'),
                     'desc'  => __('messages.visit_card1_desc'),
                 ],
                 [
-                    'image' => '/images/durian-pupuan.jpg',
+                    'image' => '/images/durianpupuan.jpg',
+                    'link' => '/explore-pupuan/durian-pupuan',
                     'title' => __('messages.visit_card2_title'),
                     'desc'  => __('messages.visit_card2_desc'),
                 ],
                 [
-                    'image' => '/images/patung-dewa-tidur.jpg',
+                    'image' => '/images/explorepupuansatu.webp',
+                    'link' => '/explore-pupuan/patuhbudha',
                     'title' => __('messages.visit_card3_title'),
                     'desc'  => __('messages.visit_card3_desc'),
                 ],
                 [
-                    'image' => '/images/gula-aren-pupuan.jpg',
+                    'image' => '/images/gulaarenpupuan.jpg',
+                    'link' => '/explore-pupuan/gulaaren',
                     'title' => __('messages.visit_card4_title'),
                     'desc'  => __('messages.visit_card4_desc'),
                 ],
                 [
-                    'image' => '/images/trekking-cycling-pupuan.jpg',
+                    'image' => '/images/teraseringpupuan.jpg',
+                    'link' => '/explore-pupuan/terasering-sawah',
                     'title' => __('messages.visit_card5_title'),
                     'desc'  => __('messages.visit_card5_desc'),
+                ],
+                [
+                    'image' => '/images/kopipupuan.webp',
+                    'link' => '/explore-pupuan/roasting-kopi',
+                    'title' => __('messages.visit_card6_title'),
+                    'desc'  => __('messages.visit_card6_desc'),
                 ],
             ],
 

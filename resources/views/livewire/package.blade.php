@@ -1,32 +1,39 @@
 <div class="min-h-screen bg-white">
     <!-- Hero Section Paket Wisata -->
-    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
-        data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
+  <section 
+    class="relative w-full h-[60vh] flex items-center justify-center text-center text-white overflow-hidden" 
+    data-aos="fade-zoom-in" 
+    data-aos-duration="1200" 
+    data-aos-easing="ease-in-out" 
+    data-aos-once="true">
 
-        <!-- Background -->
-        <img src="/images/gambarheader.jpg" alt="Paket Wisata Background"
-            class="absolute inset-0 w-full h-full object-cover" data-aos="zoom-out" data-aos-duration="1000">
+    <!-- Background -->
+    <img src="/images/headerpaketwisata.webp" 
+        alt="Paket Wisata Background" 
+        class="absolute inset-0 w-full h-full object-cover" 
+        data-aos="zoom-out" 
+        data-aos-duration="1000">
 
-        <!-- Overlay -->
-        <div class="absolute inset-0 bg-black/40"></div>
+    <!-- Overlay -->
+    <div class="absolute inset-0 bg-black/50"></div>
 
-        <!-- Content -->
-        <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
-            <p class="text-white mb-3 uppercase tracking-wide" data-aos="fade-down" data-aos-delay="400">
-                All Packages
-            </p>
+    <!-- Content -->
+    <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
+        <p class="text-white mb-3 uppercase tracking-wide" data-aos="fade-down" data-aos-delay="400">
+        {!! $texts['subheading'] !!}
+        </p>
 
-            <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
-                Paket Wisata Terbaik untuk <span class="text-primary">Liburan Anda</span>
-            </h1>
+        <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
+        {!! $texts['title'] !!}
+        </h1>
 
-            <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
-            <p id="paket-wisata" class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up"
-                data-aos-delay="1000">
-                Temukan berbagai pilihan paket wisata menarik yang kami tawarkan untuk pengalaman liburan tak terlupakan
-            </p>
-        </div>
+        <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
+
+        <p id="paket-wisata" class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+        {!! $texts['description'] !!}
+        </p>
+    </div>
 
     </section>
 
@@ -69,13 +76,26 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="flex flex-col items-end mt-4">
+
+                                    <div class="flex flex-col items-start mb-7 mt-4">
                                         <p class="text-sm">Mulai dari</p>
                                         <p class="text-primary text-xl font-bold">
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                         </p>
                                     </div>
 
+                                     <div class="flex gap-2">
+                                        <a href="{{ Route('booking.flow', $product->slug) }}"
+                                            class="flex-1 text-center py-2.5 bg-primary hover:bg-secondary text-white text-sm font-semibold rounded-lg transition-all duration-300 hover:shadow-lg">
+                                            <i class="fa-solid fa-calendar-check mr-1"></i>
+                                            {{ $texts['tombol_booking'] }}
+                                        </a>
+
+                                        <a href="{{ route('package.detail', $product->slug) }}"
+                                            class="flex-shrink-0 px-4 py-2.5 bg-white border border-primary text-primary text-sm font-semibold rounded-lg hover:bg-primary hover:text-white transition-all duration-300">
+                                            <i class="fa-solid fa-circle-info text-xl"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </a>
                         </swiper-slide>

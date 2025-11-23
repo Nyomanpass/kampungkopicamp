@@ -2,8 +2,8 @@
     <div class="w-full max-w-xl p-8">
         <div class="mb-10 lg:mb-14">
             <a href="/"
-                class="mb-3 mx-auto w-24 h-24 bg-warna-500 flex items-center justify-center rounded-full p-1 bg-gray-300">
-                {{-- <img src="" alt="Logo" class="w-full h-full object-cover"> --}}
+                >
+                <img src="/images/logodua.png" alt="Logo" class="w-52 h-full mb-6 mx-auto object-cover">
             </a>
             <h2 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-center mb-2">Selamat Datang Kembali!</h2>
             <p class="text-center text-warna-300">Silahkan login untuk mendapatkan promo menarik Kampung Kopi.</p>
