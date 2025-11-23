@@ -4,6 +4,7 @@ namespace App\Mail;
 
 use App\Models\Booking;
 use App\Models\Invoice;
+use App\Models\Payment;
 use Illuminate\Bus\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
@@ -15,11 +16,13 @@ class PaymentConfirmation extends Mailable
 
     public $booking;
     public $invoice;
+    public $payment;
 
-    public function __construct(Booking $booking, Invoice $invoice)
+    public function __construct(Booking $booking, Invoice $invoice, Payment $payment)
     {
         $this->booking = $booking;
         $this->invoice = $invoice;
+        $this->payment = $payment;
     }
 
     public function build()
@@ -28,6 +31,7 @@ class PaymentConfirmation extends Mailable
         $pdf = Pdf::loadView('pdf.invoice', [
             'booking' => $this->booking,
             'invoice' => $this->invoice,
+            'payment' => $this->payment,
         ]);
 
         return $this->subject('Konfirmasi Pembayaran - Kampung Kopi Camp')
@@ -35,6 +39,7 @@ class PaymentConfirmation extends Mailable
             ->with([
                 'booking' => $this->booking,
                 'invoice' => $this->invoice,
+                'payment' => $this->payment,
             ])
             ->attachData($pdf->output(), 'invoice-' . $this->invoice->getInvoiceNumber() . '.pdf', [
                 'mime' => 'application/pdf',

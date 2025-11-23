@@ -199,14 +199,14 @@
 
 
                         </div>
-                        <div class="flex gap-3 mt-2 flex-wrap">
-                            @if ($voucher->valid_until)
+                        <div class="flex gap-1 mt-2 flex-wrap">
+                            @if ($voucher->end_date)
                                 <div class="text-xs text-gray-500 px-2 py-0.5 rounded-md border border-gray-100">
-                                    Exp: {{ \Carbon\Carbon::parse($voucher->valid_until)->format('d M Y') }}
+                                    Exp: {{ \Carbon\Carbon::parse($voucher->end_date)->format('d M Y') }}
                                 </div>
                             @endif
 
-                            @if ($voucher->min_purchase)
+                            @if ($voucher->min_order)
                                 <div class="text-xs text-gray-500 px-2 py-0.5 rounded-md border border-gray-100">
                                     Min. Pembelian Rp {{ number_format($voucher->min_purchase, 0, ',', '.') }}
                                 </div>

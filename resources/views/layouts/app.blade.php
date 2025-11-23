@@ -18,18 +18,14 @@
         scrolled = window.pageYOffset > 50;
     });"
         class="fixed py-4 top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out"
-       :class="
-    mobileMenuOpen || scrolled
-        ? 'bg-white shadow-md text-secondary py-1'
-        : 'bg-transparent text-white'
-"
->
+        :class="mobileMenuOpen || scrolled ?
+            'bg-white shadow-md text-secondary py-1' :
+            'bg-transparent text-white'">
         <div class="relative h-16 max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-14 py-5">
             <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">
                 <img class="md:w-36 md:h-16 w-28 h-12 transition-all duration-100 ease-in-out delay-75"
-                :src="scrolled || mobileMenuOpen ? '/images/logodua.png' : '/images/logo.png'"
-                alt="">
+                    :src="scrolled || mobileMenuOpen ? '/images/logodua.png' : '/images/logo.png'" alt="">
 
             </a>
 
@@ -86,45 +82,48 @@
             </button>
         </div>
 
-        <div x-show="mobileMenuOpen" x-transition
-           class="lg:hidden w-full  relative z-40">
+        <div x-show="mobileMenuOpen" x-transition class="lg:hidden w-full  relative z-40">
             <nav class="px-6 py-6 space-y-4">
                 <a href="/" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.home') }}</a>
                 <a href="/about" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.about') }}</a>
-                <a href="/package" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.tour_packages') }}</a>
-                <a href="/explore-pupuan" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.explore_pupuan') }}</a>
-                <a href="/article" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.article') }}</a>
-                <a href="/contact" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.contact') }}</a>
+                <a href="/package"
+                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.tour_packages') }}</a>
+                <a href="/explore-pupuan"
+                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.explore_pupuan') }}</a>
+                <a href="/article"
+                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.article') }}</a>
+                <a href="/contact"
+                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.contact') }}</a>
             </nav>
             <!-- MOBILE BUTTON (login / dashboard) -->
-<div class="flex lg:hidden items-center relative z-50 px-6 mt-6">
-    @if (Auth::check() && Auth::user()->role === 'admin')
-        <a href="{{ route('admin.dashboard') }}"
-            class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
+            <div class="flex lg:hidden items-center relative z-50 px-6 mt-6">
+                @if (Auth::check() && Auth::user()->role === 'admin')
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
             bg-secondary text-white hover:opacity-90"
-            :class="scrolled ? 'shadow-md' : ''">
-            Admin Dashboard
-        </a>
-    @elseif(Auth::check() && Auth::user()->role === 'user')
-        <a href="{{ route('user.dashboard') }}"
-            class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
+                        :class="scrolled ? 'shadow-md' : ''">
+                        Admin Dashboard
+                    </a>
+                @elseif(Auth::check() && Auth::user()->role === 'user')
+                    <a href="{{ route('user.dashboard') }}"
+                        class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
             bg-secondary text-white hover:opacity-90"
-            :class="scrolled ? 'shadow-md' : ''">
-            User Dashboard
-        </a>
-    @else
-        <a href="{{ route('register') }}"
-            class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
+                        :class="scrolled ? 'shadow-md' : ''">
+                        User Dashboard
+                    </a>
+                @else
+                    <a href="{{ route('register') }}"
+                        class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
             bg-secondary text-white hover:opacity-90"
-            :class="scrolled ? 'shadow-md' : ''">
-            {{ __('messages.login') }}
-        </a>
-    @endif
-</div>
+                        :class="scrolled ? 'shadow-md' : ''">
+                        {{ __('messages.login') }}
+                    </a>
+                @endif
+            </div>
 
             <div class="z-50 pointer-events-auto text-white px-4 py-2 rounded-full ">
-                    <livewire:language-switcher :key="session('locale')" />
-                </div>
+                <livewire:language-switcher :key="session('locale')" />
+            </div>
         </div>
     </header>
 
@@ -170,11 +169,9 @@
                 }
             });
         });
-
-        
     </script>
 
-    
+
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-element-bundle.min.js"></script>
 </body>
 

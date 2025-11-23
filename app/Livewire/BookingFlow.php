@@ -331,6 +331,7 @@ class BookingFlow extends Component
             $this->requiredUnits = 1; // touring/area_rental
         }
 
+
         $this->currentStep = 2;
         $this->loadAvailability();
     }
@@ -572,6 +573,25 @@ class BookingFlow extends Component
             return;
         }
 
+        // Check if voucher already applied
+        if ($this->appliedVoucher) {
+            $this->voucherError = 'Anda sudah menerapkan voucher. Hapus voucher yang ada terlebih dahulu jika ingin menggunakan voucher lain.';
+            return;
+        }
+
+        // check if user already use this voucher in another booking using voucher_redemptions
+        $selectedVoucher = Voucher::where('code', $this->voucherCode)->first();
+        $existingRedemption = DB::table('voucher_redemptions')
+            ->where('voucher_id', $selectedVoucher->id)
+            ->where('user_id', Auth::id())
+            ->first();
+
+        if ($existingRedemption) {
+            $this->voucherError = 'Anda sudah pernah menggunakan voucher ini.';
+            return;
+        }
+
+
         // Validate voucher code input
         if (empty($this->voucherCode)) {
             $this->voucherError = 'Masukkan kode voucher.';
@@ -710,7 +730,7 @@ class BookingFlow extends Component
                 'product_type' => $this->product->type,
                 'pricing_type' => $this->product->type,
                 'start_date' => $this->selectedStartDate,
-                'end_date' => Carbon::parse($this->selectedStartDate)->addDays($this->nightCount)->format('Y-m-d'),
+                'end_date' => Carbon::parse($this->selectedStartDate)->addDays((int)$this->nightCount)->format('Y-m-d'),
                 'people_count' => $this->peopleCount,
                 'unit_count' => $this->product->type !== 'touring' ? $this->requiredUnits : null,
                 'seat_count' => $this->product->type === 'touring' ? $this->peopleCount : null,
@@ -788,11 +808,12 @@ class BookingFlow extends Component
                 'voucher_applied' => $this->appliedVoucher !== null,
             ]);
 
-            // Redirect to payment page
-            return redirect()->route('payment.show', [
-                'token' => $booking->booking_token,
-                'snap_token' => $paymentResult['snap_token'],
-            ]);
+            // ✅ Dispatch event to trigger Snap Modal
+            $this->dispatch(
+                'open-snap-modal',
+                snapToken: $paymentResult['snap_token'],
+                bookingToken: $booking->booking_token
+            );
         } catch (\Exception $e) {
             DB::rollBack();
 
@@ -813,7 +834,7 @@ class BookingFlow extends Component
         }
     }
 
-    
+
 
     // ============================================
     // STEP NAVIGATION

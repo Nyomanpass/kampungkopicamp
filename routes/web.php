@@ -38,8 +38,6 @@ use App\Http\Controllers\PaymentController;
 Route::get('/', Home::class)->name('home');
 Route::get('/about', About::class)->name('about');
 Route::get('/contact', Contact::class)->name('contact');
-Route::get('/paket-wisata', Paketwisata::class)->name('paket-wisata');
-Route::get('/paket/{slug}', PaketDetail::class)->name('paket.detail');
 Route::get('/explore-pupuan', ExplorePupuan::class)->name('explore-pupuan');
 Route::get('/article', \App\Livewire\Blog::class)->name('article');
 Route::get('/article/{slug}', \App\Livewire\DetailBlog::class)->name('article.detail');

@@ -65,12 +65,12 @@ class Voucher extends Model
         $now = now()->toDateString();
         return $query->active()
             ->where(function ($q) use ($now) {
-                $q->whereNull('start_at')
-                    ->orWhere('start_at', '<=', $now);
+                $q->whereNull('start_date')
+                    ->orWhere('start_date', '<=', $now);
             })
             ->where(function ($q) use ($now) {
-                $q->whereNull('end_at')
-                    ->orWhere('end_at', '>=', $now);
+                $q->whereNull('end_date')
+                    ->orWhere('end_date', '>=', $now);
             });
     }
 

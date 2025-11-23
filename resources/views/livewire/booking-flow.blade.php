@@ -1,5 +1,5 @@
-<div class="min-h-screen bg-gray-50 py-12 md:py-13 lg:py-24">
-    <div class="max-w-4xl mx-auto px-6 sm:px-6 lg:px-8">
+<div class="min-h-screen bg-white py-12 md:py-13 lg:py-24">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
 
         <!-- Progress Steps -->
         <div class="mb-8">
@@ -22,7 +22,7 @@
                         <!-- Connector Line -->
                         @if ($step < 4)
                             <div
-                                class="w-12 sm:w-16 h-0.5 mx-2 {{ $currentStep > $step ? 'bg-primary' : 'bg-gray-200' }}">
+                                class="w-8 sm:w-10 sm:w-16 h-0.5 mx-2 {{ $currentStep > $step ? 'bg-primary' : 'bg-gray-200' }}">
                             </div>
                         @endif
                     </div>
@@ -33,10 +33,10 @@
         <!-- Card Container -->
         <div class="bg-white rounded-2xl md:shadow-lg py-6 md:p-6 lg:p-8">
             <!-- Product Header -->
-            <div class="flex items-center gap-4 mb-6 pb-6 border-b">
+            <div class="flex items-center gap-4 mb-8 pb-6 border-b">
                 @if ($product->images && count($product->images) > 0)
-                    <img src="{{ asset('storage/' . $product->images[0]) }}" alt="{{ $product->name }}"
-                        class="w-20 h-20 rounded-lg object-cover">
+                    <img src="{{ $product->images[0] }}" alt="{{ $product->name }}"
+                        class="size-18 rounded-lg object-cover">
                 @endif
                 <div>
                     <h2 class="text-xl font-bold text-gray-900">{{ $product->name }}</h2>
@@ -47,7 +47,11 @@
             <!-- STEP 1: Input People & Nights -->
             @if ($currentStep === 1)
                 <div>
-                    <h3 class="text-2xl font-bold mb-6">Berapa orang dan berapa malam?</h3>
+                    @if ($product->type == 'touring')
+                        <h3 class="text-2xl font-bold mb-6">Jumlah Partisipan</h3>
+                    @else
+                        <h3 class="text-2xl font-bold mb-6">Jumlah Pengunjung dan Malam</h3>
+                    @endif
 
                     <form wire:submit.prevent="nextToCalendar" class="space-y-6">
                         <!-- People Count -->
@@ -56,34 +60,43 @@
                                 Jumlah Orang
                             </label>
                             <input type="number" wire:model="peopleCount" min="1"
+                                @if ($product->type == 'touring') max="{{ $product->max_participant }}"
+                            @else
+                                max="{{ $product->capacity_per_unit }}" @endif
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                             @error('peopleCount')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
 
                             @if ($product->capacity_per_unit)
-                                <p class="text-sm text-gray-500 mt-1">
+                                <p class="text-xs md:text-sm text-gray-500 mt-1">
                                     Kapasitas maksimal per unit: {{ $product->capacity_per_unit }} orang
+                                </p>
+                            @elseif ($product->max_participant)
+                                <p class="text-xs md:text-sm text-gray-500 mt-1">
+                                    Kapasitas maksimal partisipan: {{ $product->max_participant }} orang
                                 </p>
                             @endif
                         </div>
 
                         <!-- Night Count -->
-                        <div>
-                            <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Jumlah Malam
-                            </label>
-                            <input type="number" wire:model="nightCount" min="1" max="30"
-                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
-                            @error('nightCount')
-                                <span class="text-red-500 text-sm">{{ $message }}</span>
-                            @enderror
-                        </div>
+                        @if (!$product->type == 'touring')
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Jumlah Malam
+                                </label>
+                                <input type="number" wire:model="nightCount" min="1" max="30"
+                                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+                                @error('nightCount')
+                                    <span class="text-red-500 text-sm">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
 
                         <!-- Estimated Units (if accommodation) -->
                         @if ($product->type === 'accommodation' && $product->capacity_per_unit)
-                            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                                <p class="text-sm text-blue-800">
+                            <div class="bg-info-light border border-info rounded-lg p-4">
+                                <p class="text-sm text-info">
                                     <i class="fas fa-info-circle mr-2"></i>
                                     Estimasi unit yang dibutuhkan:
                                     <strong>
@@ -91,7 +104,7 @@
                                         unit
                                     </strong>
                                 </p>
-                                <p class="text-xs text-blue-600 mt-1">
+                                <p class="text-xs text-info mt-1">
                                     Pembagian tamu per unit dapat diatur saat check-in
                                 </p>
                             </div>
@@ -106,7 +119,7 @@
                             <button type="submit" @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
                                 class="w-3/4 bg-primary hover:bg-light-primary text-white font-semibold py-4 rounded-lg transition-all duration-200 active:scale-95">
                                 Lanjut Pilih Tanggal
-                                <i class="fas fa-arrow-right ml-2"></i>
+
                             </button>
                         </div>
                     </form>
@@ -118,7 +131,7 @@
                 <div>
                     <div class="flex items-center justify-center mb-6">
 
-                        <h3 class="text-2xl font-bold">Pilih Tanggal</h3>
+                        <h3 class="text-2xl font-bold">Pilih Tanggal Booking</h3>
                     </div>
 
                     <!-- Selected Info -->
@@ -134,8 +147,8 @@
                     </div>
 
                     @if ($requiredUnits > 0)
-                        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                            <p class="text-sm text-blue-800">
+                        <div class="bg-info-light border border-info rounded-lg p-4 mb-6">
+                            <p class="text-sm text-info">
                                 Unit yang dibutuhkan: <strong>{{ $requiredUnits }} unit</strong>
                             </p>
                         </div>
@@ -276,8 +289,7 @@
                         <button wire:click="nextToAddons" @if (!$selectedStartDate) disabled @endif
                             @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
                             class="w-3/4 bg-primary hover:bg-light-primary text-white font-semibold py-4 rounded-lg transition-all duration-200 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300">
-                            Lanjut ke Add-ons
-                            <i class="fas fa-arrow-right ml-2"></i>
+                            Lanjut
                         </button>
                     </div>
 
@@ -359,50 +371,9 @@
                                                     {{ $addon->description }}</p>
                                             @endif
 
-                                            {{-- Quantity Control --}}
-                                            <div class="mt-3 flex items-center gap-3">
-                                                @if (isset($selectedAddons[$addon->id]))
-                                                    <label class="text-sm font-medium text-gray-700">
-                                                        {{ $addon->getQuantityLabel() }}:
-                                                    </label>
-                                                    <div class="flex items-center gap-2">
-                                                        <button type="button"
-                                                            wire:click="updateAddonQty({{ $addon->id }}, {{ ($selectedAddons[$addon->id]['qty'] ?? 1) - 1 }})"
-                                                            class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center">
-                                                            <i class="fas fa-minus"></i>
-                                                        </button>
-                                                        <input type="number"
-                                                            wire:change="updateAddonQty({{ $addon->id }}, $event.target.value)"
-                                                            value="{{ $selectedAddons[$addon->id]['qty'] ?? 1 }}"
-                                                            min="{{ $addon->min_quantity }}"
-                                                            max="{{ $addon->max_quantity ?? 999 }}"
-                                                            class="w-16 text-center border border-gray-300 rounded-lg py-1">
-                                                        <button type="button"
-                                                            wire:click="updateAddonQty({{ $addon->id }}, {{ ($selectedAddons[$addon->id]['qty'] ?? 1) + 1 }})"
-                                                            class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center">
-                                                            <i class="fas fa-plus"></i>
-                                                        </button>
-                                                    </div>
-
-                                                    {{-- Remove Button --}}
-                                                    <button type="button"
-                                                        wire:click="removeAddon({{ $addon->id }})"
-                                                        class="ml-auto text-red-600 hover:text-red-800 text-sm">
-                                                        <i class="fas fa-trash"></i> Hapus
-                                                    </button>
-                                                @else
-                                                    {{-- Add Button --}}
-                                                    <button type="button" wire:click="addAddon({{ $addon->id }})"
-                                                        class="mt-3 w-full bg-primary hover:bg-light-primary text-white py-2 rounded-lg font-semibold transition-all"
-                                                        @if ($addon->isOutOfStock()) disabled @endif>
-                                                        <i class="fas fa-plus"></i> Tambahkan
-                                                    </button>
-                                                @endif
-                                            </div>
-
                                             {{-- Price Calculation Example --}}
                                             @if (isset($selectedAddons[$addon->id]))
-                                                <div class="mt-2 text-xs text-gray-600 bg-blue-50 rounded p-2">
+                                                <div class="mt-2 text-xs text-info bg-info-light rounded p-2">
                                                     <i class="fas fa-calculator"></i>
                                                     @php
                                                         $qty = $selectedAddons[$addon->id]['qty'] ?? 1;
@@ -432,6 +403,53 @@
                                                     @endif
                                                 </div>
                                             @endif
+
+                                            {{-- Quantity Control --}}
+                                            <div class="mt-3 flex items-center gap-3">
+                                                @if (isset($selectedAddons[$addon->id]))
+                                                    <div class="flex flex-col w-full items-center gap-2">
+                                                        <div class="w-full">
+                                                            <label class="text-sm font-medium text-gray-700">
+                                                                {{ $addon->getQuantityLabel() }}:
+                                                            </label>
+                                                            <div class="flex items-center gap-2">
+                                                                <button type="button"
+                                                                    wire:click="updateAddonQty({{ $addon->id }}, {{ ($selectedAddons[$addon->id]['qty'] ?? 1) - 1 }})"
+                                                                    class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center">
+                                                                    <i class="fas fa-minus"></i>
+                                                                </button>
+                                                                <input type="number"
+                                                                    wire:change="updateAddonQty({{ $addon->id }}, $event.target.value)"
+                                                                    value="{{ $selectedAddons[$addon->id]['qty'] ?? 1 }}"
+                                                                    min="{{ $addon->min_quantity }}"
+                                                                    max="{{ $addon->max_quantity ?? 999 }}"
+                                                                    class="w-full text-center border border-gray-300 rounded-lg py-1">
+                                                                <button type="button"
+                                                                    wire:click="updateAddonQty({{ $addon->id }}, {{ ($selectedAddons[$addon->id]['qty'] ?? 1) + 1 }})"
+                                                                    class="w-8 h-8 bg-gray-200 hover:bg-gray-300 rounded-lg flex items-center justify-center">
+                                                                    <i class="fas fa-plus"></i>
+                                                                </button>
+                                                            </div>
+                                                        </div>
+
+                                                        {{-- Remove Button --}}
+                                                        <button type="button"
+                                                            wire:click="removeAddon({{ $addon->id }})"
+                                                            class="w-full py-2 bg-danger text-white rounded-lg font-semibold hover:bg-danger/80 text-sm">
+                                                            <i class="fas fa-trash"></i>
+                                                        </button>
+                                                    </div>
+                                                @else
+                                                    {{-- Add Button --}}
+                                                    <button type="button" wire:click="addAddon({{ $addon->id }})"
+                                                        class="mt-3 w-full bg-primary hover:bg-light-primary text-white py-2 rounded-lg font-semibold transition-all"
+                                                        @if ($addon->isOutOfStock()) disabled @endif>
+                                                        <i class="fas fa-plus"></i> Tambahkan
+                                                    </button>
+                                                @endif
+                                            </div>
+
+
                                         </div>
                                     </div>
                                 </div>
@@ -816,4 +834,46 @@
     <x-auth-modal :show="$showLoginModal" :view="$modalView" />
 
     <x-email-confirm-modal :show="$showEmailConfirmModal" :email="$existingUserEmail" />
+
+    <!-- Midtrans Snap Script -->
+    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
+    </script>
+
+    @script
+        <script>
+            // Listen for open-snap-modal event
+            $wire.on('open-snap-modal', (event) => {
+                const snapToken = event.snapToken;
+                const bookingToken = event.bookingToken;
+
+                console.log('Opening Snap Modal with token:', snapToken);
+
+                // Trigger Midtrans Snap
+                snap.pay(snapToken, {
+                    onSuccess: function(result) {
+                        console.log('Payment success:', result);
+                        // Redirect to finish page
+                        window.location.href = `/booking/${bookingToken}/finish`;
+                    },
+                    onPending: function(result) {
+                        console.log('Payment pending:', result);
+                        // Redirect to finish page
+                        window.location.href = `/booking/${bookingToken}/finish`;
+                    },
+                    onError: function(result) {
+                        console.error('Payment error:', result);
+                        alert('Terjadi kesalahan saat memproses pembayaran. Silakan coba lagi.');
+                    },
+                    onClose: function() {
+                        console.log('Payment popup closed');
+                        alert(
+                            'Anda menutup popup pembayaran. Silakan lanjutkan pembayaran dari halaman My Booking.'
+                        );
+                        // Redirect ke dashboard atau my booking
+                        window.location.href = '{{ route('user.dashboard') }}';
+                    }
+                });
+            });
+        </script>
+    @endscript
 </div>

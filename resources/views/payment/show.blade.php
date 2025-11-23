@@ -7,7 +7,7 @@
     <title>Pembayaran - {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script src="https://app.sandbox.midtrans.com/snap/snap.js"
-        data-client-key="{{ config('SB-Mid-client-8l77DxYcxNCYM9f8') }}"></script>
+        data-client-key="{{ config('midtrans.client_key') }}"></script>
 </head>
 
 <body class="bg-gray-50">
@@ -25,17 +25,22 @@
                         {{ number_format($booking->total_price, 0, ',', '.') }}</span>
                 </div>
                 <p class="text-sm text-gray-500">Pembayaran akan expire dalam 2 jam</p>
+                <p class="text-xs text-blue-600 mt-2">
+                    <i class="fas fa-info-circle"></i>
+                    Popup pembayaran akan muncul otomatis. Jika tidak muncul, klik tombol di bawah.
+                </p>
             </div>
 
             <button id="pay-button"
-                class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
-                Bayar Sekarang
+                class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark transition-colors flex items-center justify-center gap-2">
+                Pilih Metode Pembayaran
             </button>
         </div>
     </div>
 
     <script type="text/javascript">
-        document.getElementById('pay-button').onclick = function() {
+        // Function to open Midtrans payment popup
+        function openPayment() {
             snap.pay('{{ $snapToken }}', {
                 onSuccess: function(result) {
                     window.location.href = '{{ route('booking.finish', $booking->booking_token) }}';
@@ -47,10 +52,21 @@
                     alert('Pembayaran gagal!');
                 },
                 onClose: function() {
-                    alert('Anda menutup popup pembayaran');
+                    // User closed the popup, they can click button again to reopen
+                    console.log('Payment popup closed by user');
                 }
             });
-        };
+        }
+
+        // Attach to button click
+        document.getElementById('pay-button').onclick = openPayment;
+
+        // Auto-trigger payment popup after page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                openPayment();
+            }, 1000); // Delay 1 second for better UX
+        });
     </script>
 </body>
 

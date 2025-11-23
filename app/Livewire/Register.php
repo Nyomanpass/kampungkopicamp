@@ -48,6 +48,6 @@ class Register extends Component
         \Illuminate\Support\Facades\Auth::login($user);
 
         // Redirect to a desired page after registration
-        return redirect()->intended('/');
+        return redirect()->intended('/dashboard')->with('success', 'Registrasi berhasil! Selamat datang, ' . $this->name . '!');
     }
 }

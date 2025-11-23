@@ -13,7 +13,7 @@
             <div class="absolute right-0 mt-2 w-40 bg-white shadow-lg rounded-lg z-50 ring-1 ring-black ring-opacity-5 transition">
                 <button wire:click="setLang('id')"
                         class="w-full px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center space-x-2">
-                    <span>🇮🇩</span> <span>Indonesia</span>
+                    <span>🇮🇩</span> <span>Indonesia </span>
                 </button>
                 <button wire:click="setLang('en')"
                         class="w-full px-4 py-2 text-gray-700 hover:bg-gray-100 flex items-center space-x-2">

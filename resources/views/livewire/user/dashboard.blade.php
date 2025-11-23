@@ -1,19 +1,89 @@
 <div class="relative w-full">
-    {{-- Flash Messages --}}
-    @if (session()->has('success'))
-        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-            class="fixed top-4 right-4 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg">
-            {{ session('success') }}
-        </div>
-    @endif
+    <div class="fixed top-4 right-4 z-50 w-96 max-w-[calc(100vw-2rem)] space-y-3">
+        @if (session()->has('success'))
+            <div wire:key="success-{{ md5(session('success') . microtime()) }}" x-data="{
+                show: false,
+                progress: 100,
+                duration: 4000,
+                init() {
+                    this.$nextTick(() => { this.show = true; });
+                    const step = 100 / (this.duration / 50);
+                    const interval = setInterval(() => {
+                        this.progress = Math.max(0, this.progress - step);
+                        if (this.progress <= 0) {
+                            clearInterval(interval);
+                            this.close();
+                        }
+                    }, 50);
+                },
+                close() {
+                    this.show = false;
+                    setTimeout(() => this.$el.remove(), 300);
+                }
+            }" x-show="show"
+                x-cloak x-transition:enter="transform ease-out duration-300"
+                x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
+                x-transition:leave="transform ease-in duration-200" x-transition:leave-start="translate-x-0 opacity-100"
+                x-transition:leave-end="translate-x-full opacity-0"
+                class="relative rounded-xl border border-green-200 bg-gradient-to-br from-green-50 to-white text-green-800 shadow-lg ring-1 ring-green-100">
+                <div class="flex items-start gap-3 p-4">
+                    <i class="fas fa-check-circle text-2xl text-green-500"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">Success</p>
+                        <p class="text-sm opacity-90">{{ session('success') }}</p>
+                    </div>
+                    <button @click="close()" class="p-1.5 rounded-md text-green-700 hover:bg-green-100/60">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="absolute left-0 bottom-0 h-1 bg-green-200/60 w-full overflow-hidden rounded-b-xl">
+                    <div class="h-full bg-green-500 transition-all ease-linear" :style="`width: ${progress}%`"></div>
+                </div>
+            </div>
+        @endif
 
-    @if (session()->has('error'))
-        <div x-data="{ show: true }" x-show="show" x-init="setTimeout(() => show = false, 5000)"
-            class="fixed top-4 right-4 z-50 bg-red-500 text-white px-6 py-3 rounded-lg shadow-lg">
-            {{ session('error') }}
-        </div>
-    @endif
-
+        @if (session()->has('error'))
+            <div wire:key="error-{{ md5(session('error') . microtime()) }}" x-data="{
+                show: false,
+                progress: 100,
+                duration: 5000,
+                init() {
+                    this.$nextTick(() => { this.show = true; });
+                    const step = 100 / (this.duration / 50);
+                    const interval = setInterval(() => {
+                        this.progress = Math.max(0, this.progress - step);
+                        if (this.progress <= 0) {
+                            clearInterval(interval);
+                            this.close();
+                        }
+                    }, 50);
+                },
+                close() {
+                    this.show = false;
+                    setTimeout(() => this.$el.remove(), 300);
+                }
+            }" x-show="show"
+                x-cloak x-transition:enter="transform ease-out duration-300"
+                x-transition:enter-start="translate-x-full opacity-0" x-transition:enter-end="translate-x-0 opacity-100"
+                x-transition:leave="transform ease-in duration-200" x-transition:leave-start="translate-x-0 opacity-100"
+                x-transition:leave-end="translate-x-full opacity-0"
+                class="relative rounded-xl border border-red-200 bg-gradient-to-br from-red-50 to-white text-red-800 shadow-lg ring-1 ring-red-100">
+                <div class="flex items-start gap-3 p-4">
+                    <i class="fas fa-exclamation-circle text-2xl text-red-500"></i>
+                    <div class="flex-1">
+                        <p class="font-medium">Error</p>
+                        <p class="text-sm opacity-90">{{ session('error') }}</p>
+                    </div>
+                    <button @click="close()" class="p-1.5 rounded-md text-red-700 hover:bg-red-100/60">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="absolute left-0 bottom-0 h-1 bg-red-200/60 w-full overflow-hidden rounded-b-xl">
+                    <div class="h-full bg-red-500 transition-all ease-linear" :style="`width: ${progress}%`"></div>
+                </div>
+            </div>
+        @endif
+    </div>
     {{-- carousel banner --}}
     <div class="swiper mySwiper w-full aspect-[16/9] lg:aspect-[16/6]">
         <div class="swiper-wrapper">
@@ -59,7 +129,7 @@
                 <button @click="open = false" class="p-2">
                     <i class="fa fa-angle-left text-lg"></i>
                 </button>
-                <h3 class="font-semibold text-lg">All Packages</h3>
+                <h3 class="font-semibold text-lg lg:text-xl">All Packages</h3>
                 <div class="w-6"></div>
             </div>
 
@@ -99,16 +169,22 @@
                                     <div class="bg-gray-300 aspect-[5/3] w-full"></div>
                                 @endif
                                 <div class="p-3">
-                                    <h4 class="font-semibold text-sm truncate">{{ $product->name }}</h4>
-                                    <p class="text-xs mt-1 text-gray-600 flex items-center gap-2">
-                                        <span><i class="fa-regular fa-user"></i> {{ $product->capacity ?? 1 }}</span> |
+                                    <h4 class="font-semibold truncate text-lg lg:text-xl">{{ $product->name }}
+                                    </h4>
+                                    <p class="text-xs text-gray-600 flex items-center gap-2">
+                                        <span><i class="fa-regular fa-user"></i>
+                                            @if ($product->type == 'touring')
+                                                {{ $product->max_participant ?? 1 }}
+                                            @else
+                                                {{ $product->capacity_per_unit ?? 1 }}
+                                            @endif
+                                        </span> |
                                         <span>Daily</span>
                                     </p>
-                                    <div class="mt-3 flex items-center justify-between">
-                                        <p class="font-semibold text-primary">Rp
+                                    <div class="mt-3 flex items-center justify-end">
+                                        <p class="font-bold text-lg text-primary">Rp
                                             {{ number_format($product->price, 0, ',', '.') }}</p>
-                                        <button type="button"
-                                            class="px-3 py-1 bg-light-primary text-white rounded-md text-xs">Book</button>
+
                                     </div>
                                 </div>
                             </a>
@@ -128,14 +204,14 @@
                                     <div class="bg-gray-300 aspect-[5/3] w-full"></div>
                                 @endif
                                 <div class="p-3">
-                                    <h4 class="font-semibold text-sm truncate">{{ $product->name }}</h4>
-                                    <p class="text-xs mt-1 text-gray-600">Kapasitas: {{ $product->capacity ?? 1 }}
+                                    <h4 class="font-semibold text-lg lg:text-xl truncate">{{ $product->name }}</h4>
+                                    <p class="text-xs text-gray-600">Kapasitas:
+                                        {{ $product->capacity_per_unit ?? 1 }}
                                         orang</p>
-                                    <div class="mt-3 flex items-center justify-between">
-                                        <p class="font-semibold text-primary">Rp
+                                    <div class="mt-3 flex items-center justify-end">
+                                        <p class="font-bold text-lg text-primary">Rp
                                             {{ number_format($product->price, 0, ',', '.') }}</p>
-                                        <button type="button"
-                                            class="px-3 py-1 bg-light-primary text-white rounded-md text-xs">Book</button>
+
                                     </div>
                                 </div>
                             </a>
@@ -225,26 +301,26 @@
 
             {{-- section type product (just show when mobile display) --}}
             <div class="lg:hidden " x-data="{ open: false }" x-cloak>
-                <h3 class="font-bold mb-4">Healingnya Mau Ngapain?</h3>
+                <h3 class="font-bold mb-4 text-lg lg:text-xl text-dark-primary">Healingnya Mau Ngapain?</h3>
                 <div class="flex w-full justify-around">
                     <button wire:click="toggleDisplayProducts('accommodation')"
                         class="flex flex-col justify-center items-center gap-1">
-                        <div class="bg-light-primary size-10 rounded-full flex justify-center items-center">
-                            <i class="fas fa-campground text-secondary text-lg"></i>
+                        <div class="bg-light-primary size-12 rounded-full flex justify-center items-center">
+                            <i class="fas fa-campground text-secondary text-xl"></i>
                         </div>
                         <p class="text-sm">Camping</p>
                     </button>
                     <button wire:click="toggleDisplayProducts('touring')"
                         class="flex flex-col justify-center items-center gap-1">
-                        <div class="bg-light-primary size-10 rounded-full flex justify-center items-center">
-                            <i class="fas fa-person-hiking text-secondary text-lg"></i>
+                        <div class="bg-light-primary size-12 rounded-full flex justify-center items-center">
+                            <i class="fas fa-person-hiking text-secondary text-xl"></i>
                         </div>
                         <p class="text-sm">Touring</p>
                     </button>
                     <button wire:click="toggleDisplayProducts('area')"
                         class="flex flex-col justify-center items-center gap-1">
-                        <div class="bg-light-primary size-10 rounded-full flex justify-center items-center">
-                            <i class="fas fa-tree text-secondary text-lg"></i>
+                        <div class="bg-light-primary size-12 rounded-full flex justify-center items-center">
+                            <i class="fas fa-tree text-secondary text-xl"></i>
                         </div>
                         <p class="text-sm">Rekreasi</p>
                     </button>
@@ -263,7 +339,7 @@
                         <button @click="open = false">
                             <i class="fa fa-angle-left text-lg"></i>
                         </button>
-                        <h3 class="font-semibold text-lg">Detail Booking</h3>
+                        <h3 class="font-semibold text-lg lg:text-xl">Detail Booking</h3>
                         <div class="text-white">
                             <i class="fa fa-angle-left text-lg"></i>
                         </div>
@@ -280,7 +356,7 @@
 
             {{-- section highlight paket --}}
             <div class="w-full lg:hidden">
-                <h3 class="font-bold mb-4">Udah Waktunya Liburan Nih</h3>
+                <h3 class="font-bold mb-4 text-lg lg:text-xl">Udah Waktunya Liburan Nih</h3>
                 <div class="w-full overflow-x-scroll snap-x">
                     <div class="flex gap-3 w-max">
                         @forelse($popularProducts as $product)
@@ -296,16 +372,15 @@
                                 <div class="px-2.5 py-2.5">
                                     <p class="truncate w-40">{{ $product->name }}</p>
                                     <p class="text-xs mt-1 text-gray-600 flex items-center gap-2">
-                                        @if ($product->type === 'touring')
-                                            <span><i class="fa-regular fa-user"></i>
-                                                {{ $product->capacity ?? 1 }}</span> | <span>Daily</span>
-                                        @elseif($product->type === 'accommodation')
-                                            <span>Kapasitas: {{ $product->capacity ?? 1 }} orang</span>
-                                        @else
-                                            <span>{{ ucfirst($product->type) }}</span>
-                                        @endif
+                                        <span>Kapasitas:
+                                            @if ($product->type === 'touring')
+                                                {{ $product->max_participant ?? 1 }} orang
+                                            @else
+                                                {{ $product->capacity_per_unit ?? 1 }} orang
+                                            @endif
+                                        </span>
                                     </p>
-                                    <p class="font-semibold text-primary pt-4">Rp
+                                    <p class="font-bold text-primary pt-4">Rp
                                         {{ number_format($product->price, 0, ',', '.') }}</p>
                                 </div>
                             </a>
@@ -318,7 +393,7 @@
 
             {{-- section type accommodation paket (camping) --}}
             <div class="w-full hidden lg:block">
-                <h3 class="font-bold mb-4">Camping di Alam Terbuka</h3>
+                <h3 class="font-bold mb-4 text-lg lg:text-xl">Camping di Alam Terbuka</h3>
                 <div class="w-full overflow-x-scroll snap-x">
                     <div class="flex gap-3 w-max">
                         @forelse($accommodationProducts as $product)
@@ -380,7 +455,7 @@
 
             {{-- section type rekreasi paket (area) --}}
             <div class="w-full hidden lg:block">
-                <h3 class="font-bold mb-4">Area Rekreasi Spesial</h3>
+                <h3 class="font-bold mb-4 text-lg lg:text-xl">Area Rekreasi Spesial</h3>
                 <div class="w-full overflow-x-scroll snap-x">
                     <div class="flex gap-3 w-max">
                         @forelse($areaProducts as $product)
@@ -409,7 +484,7 @@
 
             {{-- section history latest booking --}}
             <div>
-                <h3 class="font-bold mb-4">Yuk, Liburan Lagi!</h3>
+                <h3 class="font-bold mb-4 text-lg lg:text-xl">Yuk, Liburan Lagi!</h3>
                 <div class="space-y-3">
                     @forelse($latestBookings as $booking)
                         @php
