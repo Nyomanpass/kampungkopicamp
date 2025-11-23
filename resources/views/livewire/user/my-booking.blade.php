@@ -114,7 +114,7 @@
     </div>
 
     {{-- history booking list --}}
-    <div class="space-y-5">
+    <div class="space-y-5 pb-20 lg:pb-0">
         @forelse($bookings as $booking)
             @php
                 // Get main product item
@@ -161,9 +161,15 @@
                                 {{ $booking->items->where('item_type', 'product')->first()?->name_snapshot ?? 'N/A' }}
                             </p>
                             <p class="text-xs mb-1">
-                                {{ $booking->people_count }} People - {{ $booking->unit_count }} Unit -
-                                {{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) }}
-                                Day{{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) > 1 ? 's' : '' }}
+                                @if ($product->type === 'touring')
+                                    {{ $booking->people_count }} Seats -
+                                    {{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) }}
+                                    Day{{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) > 1 ? 's' : '' }}
+                                @else
+                                    {{ $booking->people_count }} People - {{ $booking->unit_count }} Unit -
+                                    {{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) }}
+                                    Day{{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) > 1 ? 's' : '' }}
+                                @endif
                             </p>
                             @php
                                 $addonCount = $booking->bookingItems()->whereNotNull('addon_id')->count();
@@ -200,7 +206,7 @@
                         x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
                         x-transition:leave="transition ease-in duration-300" x-transition:leave-start="translate-x-0"
                         x-transition:leave-end="translate-x-full"
-                        class="fixed top-0 right-0 h-full w-full lg:max-w-4xl  bg-gray-200 shadow-2xl z-50 overflow-y-auto ">
+                        class="fixed top-0 right-0 h-full w-full lg:max-w-4xl  bg-gray-100 shadow-2xl z-50 overflow-y-auto ">
 
                         {{-- header detail booking --}}
                         <div
@@ -297,7 +303,11 @@
                                                 <p class="font-medium">
                                                     {{ $product ? $product->name : 'Product N/A' }}</p>
                                                 <p class="text-xs text-gray-500">Max
-                                                    {{ $product ? $product->capacity_per_unit : 'N/A' }}
+                                                    @if ($product->type === 'touring')
+                                                        {{ $product ? $product->max_participant : 'N/A' }}
+                                                    @else
+                                                        {{ $product ? $product->capacity_per_unit : 'N/A' }}
+                                                    @endif
                                                     People
                                                 </p>
 
@@ -307,10 +317,12 @@
                                             <p class="font-medium">Jumlah Orang</p>
                                             <p class="font-medium">{{ $booking->people_count }} Orang</p>
                                         </div>
-                                        <div class="flex justify-between">
-                                            <p class="font-medium">Unit</p>
-                                            <p class="font-medium">{{ $booking->unit_count }} Unit</p>
-                                        </div>
+                                        @if (!$product->type == 'touring')
+                                            <div class="flex justify-between">
+                                                <p class="font-medium">Unit</p>
+                                                <p class="font-medium">{{ $booking->unit_count }} Unit</p>
+                                            </div>
+                                        @endif
                                         <div class="flex justify-between">
                                             <p class="font-medium">Hari</p>
                                             <p class="font-medium">
@@ -411,14 +423,38 @@
 
                             {{-- Actions --}}
                             <div class="flex gap-3 sticky bottom-0 left-0 right-0 bg-white px-4 py-3 z-80">
-                                <button wire:click="downloadInvoice({{ $booking->id }})"
-                                    class="flex-1 px-4 py-2.5 rounded-full border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50">
-                                    Download Invoice
-                                </button>
-                                <a href="{{ route('package.detail', $product->slug) }}"
-                                    class="flex-1 px-4 py-2.5 rounded-full bg-light-primary text-white text-sm font-medium text-center hover:bg-light-primary/90">
-                                    Booking Lagi
-                                </a>
+                                @php
+                                    $latestPayment = $booking->payments()->latest()->first();
+                                    $canContinuePayment =
+                                        $booking->status === 'pending_payment' &&
+                                        $latestPayment &&
+                                        in_array($latestPayment->status, ['initiated', 'pending']) &&
+                                        $latestPayment->expired_at &&
+                                        \Carbon\Carbon::parse($latestPayment->expired_at)->isFuture();
+                                @endphp
+
+                                @if ($canContinuePayment)
+                                    {{-- Continue Payment Button --}}
+                                    <a href="{{ route('payment.show', ['token' => $booking->booking_token, 'snap_token' => $latestPayment->payment_code_or_url]) }}"
+                                        class="flex-1 px-4 py-2.5 lg:py-3 rounded-full bg-warning text-white text-sm font-medium text-center hover:bg-warning/90 flex items-center justify-center gap-2">
+                                        <i class="fas fa-credit-card"></i>
+                                        Lanjutkan Pembayaran
+                                    </a>
+                                @elseif(in_array($booking->status, ['paid', 'confirmed', 'checked_in', 'completed']))
+                                    {{-- Download Invoice Button --}}
+                                    <button wire:click="downloadInvoice({{ $booking->id }})"
+                                        class="flex-1 px-4 py-2.5 lg:py-3 rounded-full border border-gray-300 bg-white text-sm font-medium hover:bg-gray-50">
+                                        Download Invoice
+                                    </button>
+                                @endif
+
+                                @if (!in_array($booking->status, ['pending_payment']) || !$canContinuePayment)
+                                    {{-- Book Again Button --}}
+                                    <a href="{{ route('package.detail', $product->slug) }}"
+                                        class="flex-1 px-4 py-2.5 lg:py-3 rounded-full bg-light-primary text-white text-sm font-medium text-center hover:bg-light-primary/90">
+                                        Booking Lagi
+                                    </a>
+                                @endif
                             </div>
                         </div>
 

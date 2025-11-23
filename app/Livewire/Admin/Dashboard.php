@@ -94,11 +94,18 @@ class Dashboard extends Component
         $this->availableStockToday = Availability::where('date', '=', today())
             ->sum('available_unit');
 
-        $this->lowStockAlerts = Availability::where('date', '>=', today())
-            ->where('date', '<=', now()->addDays(7))
-            ->where('available_unit', '<', 3)
-            ->where('available_seat', '>', 0)
-            ->count();
+        // $this->lowStockAlerts = Availability::where('date', '>=', today())
+        //     ->where('date', '<=', now()->addDays(7))
+        //     ->where('available_unit', '<', 3)
+        //     // ->where('available_seat', '>', 0)
+        //     ->count();
+
+        $query = Availability::where('date', '>=', today())
+            ->where('date', '<=', now()->addDays(7));
+        $availabilities = $query->with('product')->get();
+
+        $this->lowStockAlerts = $availabilities->filter(fn($a) => $a->isLowStock())->count();
+        // dd($this->lowStockAlerts);
     }
 
     private function loadChartsData()
@@ -187,11 +194,9 @@ class Dashboard extends Component
         $this->lowStockItems = Availability::with('product')
             ->where('date', '>=', today())
             ->where('date', '<=', now()->addDays(7))
-            // ->where('available_stock', '<', 3)
-            // ->where('available_stock', '>', 0)
-            ->orderBy('date')
-            ->limit(5)
-            ->get();
+            ->get()
+            ->filter(fn($a) => $a->isLowStock())
+            ->take(5);
     }
 
     public function refreshData()

@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-neutral">
     <!-- Hero Section with Large Image -->
-    <section class="relative h-[70vh]">
+    <section class="relative h-[60vh]">
         @if ($selectedImage)
             <img src="{{ $selectedImage }}" alt="{{ $product->name }}" class="w-full h-full object-cover">
         @else
@@ -71,7 +71,7 @@
                         <button wire:click="selectImage('{{ $image }}')"
                             class="flex-shrink-0 size-24 md:size-28 lg:size-32 rounded-lg overflow-hidden border-2 transition-all
                                    {{ $selectedImage === $image ? 'border-primary ring-2 ring-primary/20' : 'border-gray-200 hover:border-gray-300' }}">
-                            <img src="{{ $product->images[0] }}" alt="Gallery" class="w-full h-full object-cover">
+                            <img src="{{ $image }}" alt="Gallery" class="w-full h-full object-cover">
                         </button>
                     @endforeach
                 </div>
@@ -80,7 +80,7 @@
     @endif
 
     <!-- Main Content -->
-    <section class="py-8 lg:py-12 bg-gray-50">
+    <section class="py-6 lg:py-12 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid lg:grid-cols-3 gap-8">
                 <!-- Left Content -->
@@ -101,10 +101,10 @@
                             <h3 class="text-xl font-bold mb-4 flex items-center">
                                 Fasilitas Unggulan
                             </h3>
-                            <div class="grid sm:grid-cols-2 gap-3">
+                            <div class="grid grid-cols-2 gap-1">
                                 @foreach ($product->facilities as $facility)
                                     <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                                        <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                        <i class="fas fa-check-circle text-light-primary mr-3"></i>
                                         <span class="text-gray-700">{{ $facility }}</span>
                                     </div>
                                 @endforeach
@@ -129,14 +129,14 @@
 
                     {{-- kebijakan --}}
                     <div>
-                        <h2 class="text-xl font-bold mb-4 flex items-center">
+                        <h2 class="text-xl font-bold mb-5 flex items-center">
                             Peraturan & Kebijakan
                         </h2>
                         @if (count($houseRules) > 0)
-                            <div class="space-y-8">
+                            <div class="space-y-5">
                                 @foreach ($houseRules as $rule)
                                     <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                        <h3 class="text-lg font-semibold lg:w-[30%]">{{ $rule['title'] }}</h3>
+                                        <h3 class="text-lg font-medium lg:w-[30%]">{{ $rule['title'] }}</h3>
                                         <p class="text-gray-600 lg:w-[70%] whitespace-pre-line">{{ $rule['content'] }}
                                         </p>
                                     </div>
@@ -145,13 +145,13 @@
                         @else
                             <div class="space-y-8">
                                 <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                    <h3 class="text-lg font-semibold lg:w-[30%]">Prosedur Check-in</h3>
+                                    <h3 class="text-lg font-medium lg:w-[30%]">Prosedur Check-in</h3>
                                     <p class="text-gray-600 lg:w-[70%]">Check-in mulai pukul 14.00 dan check-out sebelum
                                         pukul 12.00.
                                         Harap informasikan perkiraan waktu kedatangan Anda sebelumnya.</p>
                                 </div>
                                 <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                    <h3 class="text-lg font-semibold lg:w-[30%]">Kebijakan Lainnya</h3>
+                                    <h3 class="text-lg font-medium lg:w-[30%]">Kebijakan Lainnya</h3>
                                     <p class="text-gray-600 lg:w-[70%]">
                                         Dilarang merokok di area dalam ruangan. Harap jaga ketenangan dan hormati tamu
                                         lain.
@@ -299,7 +299,7 @@
             <div>
                 <span class="text-gray-600 text-xs">Mulai dari</span>
                 <div class="flex items-baseline gap-1">
-                    <span class="text-xl font-bold text-primary">
+                    <span class="text-2xl font-bold text-primary">
                         Rp {{ number_format($product->price, 0, ',', '.') }}
                     </span>
                     <span class="text-gray-500 text-xs">

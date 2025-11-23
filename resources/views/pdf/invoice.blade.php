@@ -410,11 +410,25 @@
                 <h4>PAYMENT INFORMATION</h4>
                 <div class="booking-info-grid">
                     <div class="booking-info-item">
-                        <span class="label">Payment Method:</span> {{ strtoupper($payment->provider) }}
+                        <span class="label">Payment Method:</span>
+                        @php
+                            // decode raw_payload safely
+                            $raw_payload = $payment->raw_payload;
+                            if (is_string($raw_payload)) {
+                                $decoded_raw_payload = json_decode($raw_payload, true);
+                            } elseif (is_object($raw_payload)) {
+                                $decoded_raw_payload = json_decode(json_encode($raw_payload), true);
+                            } else {
+                                $decoded_raw_payload = $raw_payload ?? [];
+                            }
+                            $paymentType = $decoded_raw_payload['payment_type'] ?? ($payment->payment_type ?? 'N/A');
+                            $paymentType = str_replace('_', ' ', $paymentType);
+                        @endphp
+                        {{ strtoupper($paymentType) }}
                     </div>
                     <div class="booking-info-item">
                         <span class="label">Payment Status:</span>
-                        <span class="status-badge payment-status-{{ $payment->status }}">
+                        <span class="">
                             {{ strtoupper($payment->status) }}
                         </span>
                     </div>

@@ -21,6 +21,14 @@ class VoucherService
             ];
         }
 
+        // Check if voucher is active
+        if (!$voucher->is_active) {
+            return [
+                'valid' => false,
+                'message' => 'Voucher ini tidak aktif atau sudah tidak berlaku.',
+            ];
+        }
+
         if (!$voucher->isValid()) {
             return [
                 'valid' => false,

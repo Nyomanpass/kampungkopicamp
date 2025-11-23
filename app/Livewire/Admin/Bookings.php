@@ -489,12 +489,12 @@ class Bookings extends Component
 
             // Generate walk-in token
             $latestWalkIn = Booking::where('booking_token', 'like', 'BK-WALK%')
-                ->orderByRaw('CAST(SUBSTR(booking_token, 8) AS INTEGER) DESC')
+                ->orderByRaw('CAST(SUBSTRING(booking_token, 8) AS UNSIGNED) DESC')
                 ->first();
 
             if ($latestWalkIn) {
                 // Extract numeric part after "BK-WALK"
-                $lastNumber = (int) substr($latestWalkIn->booking_token, 8);
+                $lastNumber = (int) substr($latestWalkIn->booking_token, 7);
                 $newNumber = str_pad($lastNumber + 1, 6, '0', STR_PAD_LEFT);
             } else {
                 $newNumber = '000001';
@@ -1330,9 +1330,9 @@ class Bookings extends Component
                 if ($this->refundType === 'full') {
                     $settlementPayment->update([
                         'status' => 'refund',
-                    
+
                         'raw_payload' => json_encode([
-                         'refunded_at' => now()->toDateTimeString(),
+                            'refunded_at' => now()->toDateTimeString(),
                             'refund_amount' => $this->refundAmount,
                             'refund_reason' => $this->refundReason,
                             'refunded_by' => Auth::user()->name ?? 'Admin',

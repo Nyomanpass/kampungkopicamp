@@ -128,10 +128,17 @@
 
                     <!-- Action Buttons -->
                     <div class="flex flex-col sm:flex-row gap-3">
-                        <a href="{{ route('home') }}"
-                            class="flex-1 bg-white border-2 border-primary text-primary py-3 px-6 rounded-lg font-semibold hover:bg-primary/5 transition-colors">
-                            Kembali ke Beranda
-                        </a>
+                        @if (auth()->check())
+                            <a href="{{ route('user.dashboard') }}"
+                                class="flex-1 bg-white border-2 border-primary text-primary py-3 px-6 rounded-lg font-semibold hover:bg-primary/5 transition-colors">
+                                Kembali ke Beranda
+                            </a>
+                        @else
+                            <a href="{{ route('home') }}"
+                                class="flex-1 bg-white border-2 border-primary text-primary py-3 px-6 rounded-lg font-semibold hover:bg-primary/5 transition-colors">
+                                Kembali ke Awal
+                            </a>
+                        @endif
                         @php
                             $invoice = $booking->invoices()->primary()->first();
                         @endphp
@@ -190,9 +197,17 @@
                             class="bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
                             Refresh Status
                         </button>
-                        <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900 text-sm">
-                            Kembali ke Beranda
-                        </a>
+                        @if (auth()->check())
+                            <a href="{{ route('user.dashboard') }}"
+                                class="text-gray-600 hover:text-gray-900 text-sm  lg:text-base">
+                                Kembali ke Beranda
+                            </a>
+                        @else
+                            <a href="{{ route('home') }}"
+                                class="text-gray-600 hover:text-gray-900 text-sm lg:text-base">
+                                Kembali ke Awal
+                            </a>
+                        @endif
                     </div>
                 </div>
             @else
@@ -200,7 +215,8 @@
                 <div class="bg-white rounded-2xl shadow-lg p-8 text-center">
                     <!-- Error Icon -->
                     <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg class="w-10 h-10 text-red-600" fill="none" stroke="currentColor"
+                            viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M6 18L18 6M6 6l12 12"></path>
                         </svg>
@@ -236,9 +252,17 @@
                             class="bg-primary text-white py-3 px-6 rounded-lg font-semibold hover:bg-primary-dark transition-colors">
                             Buat Booking Baru
                         </a>
-                        <a href="{{ route('home') }}" class="text-gray-600 hover:text-gray-900 text-sm">
-                            Kembali ke Beranda
-                        </a>
+                        @if (auth()->check())
+                            <a href="{{ route('user.dashboard') }}"
+                                class="text-gray-600 hover:text-gray-900 text-sm  lg:text-base">
+                                Kembali ke Beranda
+                            </a>
+                        @else
+                            <a href="{{ route('home') }}"
+                                class="text-gray-600 hover:text-gray-900 text-sm lg:text-base">
+                                Kembali ke Awal
+                            </a>
+                        @endif
                     </div>
                 </div>
             @endif
@@ -257,6 +281,26 @@
             }
         }
     </style>
+
+    <!-- Prevent Back Navigation -->
+    <script>
+        // Prevent back button
+        (function(window) {
+            if (typeof window.history.pushState === 'function') {
+                // Push current state to history
+                window.history.pushState(null, null, window.location.href);
+
+                // Listen for popstate event (back button)
+                window.addEventListener('popstate', function() {
+                    // Push state again to prevent going back
+                    window.history.pushState(null, null, window.location.href);
+
+                    // Optional: Show alert
+                    // alert('Gunakan tombol "Kembali ke Beranda" untuk navigasi.');
+                });
+            }
+        })(window);
+    </script>
 
     <!-- Auto-refresh for pending status -->
     @if ($booking->status === 'pending_payment')

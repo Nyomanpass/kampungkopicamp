@@ -78,25 +78,25 @@
             <a href="{{ route('user.dashboard') }}"
                 class="text-center space-y-1.5 {{ request()->routeIs('user.dashboard') ? 'text-light-primary font-semibold' : 'text-gray-500 ' }}">
                 <i
-                    class="{{ request()->routeIs('user.dashboard') ? 'fas fa-home' : 'fa-regular fa-home ' }} text-lg"></i>
+                    class="{{ request()->routeIs('user.dashboard') ? 'fas fa-home' : 'fa-regular fa-home ' }} text-xl"></i>
                 <p class="text-xs">Home</p>
             </a>
             <a href="{{ route('user.bookings') }}"
                 class="text-center space-y-1.5 {{ request()->routeIs('user.bookings') ? 'text-light-primary font-semibold' : 'text-gray-500 ' }}">
                 <i
-                    class="{{ request()->routeIs('user.bookings') ? 'fas fa-file-lines' : 'fa-regular fa-file-lines ' }} text-lg"></i>
+                    class="{{ request()->routeIs('user.bookings') ? 'fas fa-file-lines' : 'fa-regular fa-file-lines ' }} text-xl"></i>
                 <p class="text-xs">My Booking</p>
             </a>
             <a href="{{ route('user.rewards') }}"
                 class="text-center space-y-1.5 {{ request()->routeIs('user.rewards') ? 'text-light-primary font-semibold' : 'text-gray-500 ' }}">
                 <i
-                    class="{{ request()->routeIs('user.rewards') ? 'fas fa-heart' : 'fa-regular fa-heart ' }} text-lg"></i>
+                    class="{{ request()->routeIs('user.rewards') ? 'fas fa-heart' : 'fa-regular fa-heart ' }} text-xl"></i>
                 <p class="text-xs">Rewards</p>
             </a>
             <a href="{{ route('user.account') }}"
                 class="text-center space-y-1.5 {{ request()->routeIs('user.account') ? 'text-light-primary font-semibold' : 'text-gray-500 ' }}">
                 <i
-                    class="{{ request()->routeIs('user.account') ? 'fas fa-user' : 'fa-regular fa-user ' }} text-lg"></i>
+                    class="{{ request()->routeIs('user.account') ? 'fas fa-user' : 'fa-regular fa-user ' }} text-xl"></i>
                 <p class="text-xs">Account</p>
             </a>
 

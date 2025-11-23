@@ -467,7 +467,11 @@
                             <div class="text-right">
                                 <span
                                     class="inline-block px-3 py-1 bg-red-100 text-red-800 text-sm font-bold rounded-lg">
-                                    {{ $item->available_stock }} left
+                                    @if ($item->product->type === 'touring')
+                                        {{ $item->available_seat }} left
+                                    @else
+                                        {{ $item->available_unit }} left
+                                    @endif
                                 </span>
                             </div>
                         </div>

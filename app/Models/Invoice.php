@@ -166,7 +166,7 @@ class Invoice extends Model
             // Get last invoice number for this type
             $lastInvoice = self::where('invoice_number', 'like', $prefix . '%')
                 ->lockForUpdate()
-                ->orderByRaw('CAST(SUBSTR(invoice_number, ' . (strlen($prefix) + 2) . ') AS INTEGER) DESC')
+                ->orderByRaw('CAST(SUBSTRING(invoice_number, ' . (strlen($prefix) + 2) . ') AS UNSIGNED) DESC')
                 ->first();
 
             if ($lastInvoice) {

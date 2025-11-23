@@ -68,6 +68,18 @@ class PaymentService
                         ],
                         'callbacks' => [
                               'finish' => route('booking.finish', $booking->booking_token),
+                        ],
+                        'enabled_payments' => [
+                              'credit_card',
+                              'bca_va',
+                              'bni_va',
+                              'bri_va',
+                              'permata_va',
+                              'other_va',
+                              'gopay',
+                              'shopeepay',
+                              'qris',
+                              'cstore'
                         ]
                   ];
 
@@ -77,7 +89,7 @@ class PaymentService
                         'booking_id' => $booking->id,
                         'provider' => 'midtrans',
                         'order_id' => $orderId,
-                        'payment_code_or_url' => $snapToken,
+                        'payment_code_or_url' => $snapToken, // Store snap token for reuse
                         'amount' => $booking->total_price,
                         'status' => 'initiated',
                         'expired_at' => $expiredAt,
@@ -178,7 +190,7 @@ class PaymentService
 
                         // Kirim email konfirmasi pembayaran ke pelanggan
                         try {
-                              Mail::to($booking->customer_email)->send(new PaymentConfirmation($booking, $invoice));
+                              Mail::to($booking->customer_email)->send(new PaymentConfirmation($booking, $invoice, $payment));
                               Log::info("Payment confirmation email sent to: {$booking->customer_email}");
                         } catch (\Exception $e) {
                               Log::error('Error sending payment confirmation email: ' . $e->getMessage());
