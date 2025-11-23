@@ -7,14 +7,14 @@
   data-aos-once="true">
 
   <!-- Background Image -->
-  <img src="/images/gambarheader.jpg" 
+  <img src="/images/contactpupuan.webp" 
        alt="Contact Background" 
        class="absolute inset-0 w-full h-full object-cover"
        data-aos="zoom-out"
        data-aos-duration="1000">
 
   <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/40"></div>
+  <div class="absolute inset-0 bg-black/50"></div>
 
   <!-- Content -->
 <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
@@ -24,7 +24,7 @@
     </p>
 
     <!-- Title -->
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-6" data-aos="fade-up" data-aos-delay="600">
+    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
       {{ $texts['contact_title_1'] }} <span class="text-primary">{{ $texts['contact_title_2'] }}</span>
     </h1>
 
@@ -32,13 +32,12 @@
     <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
     <!-- Description -->
-    <p class="text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
+    <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
       {{ $texts['contact_desc'] }}
     </p>
 </div>
 
 </section>
-
 
 <section class="py-16 lg:py-24 bg-gray-50">
     <div class="max-w-7xl mx-auto px-6 lg:px-14">

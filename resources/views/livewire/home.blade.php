@@ -3,12 +3,12 @@
     <section class="relative w-full min-h-screen overflow-hidden">
         <!-- Background Video -->
         <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
-            <source src="videos/header.mp4" type="video/mp4">
+            <source src="videos/headergambarrr.mp4" type="video/mp4">
             Browser tidak mendukung video.
         </video>
 
         <!-- Overlay Gradient -->
-        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-black/40 via-black/45 to-black/40"></div>
 
         <!-- Hero Content -->
         <div class="relative z-10 flex items-center justify-center min-h-screen px-4 sm:px-6 lg:px-8 pt-20 pb-16">
@@ -16,7 +16,7 @@
 
                 <!-- Badge -->
                 <span
-                    class="inline-block bg-accent/90 backdrop-blur-sm text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-2 rounded-full shadow-lg"
+                    class="inline-block bg-secondary backdrop-blur-sm text-white text-xs sm:text-sm font-semibold px-4 sm:px-6 py-2 rounded-full shadow-lg"
                     data-aos="fade-down" data-aos-delay="200">
                     {{ $texts['badge'] }}
                 </span>
@@ -24,8 +24,8 @@
                 <!-- Headline -->
                 <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold leading-tight" data-aos="fade-up"
                     data-aos-delay="400">
-                    {{ $texts['headline_part1'] }} <br class="hidden sm:inline">
-                    <span class="text-light-primary">{{ $texts['headline_part2'] }}</span>
+                    {{ $texts['headline_part1'] }} 
+                    <span class="text-primary">{{ $texts['headline_part2'] }}</span>
                 </h1>
 
                 <!-- Subheadline -->
@@ -38,20 +38,20 @@
                 <div class="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-8 text-sm sm:text-base"
                     data-aos="zoom-in" data-aos-delay="800">
                     <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                        <i class="fa-solid fa-users text-light-primary"></i>
+                        <i class="fa-solid fa-users text-primary"></i>
                         <span><strong>{{ $texts['happy_travelers'] }}</strong> Happy Travelers</span>
                     </div>
                     <div class="flex items-center gap-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full">
-                        <i class="fa-solid fa-location-dot text-light-primary"></i>
+                        <i class="fa-solid fa-location-dot text-primary"></i>
                         <span><strong>{{ $texts['location'] }}</strong> Premium Location</span>
                     </div>
                 </div>
 
                 <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4" data-aos="fade-up"
+                <div class="flex flex-col md:px-10 px-10 sm:flex-row items-center justify-center gap-4 pt-4" data-aos="fade-up"
                     data-aos-delay="1000">
                     <a href="#paket"
-                        class="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary hover:bg-light-primary text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
+                        class="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 bg-primary hover:bg-secondary text-white font-semibold rounded-lg shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105">
                         <i class="fa-solid fa-compass mr-2"></i>{{ $texts['cta_packages'] }}
                     </a>
                     <a href="#contact"
@@ -71,29 +71,29 @@
 
 
     <!-- About Section -->
-    <section id="about" class="relative py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white to-neutral">
-        <div class="container max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="about" class="relative py-12 sm:py-16 lg:py-20">
+        <div class="container max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
 
                 <!-- Text Content -->
                 <div class="flex-1 w-full" data-aos="fade-right">
-                    <p class="text-xs sm:text-sm font-semibold text-accent uppercase tracking-wide mb-3"
+                    <p class="text-xs sm:text-sm font-semibold text-amber-800 uppercase tracking-wide mb-3"
                         data-aos="fade-down" data-aos-delay="100">
                         {{ $texts['about_badge'] }}
                     </p>
 
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark leading-tight mb-4 sm:mb-6"
+                    <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6"
                         data-aos="fade-up" data-aos-delay="200">
                         {{ $texts['about_title_part1'] }}
                         <span class="text-primary">{{ $texts['about_title_part2'] }}</span>
                     </h2>
 
-                    <p class="text-sm sm:text-base text-gray-700 leading-relaxed mb-4" data-aos="fade-up"
+                    <p class="text-md sm:text-base text-gray-700 leading-relaxed mb-4" data-aos="fade-up"
                         data-aos-delay="300">
                         {{ $texts['about_desc1'] }}
                     </p>
 
-                    <p class="text-sm sm:text-base text-gray-700 leading-relaxed mb-6 sm:mb-8" data-aos="fade-up"
+                    <p class="text-md sm:text-base text-gray-700 leading-relaxed mb-6 sm:mb-8" data-aos="fade-up"
                         data-aos-delay="400">
                         {{ $texts['about_desc2'] }}
                     </p>
@@ -135,7 +135,7 @@
                     </div>
 
                     <a href="#paket"
-                        class="inline-block w-full sm:w-auto px-6 sm:px-8 py-3 bg-primary hover:bg-light-primary text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-center">
+                        class="inline-block w-full sm:w-auto px-6 sm:px-8 py-3 bg-secondary hover:bg-primary text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 text-center">
                         <i class="fa-solid fa-arrow-right mr-2"></i>{{ $texts['learn_more'] }}
                     </a>
                 </div>
@@ -143,22 +143,7 @@
                 <!-- Image Content -->
                 <div class="flex-1 w-full relative" data-aos="fade-left" data-aos-delay="400">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                        <img src="images/about.jpeg" alt="Kopi Bali" class="w-full h-64 sm:h-80 lg:h-96 object-cover">
-                    </div>
-
-                    <!-- Floating Badges -->
-                    <div class="absolute -top-4 -right-4 sm:top-4 sm:right-4 bg-white shadow-lg rounded-xl px-4 py-3 text-center transform hover:scale-105 transition-transform"
-                        data-aos="zoom-in" data-aos-delay="600">
-                        <span class="block text-3xl mb-1">☕</span>
-                        <p class="font-bold text-lg text-primary">100%</p>
-                        <p class="text-xs text-gray-600">{{ $texts['organic'] }}</p>
-                    </div>
-
-                    <div class="absolute -bottom-4 -left-4 sm:bottom-4 sm:left-4 bg-white shadow-lg rounded-xl px-4 py-3 text-center transform hover:scale-105 transition-transform"
-                        data-aos="zoom-in" data-aos-delay="700">
-                        <span class="block text-3xl mb-1">🌟</span>
-                        <p class="font-bold text-lg text-success">24/7</p>
-                        <p class="text-xs text-gray-600">{{ $texts['support'] }}</p>
+                        <img src="images/headerpaket.webp" alt="Kopi Bali" class="w-full h-64 sm:h-80 lg:h-96 object-cover">
                     </div>
                 </div>
             </div>
@@ -169,17 +154,11 @@
 
     <!-- Paket Wisata Section -->
     <section class="py-12 sm:py-16 lg:py-20 bg-white" id="paket">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="container max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <!-- Section Header -->
-            <div class="text-center mb-10 sm:mb-12" data-aos="fade-down">
-                <p class="text-xs sm:text-sm font-semibold text-accent uppercase tracking-wide mb-2">
-                    {{ $texts['paket_heading'] }}
-                </p>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark mb-3">
-                    {{ $texts['paket_heading'] }}
-                </h2>
-                <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto" data-aos="fade-up"
-                    data-aos-delay="100">
+           <div class="text-center mb-12" data-aos="fade-down">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6">{!! $texts['paket_heading'] !!}</h2>
+                <p class="text-sm md:text-lg text-gray-600 mt-2" data-aos="fade-up" data-aos-delay="100">
                     {{ $texts['paket_description'] }}
                 </p>
             </div>
@@ -253,7 +232,7 @@
                             <!-- CTA Buttons -->
                             <div class="flex gap-2">
                                 <a href="{{ Route('booking.flow', $paket->slug) }}"
-                                    class="flex-1 text-center px-3 py-2.5 bg-primary hover:bg-light-primary text-white text-sm font-semibold rounded-lg transition-all duration-300 hover:shadow-lg">
+                                    class="flex-1 text-center px-3 py-2.5 bg-primary hover:bg-secondary text-white text-sm font-semibold rounded-lg transition-all duration-300 hover:shadow-lg">
                                     <i class="fa-solid fa-calendar-check mr-1"></i>
                                     {{ $texts['tombol_booking'] }}
                                 </a>
@@ -283,199 +262,203 @@
 
 
     <!-- Explore Pupuan Section -->
-    <section class="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-white to-neutral">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
+ <section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
-                <!-- Photo Grid -->
-                <div class="order-2 lg:order-1 relative" data-aos="zoom-in">
-                    <div class="grid grid-cols-2 gap-3 rounded-2xl overflow-hidden">
-                        <img src="https://picsum.photos/400/400?random=1"
-                            class="w-full h-40 sm:h-56 object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-                            alt="Pupuan View">
-                        <img src="https://picsum.photos/400/400?random=2"
-                            class="w-full h-40 sm:h-56 object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-                            alt="Coffee Plantation">
-                        <img src="https://picsum.photos/400/400?random=3"
-                            class="w-full h-40 sm:h-56 object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-                            alt="Camping">
-                        <img src="https://picsum.photos/400/400?random=4"
-                            class="w-full h-40 sm:h-56 object-cover rounded-xl shadow-lg hover:scale-105 transition-transform duration-300"
-                            alt="Waterfall">
-                    </div>
+        <div 
+        class="relative grid grid-cols-2 gap-4 rounded-2xl overflow-hidden" 
+        data-aos="zoom-in" 
+        data-aos-duration="1000"
+          >
+        <img 
+            src="images/explorepupuansatu.webp" 
+            class="col-span-2 w-full h-72 object-cover rounded-xl" 
+            alt="Foto Bawah Penuh"
+        />
+        <img 
+            src="images/about.webp" 
+            class="w-full h-72 object-cover rounded-xl" 
+            alt="Foto Kiri Atas"
+        />
+        
+        <img 
+            src="images/airterjun.webp" 
+            class="w-full h-72 object-cover rounded-xl" 
+            alt="Foto Kanan Atas"
+        />
+    </div>
+    
 
-                    <!-- Floating Badge -->
-                    <div class="absolute -bottom-4 left-4 sm:bottom-4 sm:left-4 bg-white shadow-xl rounded-xl p-4 transform hover:scale-105 transition-transform"
-                        data-aos="fade-up" data-aos-delay="300">
-                        <p class="text-xs text-gray-500 flex items-center gap-2 mb-1">
-                            <i class="fa-solid fa-camera text-accent"></i>
-                            {{ __('messages.photo_spots') }}
-                        </p>
-                        <p class="font-bold text-lg text-dark">{{ __('messages.photo_count') }}</p>
-                        <p class="text-xs text-gray-500">{{ __('messages.photo_caption') }}</p>
-                    </div>
-                </div>
+    <!-- Konten Teks -->
+    <div data-aos="fade-up" data-aos-duration="1200">
+      <p class="text-sm font-semibold text-amber-800 mb-2">{{ __('messages.explore_title') }}</p>
+      <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6">{!! __('messages.explore_heading') !!}</h2>
+      <p class="text-gray-600 text-sm md:text-lg mb-8">{{ __('messages.explore_description') }}</p>
 
-                <!-- Content -->
-                <div class="order-1 lg:order-2" data-aos="fade-left">
-                    <p class="text-xs sm:text-sm font-semibold text-accent uppercase tracking-wide mb-2">
-                        {{ __('messages.explore_title') }}
-                    </p>
-                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark leading-tight mb-4">
-                        {{ __('messages.explore_heading') }}
-                    </h2>
-                    <p class="text-sm sm:text-base text-gray-600 mb-6 sm:mb-8">
-                        {{ __('messages.explore_description') }}
-                    </p>
-
-                    <!-- Destinations -->
-                    <div class="space-y-3 mb-8">
-                        @foreach ([['icon' => 'fa-water', 'title' => 'dest_air_terjun', 'time' => 'dest_air_terjun_time', 'desc' => 'dest_air_terjun_desc'], ['icon' => 'fa-mountain-sun', 'title' => 'dest_jatiluwih', 'time' => 'dest_jatiluwih_time', 'desc' => 'dest_jatiluwih_desc'], ['icon' => 'fa-tree', 'title' => 'dest_kopi', 'time' => 'dest_kopi_time', 'desc' => 'dest_kopi_desc'], ['icon' => 'fa-house-chimney-user', 'title' => 'dest_desa', 'time' => 'dest_desa_time', 'desc' => 'dest_desa_desc']] as $dest)
-                            <div class="flex items-start gap-3 p-3 sm:p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-all"
-                                data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 }}">
-                                <div
-                                    class="flex-shrink-0 flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary/10">
-                                    <i class="fa-solid {{ $dest['icon'] }} text-primary text-lg"></i>
-                                </div>
-                                <div class="flex-1 min-w-0">
-                                    <div class="flex flex-wrap items-center gap-2 mb-1">
-                                        <h4 class="font-semibold text-dark text-sm sm:text-base">
-                                            {{ __('messages.' . $dest['title']) }}
-                                        </h4>
-                                        <span
-                                            class="text-xs text-gray-500 bg-neutral px-2 py-0.5 rounded-full whitespace-nowrap">
-                                            {{ __('messages.' . $dest['time']) }}
-                                        </span>
-                                    </div>
-                                    <p class="text-xs sm:text-sm text-gray-600 leading-relaxed">
-                                        {{ __('messages.' . $dest['desc']) }}
-                                    </p>
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
-
-                    <!-- Stats -->
-                    <div class="flex flex-wrap gap-6 sm:gap-8" data-aos="zoom-in" data-aos-delay="200">
-                        <div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-primary">25+</h3>
-                            <p class="text-xs sm:text-sm text-gray-600">{{ __('messages.stat_destinasi') }}</p>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-primary">4.9</h3>
-                            <p class="text-xs sm:text-sm text-gray-600">{{ __('messages.stat_rating') }}</p>
-                        </div>
-                        <div>
-                            <h3 class="text-2xl sm:text-3xl font-bold text-primary">100%</h3>
-                            <p class="text-xs sm:text-sm text-gray-600">{{ __('messages.stat_experience') }}</p>
-                        </div>
-                    </div>
-                </div>
-
+      <!-- Destinasi List -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-y-6 gap-x-4 mb-8">
+          @foreach([
+            ['icon' => 'fa-water', 'title' => 'dest_air_terjun', 'time' => 'dest_air_terjun_time', 'desc' => 'dest_air_terjun_desc'],
+            ['icon' => 'fa-mountain-sun', 'title' => 'dest_jatiluwih', 'time' => 'dest_jatiluwih_time', 'desc' => 'dest_jatiluwih_desc'],
+            ['icon' => 'fa-tree', 'title' => 'dest_kopi', 'time' => 'dest_kopi_time', 'desc' => 'dest_kopi_desc'],
+            ['icon' => 'fa-house-chimney-user', 'title' => 'dest_desa', 'time' => 'dest_desa_time', 'desc' => 'dest_desa_desc'],
+          ] as $dest)
+            {{-- Penyesuaian: Padding lebih kecil, Shadow minimalis, Border tipis --}}
+            <div class="flex items-start p-3 sm:p-4 bg-white border border-gray-100 rounded-xl transition duration-300 hover:shadow-md" data-aos="fade-up" data-aos-delay="{{ $loop->index * 100 + 100 }}">
+              
+              {{-- Ikon: Ukuran sedikit diperkecil dan diletakkan lebih dekat --}}
+              <div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary mr-3 flex-shrink-0 mt-0.5">
+                <i class="fa-solid {{ $dest['icon'] }} text-white text-base"></i>
+              </div>
+              
+              {{-- Konten Teks --}}
+              <div>
+                <h4 class="font-medium text-gray-900 leading-snug">
+                  {{ __('messages.' . $dest['title']) }}
+                
+                </h4>
+                {{-- Deskripsi: Ukuran font tetap kecil (text-sm) tapi warna lebih lembut --}}
+                <p class="text-sm text-gray-500 mt-1">
+                  {{ __('messages.' . $dest['desc']) }}
+                </p>
+              </div>
             </div>
-        </div>
-    </section>
+          @endforeach
+      </div>
 
+      <!-- Statistik -->
+      <div class="flex gap-8" data-aos="zoom-in" data-aos-delay="200">
+        <div>
+          <h3 class="md:text-3xl text-xl font-bold text-secondary">10+</h3>
+          <p class="text-sm text-gray-600">{{ __('messages.stat_destinasi') }}</p>
+        </div>
+        <div>
+          <h3 class="md:text-3xl text-xl font-bold text-secondary">4.9</h3>
+          <p class="text-sm text-gray-600">{{ __('messages.stat_rating') }}</p>
+        </div>
+        <div>
+          <h3 class="md:text-3xl text-xl font-bold text-secondary">100%</h3>
+          <p class="text-sm text-gray-600">{{ __('messages.stat_experience') }}</p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
 
 
     <!-- CTA Parallax Section -->
-    <section class="relative h-[60vh] sm:h-[70vh] overflow-hidden">
-        <!-- Background Image with Parallax Effect -->
-        <div class="absolute inset-0">
-            <img src="images/about.jpeg" alt="{{ $texts['heading'] }}" class="w-full h-full object-cover scale-110"
-                data-aos="zoom-out" data-aos-duration="2000">
-            <div class="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/60"></div>
-        </div>
+<section class="relative h-[70vh] pb-10 bg-gray-900 overflow-hidden">
+  <!-- Background image -->
+  <div class="absolute inset-0">
+    <img src="images/pupuan.webp" 
+         alt="{{ $texts['heading'] }}"
+         class="w-full h-full object-cover scale-110"
+         data-aos="zoom-out"
+         data-aos-duration="2000">
+    <div class="absolute inset-0 bg-black/50"></div> <!-- Overlay -->
+  </div>
 
-        <!-- Content -->
-        <div class="relative z-10 flex items-center justify-center h-full px-4 sm:px-6 lg:px-8">
-            <div class="max-w-3xl mx-auto text-center text-white space-y-6">
-                <h2 class="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight" data-aos="fade-up"
-                    data-aos-duration="1000">
-                    {{ $texts['heading'] }}
-                </h2>
+  <!-- Content -->
+  <div class="relative z-10 flex flex-col items-center justify-center h-full text-center text-white px-6">
+    <h2 class="text-2xl md:text-5xl font-bold mb-4"
+        data-aos="fade-up"
+        data-aos-duration="1000"
+        >
+      {{ $texts['heading'] }}
+    </h2>
 
-                <p class="text-sm sm:text-base md:text-lg lg:text-xl opacity-90 max-w-2xl mx-auto px-4"
-                    data-aos="fade-up" data-aos-delay="300">
-                    {{ $texts['description'] }}
-                </p>
+    <p class="text-lg text-sm md:text-xl mb-6 opacity-90 max-w-2xl"
+       data-aos="fade-up"
+       data-aos-delay="300"
+       data-aos-duration="1200"
+      >
+      {{ $texts['description'] }}
+    </p>
 
-                <div class="pt-4" data-aos="zoom-in" data-aos-delay="600">
-                    <a href="#contact"
-                        class="inline-block bg-primary hover:bg-light-primary text-white text-base sm:text-lg font-semibold px-6 sm:px-8 py-3 sm:py-4 rounded-xl shadow-2xl hover:shadow-primary/50 transition-all duration-300 transform hover:scale-105">
-                        <i class="fa-solid fa-calendar-check mr-2"></i> {{ $texts['cta_text'] }}
-                    </a>
-                </div>
-            </div>
-        </div>
-    </section>
+    <a href="#booking"
+       class="inline-block bg-primary hover:bg-secondary hover:text-white  text-secondary text-md md:text-lg font-semibold px-8 py-4 rounded-xl shadow-lg duration-300 transition"
+       data-aos="flip-up"
+       data-aos-delay="600"
+       data-aos-duration="1000">
+      <i class="fa-solid fa-mug-hot mr-2"></i> {{ $texts['cta_text'] }}
+    </a>
+  </div>
+</section>
 
 
     <!-- Gallery Section -->
-    <section class="py-12 sm:py-16 lg:py-20 bg-neutral" data-aos="fade-up">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Section Header -->
-            <div class="text-center mb-8 sm:mb-12" data-aos="fade-down">
-                <p class="text-xs sm:text-sm font-semibold text-accent uppercase tracking-wide mb-2">
-                    Gallery
-                </p>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark mb-3">
-                    {{ $texts['gallery_heading'] }}
-                </h2>
-                <p class="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-                    {{ $texts['gallery_description'] }}
-                </p>
+ <section class="bg-[#f9f7f4] py-16 min-h-screen" data-aos="fade-up" data-aos-duration="1000" data-aos-once="true">
+  <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
+           <h2 class="text-2xl text-center md:text-4xl font-extrabold text-secondary leading-snug mb-6"
+            data-aos="fade-down" data-aos-duration="1000">
+            {{ $texts['gallery_heading'] }}
+        </h2>
+        <p class="text-gray-600 mb-10 md:text-lg text-sm text-center mt-4" 
+           data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">
+            {{ $texts['gallery_description'] }}
+        </p>
+
+  
+
+    <!-- Grid Layout Abstrak -->
+    <div 
+            class="grid grid-cols-1 md:grid-cols-3 grid-rows-none md:grid-rows-2 gap-4 rounded-2xl overflow-hidden" 
+            data-aos="zoom-in" 
+            data-aos-delay="200" 
+            data-aos-duration="1000"
+        >
+                
+            <div class="md:col-span-2 md:row-span-2">
+                <img 
+                    src="images/kampungkopipupuan.webp" 
+                    alt="Suasana Camp" 
+                    class="w-full h-80 md:h-[600px] object-cover rounded-2xl"
+                >
             </div>
 
-            <!-- Mobile Gallery: Simple Grid -->
-            <div class="grid grid-cols-2 gap-3 sm:hidden" data-aos="zoom-in">
-                @for ($i = 5; $i <= 10; $i++)
-                    <div class="relative aspect-square overflow-hidden rounded-xl shadow-md">
-                        <img src="https://picsum.photos/400/400?random={{ $i }}"
-                            alt="Gallery {{ $i }}"
-                            class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
-                    </div>
-                @endfor
+
+            <div data-aos="fade-left">
+                <img 
+                    src="images/kampungkopipupuansatu.webp" 
+                    alt="Kopi" 
+                    class="w-full h-80 md:h-[300px] object-cover rounded-2xl" >
             </div>
 
-            <!-- Desktop Gallery: Masonry Layout -->
-            <div class="hidden sm:grid sm:grid-cols-3 gap-3 lg:gap-4" data-aos="zoom-in" data-aos-delay="200">
-                <!-- Large Featured Image -->
-                <div class="col-span-2 row-span-2 relative overflow-hidden rounded-2xl shadow-xl group">
-                    <img src="https://picsum.photos/800/800?random=9" alt="Suasana Camp"
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
-                    <div
-                        class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <div class="absolute bottom-4 left-4 text-white">
-                            <h3 class="font-bold text-xl mb-1">Camping Experience</h3>
-                            <p class="text-sm opacity-90">Pupuan, Tabanan</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Side Images -->
-                @foreach ([5, 6, 7, 8] as $index)
-                    <div class="relative aspect-square overflow-hidden rounded-xl shadow-lg group">
-                        <img src="https://picsum.photos/400/400?random={{ $index }}"
-                            alt="Gallery {{ $index }}"
-                            class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
-                        <div
-                            class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        </div>
-                    </div>
-                @endforeach
+            
+            <div data-aos="fade-left">
+                <img 
+                    src="images/kampungkopicamp.webp" 
+                    alt="Tenda" 
+                    class="w-full h-80 md:h-[300px] object-cover rounded-2xl" >
             </div>
 
-            <!-- View More Button -->
-            <div class="text-center mt-8 sm:mt-12" data-aos="fade-up" data-aos-delay="400">
-                <a href="#gallery"
-                    class="inline-block px-6 sm:px-8 py-3 bg-white border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-all duration-300 shadow-md hover:shadow-xl">
-                    <i class="fa-solid fa-images mr-2"></i>Lihat Semua Foto
-                </a>
+            
+            <div class="md:col-span-1" data-aos="fade-left">
+                <img 
+                    src="images/kopicamp.webp" 
+                    alt="Wisata Alam" 
+                    class="w-full h-80 md:h-[500px] object-cover rounded-2xl" >
             </div>
+
+        
+            <div class="md:col-span-1" data-aos="fade-up">
+                <img 
+                    src="/images/ayokepupuan.webp" 
+                    alt="Wisata Alam" 
+                    class="w-full h-80 md:h-[500px] object-cover rounded-2xl" >
+            </div>
+
+            <div class="md:col-span-1" data-aos="fade-up">
+                <img 
+                    src="/images/pupuankopi.webp" 
+                    alt="Wisata Alam" 
+                    class="w-full h-80 md:h-[500px] object-cover rounded-2xl" >
+            </div>
+
         </div>
-    </section>
-
+  </div>
+</section>
 
 
     {{-- Article Section --}}
@@ -484,25 +467,21 @@
     @endphp
 
     <section class="py-12 sm:py-16 lg:py-20 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <!-- Section Header -->
-            <div class="text-center mb-8 sm:mb-12" data-aos="fade-up">
-                <p class="text-xs sm:text-sm font-semibold text-accent uppercase tracking-wide mb-2">
-                    Blog & Article
-                </p>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark mb-3">
-                    {{ $texts['article_heading'] }}
-                </h2>
-                <p class="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto" data-aos="fade-up"
-                    data-aos-delay="100">
-                    {{ $texts['article_description'] }}
-                </p>
-            </div>
+              <h2 class="text-2xl text-center md:text-4xl font-extrabold text-secondary leading-snug mb-6"
+        data-aos="fade-up"
+        data-aos-duration="1000">
+        {{ $texts['article_heading'] }}
+    </h2>
+    <p class="md:text-lg text-sm text-center text-gray-600" data-aos="fade-up" data-aos-delay="100">
+        {{ $texts['article_description'] }}
+    </p>
 
             <!-- Articles Grid -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-14 lg:gap-8">
                 @foreach ($blogs as $index => $blog)
-                    <article
+                     <article
                         class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden"
                         data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
 
@@ -514,26 +493,20 @@
 
                             <!-- Gradient Overlay -->
                             <div
-                                class="absolute inset-0 bg-gradient-to-t from-dark-primary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                                class="absolute inset-0 bg-gradient-to-t from-secondary/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                             </div>
 
                             <!-- Category Badge -->
                             <div class="absolute top-4 left-4">
                                 <span
-                                    class="bg-secondary/95 text-dark-primary px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
+                                    class="bg-secondary/95 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
                                     <i class="fas fa-bookmark mr-1"></i>
                                     {{ $texts['article_type'] ?? 'Article' }}
                                 </span>
                             </div>
 
                             <!-- Read More Icon (appears on hover) -->
-                            <div
-                                class="absolute bottom-4 right-4 opacity-0 group-hover:opacity-100 transition-all duration-500 transform translate-y-4 group-hover:translate-y-0">
-                                <div
-                                    class="bg-primary text-white w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
-                                    <i class="fas fa-arrow-right"></i>
-                                </div>
-                            </div>
+                           
                         </div>
 
                         <!-- Content -->
@@ -554,7 +527,7 @@
 
                             <!-- Title -->
                             <h3
-                                class="text-xl font-bold text-dark-primary mb-3 line-clamp-2 group-hover:text-primary transition-colors duration-300">
+                                class="text-xl font-bold text-slate-800 mb-3 line-clamp-2 transition-colors duration-300">
                                 {{ $blog->title ?? '' }}
                             </h3>
 
@@ -589,135 +562,79 @@
 
 
     <!-- Contact Section -->
-    <section class="py-12 sm:py-16 lg:py-20 bg-gradient-to-b from-neutral to-white" id="contact">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="py-20 bg-[#f9f7f4] text-gray-800" id="contact">
+  <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
-            <!-- Section Header -->
-            <div class="text-center mb-8 sm:mb-12" data-aos="fade-down">
-                <p class="text-xs sm:text-sm font-semibold text-accent uppercase tracking-wide mb-2">
-                    Get In Touch
-                </p>
-                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-dark mb-3">
-                    Hubungi Kami
-                </h2>
-                <p class="text-sm sm:text-base text-gray-600 max-w-2xl mx-auto">
-                    Siap membantu Anda merencanakan pengalaman glamping terbaik
-                </p>
-            </div>
+    <!-- Info Kontak -->
+    <div class="space-y-6" data-aos="fade-right" data-aos-duration="1000" data-aos-offset="200">
 
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+      <!-- WhatsApp -->
+      <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="100">
+        <h4 class="flex items-center text-lg font-semibold mb-3">
+          <span class="flex items-center justify-center w-10 h-10 bg-green-500 rounded-full mr-3">
+            <i class="fa-brands fa-whatsapp text-white"></i>
+          </span>
+          {{ $texts['whatsapp_heading'] }}
+        </h4>
+        <p class="text-sm text-gray-600 mb-4">{{ $texts['whatsapp_description'] }}</p>
+        <a href="https://wa.me/628123456789" target="_blank"
+           class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition">
+          <i class="fa-brands fa-whatsapp text-xl mr-2"></i> {{ $texts['whatsapp_number'] }}
+        </a>
+      </div>
 
-                <!-- Contact Info Cards -->
-                <div class="space-y-4" data-aos="fade-right">
-
-                    <!-- WhatsApp Card -->
-                    <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow"
-                        data-aos="fade-up" data-aos-delay="100">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-success/10 rounded-full">
-                                <i class="fa-brands fa-whatsapp text-success text-2xl"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h4 class="text-base sm:text-lg font-bold text-dark mb-1">
-                                    {{ $texts['whatsapp_heading'] }}
-                                </h4>
-                                <p class="text-xs sm:text-sm text-gray-600 mb-3">
-                                    {{ $texts['whatsapp_description'] }}
-                                </p>
-                                <a href="https://wa.me/628123456789" target="_blank"
-                                    class="inline-flex items-center gap-2 bg-success hover:bg-success/90 text-white font-semibold px-4 py-2.5 rounded-lg transition-all shadow-md hover:shadow-lg text-sm">
-                                    <i class="fa-brands fa-whatsapp text-lg"></i>
-                                    <span>{{ $texts['whatsapp_number'] }}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Phone & Email Grid -->
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div class="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition-shadow"
-                            data-aos="fade-up" data-aos-delay="200">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
-                                    <i class="fa-solid fa-phone text-primary"></i>
-                                </div>
-                                <h4 class="font-bold text-dark text-sm sm:text-base">
-                                    {{ $texts['phone_heading'] }}
-                                </h4>
-                            </div>
-                            <a href="tel:{{ str_replace([' ', '-'], '', $texts['phone_number']) }}"
-                                class="text-xs sm:text-sm text-gray-600 hover:text-primary transition-colors">
-                                {{ $texts['phone_number'] }}
-                            </a>
-                        </div>
-
-                        <div class="bg-white p-5 rounded-2xl shadow-md hover:shadow-lg transition-shadow"
-                            data-aos="fade-up" data-aos-delay="250">
-                            <div class="flex items-center gap-3 mb-2">
-                                <div class="flex items-center justify-center w-10 h-10 bg-accent/10 rounded-full">
-                                    <i class="fa-solid fa-envelope text-accent"></i>
-                                </div>
-                                <h4 class="font-bold text-dark text-sm sm:text-base">
-                                    {{ $texts['email_heading'] }}
-                                </h4>
-                            </div>
-                            <a href="mailto:{{ $texts['email_address'] }}"
-                                class="text-xs sm:text-sm text-gray-600 hover:text-primary transition-colors break-all">
-                                {{ $texts['email_address'] }}
-                            </a>
-                        </div>
-                    </div>
-
-                    <!-- Address Card -->
-                    <div class="bg-white p-5 sm:p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow"
-                        data-aos="fade-up" data-aos-delay="300">
-                        <div class="flex items-start gap-4">
-                            <div
-                                class="flex-shrink-0 flex items-center justify-center w-12 h-12 bg-danger/10 rounded-full">
-                                <i class="fa-solid fa-location-dot text-danger text-xl"></i>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <h4 class="font-bold text-dark text-base sm:text-lg mb-2">
-                                    {{ $texts['address_heading'] }}
-                                </h4>
-                                <p class="text-xs sm:text-sm text-gray-600 mb-4 leading-relaxed">
-                                    {!! nl2br(e($texts['address_details'])) !!}
-                                </p>
-                                <a href="https://www.google.com/maps?ll=-8.342049,115.036913&z=14&t=m&hl=id&gl=ID&mapclient=embed&cid=9951410633565317211"
-                                    target="_blank" rel="noopener noreferrer"
-                                    class="inline-flex items-center gap-2 bg-primary hover:bg-light-primary text-white font-semibold px-4 py-2.5 rounded-lg transition-all shadow-md hover:shadow-lg text-sm">
-                                    <i class="fa-solid fa-map-location-dot"></i>
-                                    <span>{{ $texts['address_map_cta'] }}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Google Maps -->
-                <div class="bg-white p-4 sm:p-6 rounded-2xl shadow-md hover:shadow-xl transition-shadow"
-                    data-aos="fade-left">
-                    <div class="flex items-center gap-3 mb-4">
-                        <div class="flex items-center justify-center w-10 h-10 bg-primary/10 rounded-full">
-                            <i class="fa-solid fa-map text-primary text-lg"></i>
-                        </div>
-                        <h3 class="text-base sm:text-lg font-bold text-dark">
-                            {{ $texts['location_heading'] }}
-                        </h3>
-                    </div>
-                    <div class="relative w-full h-[300px] sm:h-[400px] lg:h-[500px] rounded-xl overflow-hidden">
-                        <iframe
-                            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7895.1750634993!2d115.03386611055907!3d-8.343715401760706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1759163429473!5m2!1sid!2sid"
-                            class="w-full h-full" style="border:0;" allowfullscreen="" loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                </div>
-
-            </div>
+      <!-- Telepon & Email -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="200">
+          <h4 class="flex items-center font-semibold mb-2">
+            <i class="fa-solid fa-phone mr-2 text-secondary"></i> {{ $texts['phone_heading'] }}
+          </h4>
+          <p class="text-sm text-gray-600">{{ $texts['phone_number'] }}</p>
         </div>
-    </section>
+        <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="300">
+          <h4 class="flex items-center font-semibold mb-2">
+            <i class="fa-solid fa-envelope mr-2 text-secondary"></i> {{ $texts['email_heading'] }}
+          </h4>
+          <p class="text-sm text-gray-600">{{ $texts['email_address'] }}</p>
+        </div>
+      </div>
+
+      <!-- Alamat -->
+      <div class="bg-white p-6 rounded-2xl shadow" data-aos="fade-up" data-aos-delay="400">
+        <h4 class="flex items-center font-semibold mb-2">
+          <i class="fa-solid fa-location-dot mr-2 text-secondary"></i> {{ $texts['address_heading'] }}
+        </h4>
+        <p class="text-sm text-gray-600 mb-4">{!! nl2br(e($texts['address_details'])) !!}</p>
+        <a href="https://www.google.com/maps?ll=-8.342049,115.036913&z=14&t=m&hl=id&gl=ID&mapclient=embed&cid=9951410633565317211" target="_blank"
+           class="inline-block bg-secondary hover:bg-secondary/90 px-4 py-2 rounded-lg font-medium transition text-white">
+          <i class="fa-solid fa-map-location-dot mr-2"></i> {{ $texts['address_map_cta'] }}
+        </a>
+      </div>
+    </div>
+
+    <!-- Google Maps -->
+   <div class="bg-white p-6 rounded-2xl shadow overflow-hidden" 
+          data-aos="fade-up" 
+          data-aos-duration="1000" 
+          data-aos-offset="200">
+          
+        <h3 class="flex items-center text-lg font-semibold mb-4 text-gray-900">
+          <i class="fa-solid fa-map text-secondary mr-2"></i> {{ $texts['location_heading'] }}
+        </h3>
+        
+        {{-- Tambahkan wrapper dengan rasio aspek tetap untuk Mobile --}}
+        <div class="relative h-[400px] w-full" style="padding-top: 56.25%;">
+          <iframe 
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7895.1750634993!2d115.03386611055907!3d-8.343715401760706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1759163429473!5m2!1sid!2sid"
+            class="absolute top-0 left-0 w-full h-full rounded-lg"
+            style="border:0;" allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+
+     </div>
+
+  </div>
+</section>
 
 
 
