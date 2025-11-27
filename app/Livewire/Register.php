@@ -25,16 +25,24 @@ class Register extends Component
         $this->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
-            'phone' => 'nullable|string|max:20',
+            'phone' => 'nullable|string|max:20|unique:users,phone',
             'password' => 'required|string|min:8',
         ], [
             'name.required' => 'Nama tidak boleh kosong.',
             'email.required' => 'Email tidak boleh kosong.',
             'email.email' => 'Format email tidak valid.',
             'email.unique' => 'Email sudah terdaftar.',
+            'phone.required' => 'Nomor telepon tidak boleh kosong.',
+            'phone.unique' => 'Nomor telepon sudah terdaftar.',
             'password.required' => 'Password tidak boleh kosong.',
             'password.min' => 'Password minimal 8 karakter.',
         ]);
+
+
+        // Check if the email is already registered
+        if (\App\Models\User::where('email', $this->email)->exists()) {
+            return session()->flash('error', 'Email sudah terdaftar.');
+        }
 
         // Create the user
         $user = \App\Models\User::create([

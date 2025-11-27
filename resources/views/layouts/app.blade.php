@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Laravel Livewire Frontend</title>
+    <title>Kampung Kopi Camp | #AyoKePupuan</title>
+    <link rel="icon" type="image/png" href="/images/simpleLogo.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     @vite('resources/css/app.css')
     @livewireStyles
@@ -14,29 +15,35 @@
 <body class="text-gray-800 font-jakarta">
 
     <!-- Navbar -->
-    <header id="navbar" x-data="{ scrolled: false, mobileMenuOpen: false }" x-init="window.addEventListener('scroll', () => {
+    <header id="navbar" x-cloak x-data="{ scrolled: false, mobileMenuOpen: false }" x-init="window.addEventListener('scroll', () => {
         scrolled = window.pageYOffset > 50;
     });"
         class="fixed py-4 top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out"
         :class="mobileMenuOpen || scrolled ?
-            'bg-white shadow-md text-secondary py-1' :
+            'bg-white shadow-md text-primary py-1' :
             'bg-transparent text-white'">
         <div class="relative h-16 max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-14 py-5">
             <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">
-                <img class="md:w-36 md:h-16 w-28 h-12 transition-all duration-100 ease-in-out delay-75"
+                <img class="md:h-16 h-12 transition-all duration-100 ease-in-out delay-75"
                     :src="scrolled || mobileMenuOpen ? '/images/logodua.png' : '/images/logo.png'" alt="">
 
             </a>
 
             <!-- Navbar Desktop -->
             <nav class="hidden lg:flex items-center space-x-7">
-                <a href="/" class="hover:text-primary">{{ __('messages.home') }}</a>
-                <a href="/about" class="hover:text-primary">{{ __('messages.about') }}</a>
-                <a href="/package" class="hover:text-primary">{{ __('messages.tour_packages') }}</a>
-                <a href="/explore-pupuan" class="hover:text-primary">{{ __('messages.explore_pupuan') }}</a>
-                <a href="/article" class="hover:text-primary">{{ __('messages.article') }}</a>
-                <a href="/contact" class="hover:text-primary">{{ __('messages.contact') }}</a>
+                <a href="/"
+                    class="hover:text-secondary {{ Route::currentRouteName() === 'home' ? 'border-b border-secondary' : '' }}">{{ __('messages.home') }}</a>
+                <a href="/about"
+                    class="hover:text-secondary {{ Route::currentRouteName() === 'about' ? 'border-b border-secondary' : '' }}">{{ __('messages.about') }}</a>
+                <a href="/package"
+                    class="hover:text-secondary {{ Route::currentRouteName() === 'package.product' ? 'border-b border-secondary' : '' }}">{{ __('messages.tour_packages') }}</a>
+                <a href="/explore-pupuan"
+                    class="hover:text-secondary {{ Route::currentRouteName() === 'explore-pupuan' ? 'border-b border-secondary' : '' }}">{{ __('messages.explore_pupuan') }}</a>
+                <a href="/article"
+                    class="hover:text-secondary {{ Route::currentRouteName() === 'article' ? 'border-b border-secondary' : '' }}">{{ __('messages.article') }}</a>
+                <a href="/contact"
+                    class="hover:text-secondary {{ Route::currentRouteName() === 'contact' ? 'border-b border-secondary' : '' }}">{{ __('messages.contact') }}</a>
             </nav>
 
 
@@ -83,37 +90,38 @@
         </div>
 
         <div x-show="mobileMenuOpen" x-transition class="lg:hidden w-full  relative z-40">
+
             <nav class="px-6 py-6 space-y-4">
-                <a href="/" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.home') }}</a>
-                <a href="/about" class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.about') }}</a>
+                <a href="/" class="block py-2 text-primary hover:text-warna-400">{{ __('messages.home') }}</a>
+                <a href="/about" class="block py-2 text-primary hover:text-warna-400">{{ __('messages.about') }}</a>
                 <a href="/package"
-                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.tour_packages') }}</a>
+                    class="block py-2 text-primary hover:text-warna-400">{{ __('messages.tour_packages') }}</a>
                 <a href="/explore-pupuan"
-                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.explore_pupuan') }}</a>
+                    class="block py-2 text-primary hover:text-warna-400">{{ __('messages.explore_pupuan') }}</a>
                 <a href="/article"
-                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.article') }}</a>
+                    class="block py-2 text-primary hover:text-warna-400">{{ __('messages.article') }}</a>
                 <a href="/contact"
-                    class="block py-2 text-secondary hover:text-warna-400">{{ __('messages.contact') }}</a>
+                    class="block py-2 text-primary hover:text-warna-400">{{ __('messages.contact') }}</a>
             </nav>
             <!-- MOBILE BUTTON (login / dashboard) -->
             <div class="flex lg:hidden items-center relative z-50 px-6 mt-6">
                 @if (Auth::check() && Auth::user()->role === 'admin')
                     <a href="{{ route('admin.dashboard') }}"
-                        class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
+                        class="w-full text-center px-5 py-2.5 rounded-full text-sm font-medium transition
             bg-secondary text-white hover:opacity-90"
                         :class="scrolled ? 'shadow-md' : ''">
                         Admin Dashboard
                     </a>
                 @elseif(Auth::check() && Auth::user()->role === 'user')
                     <a href="{{ route('user.dashboard') }}"
-                        class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
+                        class="w-full text-center px-5 py-2.5 rounded-full text-sm font-medium transition
             bg-secondary text-white hover:opacity-90"
                         :class="scrolled ? 'shadow-md' : ''">
                         User Dashboard
                     </a>
                 @else
                     <a href="{{ route('register') }}"
-                        class="w-full text-center px-5 py-2 rounded-full text-sm font-medium transition
+                        class="w-full text-center px-5 py-2.5 rounded-full text-sm font-medium transition
             bg-secondary text-white hover:opacity-90"
                         :class="scrolled ? 'shadow-md' : ''">
                         {{ __('messages.login') }}
@@ -124,6 +132,7 @@
             <div class="z-50 pointer-events-auto text-white px-4 py-2 rounded-full ">
                 <livewire:language-switcher :key="session('locale')" />
             </div>
+
         </div>
     </header>
 

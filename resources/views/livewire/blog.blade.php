@@ -1,63 +1,57 @@
 <div class="min-h-screen">
     {{-- Hero Section --}}
-    <section 
-  class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
-  data-aos="fade-zoom-in"
-  data-aos-duration="1200"
-  data-aos-easing="ease-in-out"
-  data-aos-once="true">
+    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
+        data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
-  <!-- Background Image -->
-  <img src="/images/article.webp" 
-       alt="Article Background" 
-       class="absolute inset-0 w-full h-full object-cover"
-       data-aos="zoom-out"
-       data-aos-duration="1000">
+        <!-- Background Image -->
+        <img src="/images/article.webp" alt="Article Background" class="absolute inset-0 w-full h-full object-cover"
+            data-aos="zoom-out" data-aos-duration="1000">
 
-  <!-- Overlay -->
-  <div class="absolute inset-0 bg-black/50"></div>
+        <!-- Overlay -->
+        <div class="absolute inset-0 bg-black/50"></div>
 
-  <!-- Content -->
-  <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
-    <!-- Sub Heading -->
-    <p class="uppercase text-white mb-3 tracking-wide" data-aos="fade-down" data-aos-delay="400">
-      {{ $texts['articles_stories'] }}
-    </p>
+        <!-- Content -->
+        <div class="relative z-10 px-6" data-aos="fade-up" data-aos-delay="300">
+            <!-- Sub Heading -->
+            <p class="uppercase text-white mb-3 tracking-wide" data-aos="fade-down" data-aos-delay="400">
+                {{ $texts['articles_stories'] }}
+            </p>
 
-    <!-- Title -->
-    <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
-      {!! str_replace(':place', '<span class="text-primary">Pupuan</span>', $texts['explore_inspiration']) !!}
-    </h1>
+            <!-- Title -->
+            <h1 class="text-3xl md:text-5xl font-bold leading-tight mb-6" data-aos="fade-up" data-aos-delay="600">
+                {!! str_replace(':place', '<span class="text-secondary">Pupuan</span>', $texts['explore_inspiration']) !!}
+            </h1>
 
-    <!-- Decorative Line -->
-    <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
+            <!-- Decorative Line -->
+            <div class="w-24 h-1 bg-white mx-auto mb-6 rounded-full" data-aos="zoom-in" data-aos-delay="800"></div>
 
-    <!-- Description -->
-    <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up" data-aos-delay="1000">
-      {{ $texts['explore_description'] }}
-    </p>
-  </div>
-</section>
+            <!-- Description -->
+            <p class="text-sm md:text-lg max-w-2xl mx-auto leading-relaxed text-gray-100" data-aos="fade-up"
+                data-aos-delay="1000">
+                {{ $texts['explore_description'] }}
+            </p>
+        </div>
+    </section>
 
 
     {{-- Articles Section --}}
     <section class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
         <!-- Header -->
-         <div class="grid grid-cols-1 md:grid-cols-2 md:gap-8 mb-12" data-aos="fade-up">
-    <div>
-      <p class="text-sm font-semibold text-amber-800 tracking-widest mb-2">
-        {{ $texts['latest_news_events'] }}
-      </p>
-      <h2 class="text-2xl md:text-4xl font-extrabold text-secondary leading-snug mb-6">
-        {!! str_replace(':place', '<span class="text-primary">Pupuan</span>', $texts['latest_stories_heading']) !!}
-      </h2>
-    </div>
-    <div>
-      <p class="text-sm md:text-lg max-w-3xl text-gray-600 mb-6">
-        {{ $texts['latest_stories_description'] }}
-      </p>
-    </div>
-  </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 md:gap-8 mb-12" data-aos="fade-up">
+            <div>
+                <p class="text-sm font-semibold text-amber-800 tracking-widest mb-2">
+                    {{ $texts['latest_news_events'] }}
+                </p>
+                <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6">
+                    {!! str_replace(':place', '<span class="text-secondary">Pupuan</span>', $texts['latest_stories_heading']) !!}
+                </h2>
+            </div>
+            <div>
+                <p class="text-sm md:text-lg max-w-3xl text-gray-600 mb-6">
+                    {{ $texts['latest_stories_description'] }}
+                </p>
+            </div>
+        </div>
 
         <!-- Blog Grid -->
         @if (count($blogs) > 0)
@@ -83,12 +77,10 @@
                                 <span
                                     class="bg-secondary/95 text-white px-4 py-1.5 rounded-full text-xs font-bold tracking-wide shadow-lg">
                                     <i class="fas fa-bookmark mr-1"></i>
-                                    {{ $texts['article_type'] ?? 'Article' }}
+                                    {{ $blog->category }}
                                 </span>
                             </div>
 
-                            <!-- Read More Icon (appears on hover) -->
-                           
                         </div>
 
                         <!-- Content -->
@@ -146,5 +138,3 @@
     </section>
 
 </div>
-
-

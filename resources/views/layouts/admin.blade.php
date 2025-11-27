@@ -27,6 +27,7 @@
 <head>
     <meta charset="UTF-8">
     <title>KKC - Dashboard Admin</title>
+    <link rel="icon" type="image/png" href="/images/simpleLogo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite('resources/css/app.css')
     @livewireStyles
@@ -96,7 +97,7 @@
 
     <!-- Sidebar -->
     <aside x-data="{ collapsed: false }" :class="collapsed ? 'md:w-20' : 'md:w-64'"
-        class="bg-gradient-to-b from-primary to-[#485934] shadow-lg hidden md:flex flex-col transition-all duration-300 h-full">
+        class="bg-gradient-to-b from-secondary to-light-primary shadow-lg hidden md:flex flex-col transition-all duration-300 h-full">
         <div class="flex justify-between items-center pb-3 ">
             <h1 x-show="!collapsed" x-transition class="text-white text-xl font-semibold p-4">Kampung Kopi</h1>
             <button @click="collapsed = !collapsed" class="text-white size-16">
@@ -106,63 +107,63 @@
         <div class="flex-1 overflow-y-auto">
             <!-- Sidebar content goes here -->
             <a href="{{ route('admin.dashboard') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-chart-column "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Dashboard</span>
             </a>
             <a href="{{ route('admin.bookings') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.bookings') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.bookings') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-calendar-days "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Booking</span>
             </a>
             <a href="{{ route('admin.products') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.products') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.products') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-boxes-stacked "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Produk</span>
             </a>
             <a href="{{ route('admin.availability') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.availability') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.availability') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-boxes-stacked "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Ketersediaan Produk</span>
             </a>
             <a href="{{ route('admin.addons') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.addons') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.addons') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-puzzle-piece "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Addons</span>
             </a>
             <a href="{{ route('admin.payments') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.payments') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.payments') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-file-invoice-dollar "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Payments</span>
             </a>
             <a href="{{ route('admin.vouchers') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.vouchers') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.vouchers') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-ticket-simple "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Voucher</span>
             </a>
             <a href="{{ route('admin.articles') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.articles') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.articles') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-newspaper "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Blog & Articles</span>
             </a>
             <a href="{{ route('admin.users') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.users') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.users') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-user "></i>
                 </div>
@@ -172,7 +173,7 @@
                 {{-- Parent Menu --}}
                 <button @click="open = !open"
                     class="w-full flex items-center justify-between gap-3 p-5  transition-all
-            {{ request()->routeIs('admin.reports.*') ? 'bg-[#3f4e2e] text-white' : 'text-white hover:bg-[#3f4e2e]' }}">
+            {{ request()->routeIs('admin.reports.*') ? 'bg-dark-secondary text-white' : 'text-white hover:bg-dark-secondary' }}">
                     <div class="flex items-center gap-3">
                         <i class="fas fa-chart-bar"></i>
                         <span x-show="!collapsed" x-transition class="" class="font-medium">Laporan</span>
@@ -188,7 +189,7 @@
                     {{-- Revenue Reports --}}
                     <a href="{{ route('admin.reports.revenue') }}"
                         class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.revenue') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.revenue') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                         {{-- <i class="fas fa-dollar-sign text-base"></i> --}}
                         <span x-show="!collapsed" x-transition>Pendapatan</span>
                     </a>
@@ -196,7 +197,7 @@
                     {{-- Booking Reports --}}
                     <a href="{{ route('admin.reports.bookings') }}"
                         class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.bookings') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.bookings') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                         {{-- <i class="fas fa-calendar-alt text-base"></i> --}}
                         <span x-show="!collapsed" x-transition>Booking</span>
                     </a>
@@ -204,7 +205,7 @@
                     {{-- Customer Reports --}}
                     <a href="{{ route('admin.reports.customers') }}"
                         class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.customers') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.customers') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                         {{-- <i class="fas fa-users text-base"></i> --}}
                         <span x-show="!collapsed" x-transition>Customer</span>
                     </a>
@@ -212,19 +213,22 @@
                     {{-- Financial Reports --}}
                     <a href="{{ route('admin.reports.financial') }}"
                         class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.financial') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.financial') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                         {{-- <i class="fas fa-file-invoice-dollar text-base"></i> --}}
                         <span x-show="!collapsed" x-transition>Keuangan</span>
                     </a>
                 </div>
             </div>
             <a href="{{ route('admin.settings') }}"
-                class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.settings') ? 'bg-[#3f4e2e]' : '' }}">
+                class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.settings') ? 'bg-dark-secondary' : '' }}">
                 <div class="p-5">
                     <i class="fa-solid fa-gear "></i>
                 </div>
                 <span x-show="!collapsed" x-transition class="">Settings</span>
             </a>
+        </div>
+        <div class="flex items-center justify-center mb-2">
+            <p class="text-xs text-gray-200">Version 1.0.0</p>
         </div>
     </aside>
 
@@ -256,63 +260,63 @@
                     <div class="overflow-y-auto pb-14">
                         <!-- Sidebar content goes here -->
                         <a href="{{ route('admin.dashboard') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.dashboard') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-chart-column "></i>
                             </div>
                             <span class=>Dashboard</span>
                         </a>
                         <a href="{{ route('admin.bookings') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.bookings') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.bookings') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-calendar-days "></i>
                             </div>
                             <span class=>Booking</span>
                         </a>
                         <a href="{{ route('admin.products') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.products') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.products') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-boxes-stacked "></i>
                             </div>
                             <span class=>Produk</span>
                         </a>
                         <a href="{{ route('admin.availability') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.availability') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.availability') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-boxes-stacked "></i>
                             </div>
                             <span class=>Ketersediaan Produk</span>
                         </a>
                         <a href="{{ route('admin.addons') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.addons') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.addons') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-puzzle-piece "></i>
                             </div>
                             <span class=>Addons</span>
                         </a>
                         <a href="{{ route('admin.payments') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.payments') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.payments') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-file-invoice-dollar "></i>
                             </div>
                             <span class=>Payments</span>
                         </a>
                         <a href="{{ route('admin.vouchers') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.vouchers') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.vouchers') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-ticket-simple "></i>
                             </div>
                             <span class=>Voucher</span>
                         </a>
                         <a href="{{ route('admin.articles') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.articles') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.articles') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-newspaper "></i>
                             </div>
                             <span class=>Blog & Articles</span>
                         </a>
                         <a href="{{ route('admin.users') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.users') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.users') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-user "></i>
                             </div>
@@ -322,7 +326,7 @@
                             {{-- Parent Menu --}}
                             <button @click="open = !open"
                                 class="w-full flex items-center justify-between gap-3 p-5  transition-all
-            {{ request()->routeIs('admin.reports.*') ? 'bg-[#3f4e2e] text-white' : 'text-white hover:bg-[#3f4e2e]' }}">
+            {{ request()->routeIs('admin.reports.*') ? 'bg-dark-secondary text-white' : 'text-white hover:bg-dark-secondary' }}">
                                 <div class="flex items-center gap-3">
                                     <i class="fas fa-chart-bar"></i>
                                     <span class="" class="font-medium">Laporan</span>
@@ -338,7 +342,7 @@
                                 {{-- Revenue Reports --}}
                                 <a href="{{ route('admin.reports.revenue') }}"
                                     class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.revenue') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.revenue') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                                     {{-- <i class="fas fa-dollar-sign text-base"></i> --}}
                                     <span>Pendapatan</span>
                                 </a>
@@ -346,7 +350,7 @@
                                 {{-- Booking Reports --}}
                                 <a href="{{ route('admin.reports.bookings') }}"
                                     class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.bookings') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.bookings') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                                     {{-- <i class="fas fa-calendar-alt text-base"></i> --}}
                                     <span>Booking</span>
                                 </a>
@@ -354,7 +358,7 @@
                                 {{-- Customer Reports --}}
                                 <a href="{{ route('admin.reports.customers') }}"
                                     class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.customers') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.customers') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                                     {{-- <i class="fas fa-users text-base"></i> --}}
                                     <span>Customer</span>
                                 </a>
@@ -362,14 +366,14 @@
                                 {{-- Financial Reports --}}
                                 <a href="{{ route('admin.reports.financial') }}"
                                     class="flex items-center gap-3 pl-15 py-5 transition-all text-sm
-                {{ request()->routeIs('admin.reports.financial') ? 'bg-[#3f4e2e] text-white font-semibold' : 'text-white hover:bg-[#3f4e2e]' }}">
+                {{ request()->routeIs('admin.reports.financial') ? 'bg-dark-secondary text-white font-semibold' : 'text-white hover:bg-dark-secondary' }}">
                                     {{-- <i class="fas fa-file-invoice-dollar text-base"></i> --}}
                                     <span>Keuangan</span>
                                 </a>
                             </div>
                         </div>
                         <a href="{{ route('admin.settings') }}"
-                            class="flex text-white justify-start items-center w-full hover:bg-[#3f4e2e] transition-all {{ request()->routeIs('admin.settings') ? 'bg-[#3f4e2e]' : '' }}">
+                            class="flex text-white justify-start items-center w-full hover:bg-dark-secondary transition-all {{ request()->routeIs('admin.settings') ? 'bg-dark-secondary' : '' }}">
                             <div class="p-5">
                                 <i class="fa-solid fa-gear "></i>
                             </div>

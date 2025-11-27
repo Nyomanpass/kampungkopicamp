@@ -305,22 +305,22 @@
                 <div class="flex w-full justify-around">
                     <button wire:click="toggleDisplayProducts('accommodation')"
                         class="flex flex-col justify-center items-center gap-1">
-                        <div class="bg-light-primary size-12 rounded-full flex justify-center items-center">
-                            <i class="fas fa-campground text-secondary text-xl"></i>
+                        <div class="bg-secondary size-12 rounded-full flex justify-center items-center">
+                            <i class="fas fa-campground text-white text-xl"></i>
                         </div>
                         <p class="text-sm">Camping</p>
                     </button>
                     <button wire:click="toggleDisplayProducts('touring')"
                         class="flex flex-col justify-center items-center gap-1">
-                        <div class="bg-light-primary size-12 rounded-full flex justify-center items-center">
-                            <i class="fas fa-person-hiking text-secondary text-xl"></i>
+                        <div class="bg-secondary size-12 rounded-full flex justify-center items-center">
+                            <i class="fas fa-person-hiking text-white text-xl"></i>
                         </div>
                         <p class="text-sm">Touring</p>
                     </button>
                     <button wire:click="toggleDisplayProducts('area')"
                         class="flex flex-col justify-center items-center gap-1">
-                        <div class="bg-light-primary size-12 rounded-full flex justify-center items-center">
-                            <i class="fas fa-tree text-secondary text-xl"></i>
+                        <div class="bg-secondary size-12 rounded-full flex justify-center items-center">
+                            <i class="fas fa-tree text-white text-xl"></i>
                         </div>
                         <p class="text-sm">Rekreasi</p>
                     </button>
@@ -423,7 +423,7 @@
 
             {{-- section type touring paket (tour) --}}
             <div class="w-full hidden lg:block">
-                <h3 class="font-bold mb-4">Petualangan Seru Menanti</h3>
+                <h3 class="font-bold mb-4 text-lg lg:text-xl">Petualangan Seru Menanti</h3>
                 <div class="w-full overflow-x-scroll snap-x">
                     <div class="flex gap-3 w-max">
                         @forelse($touringProducts as $product)

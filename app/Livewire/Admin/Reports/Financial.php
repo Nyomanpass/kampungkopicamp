@@ -130,13 +130,6 @@ class Financial extends Component
         $this->totalRefunded = Invoice::where('type', 'credit_note')
             ->whereBetween('created_at', [$start, $end])
             ->sum('amount');
-
-
-        // Total Tax (sum of tax from all paid invoices)
-        $this->totalTax = Invoice::where('type', 'invoice')
-            ->where('status', 'paid')
-            ->whereBetween('created_at', [$this->startDate, $this->endDate])
-            ->sum('tax_amount');
     }
 
     private function loadCharts()
@@ -188,8 +181,10 @@ class Financial extends Component
 
         $this->invoiceStatusData = [
             'labels' => $statusCounts->pluck('status')->map(fn($s) => ucfirst($s))->toArray(),
-            'data' => $statusCounts->pluck('total')->toArray(),
+            'series' => $statusCounts->pluck('total')->map(fn($v) => (float)$v)->values()->toArray(), // ✅ Convert to float and reindex
         ];
+
+        // dd($this->invoiceStatusData);
 
         // Payment Methods Breakdown
         $paymentMethods = Payment::where('status', 'settlement')
@@ -200,7 +195,7 @@ class Financial extends Component
 
         $this->paymentMethodsData = [
             'labels' => $paymentMethods->pluck('provider')->map(fn($p) => ucfirst($p))->toArray(),
-            'series' => $paymentMethods->pluck('total')->toArray(),
+            'series' => $paymentMethods->pluck('total')->map(fn($v) => (float)$v)->values()->toArray(), // ✅ Convert to float and reindex
         ];
 
 

@@ -34,16 +34,30 @@
                 </h1>
                 <div class="flex items-center gap-4 text-white/90">
                     @if ($product->duration_type)
-                        <div class="flex items-center">
-                            <i class="fas fa-clock mr-2"></i>
-                            <span>{{ ucfirst($product->duration_type) }}</span>
-                        </div>
+                        @if ($product->type == 'touring')
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>Session</span>
+                            </div>
+                        @else
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-2"></i>
+                                <span>{{ ucfirst($product->duration_type) }}</span>
+                            </div>
+                        @endif
                     @endif
-                    @if ($product->capacity_per_unit)
-                        <div class="flex items-center">
-                            <i class="fas fa-users mr-2"></i>
-                            <span>{{ $product->capacity_per_unit }} guests</span>
-                        </div>
+                    @if ($product->capacity_per_unit || $product->max_participant)
+                        @if ($product->type == 'touring')
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-2"></i>
+                                <span>{{ $product->max_participant }} guests</span>
+                            </div>
+                        @else
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-2"></i>
+                                <span>{{ $product->capacity_per_unit }} guests</span>
+                            </div>
+                        @endif
                     @endif
                 </div>
             </div>
@@ -104,7 +118,7 @@
                             <div class="grid grid-cols-2 gap-1">
                                 @foreach ($product->facilities as $facility)
                                     <div class="flex items-center p-3 bg-gray-50 rounded-lg">
-                                        <i class="fas fa-check-circle text-light-primary mr-3"></i>
+                                        <i class="fas fa-check-circle text-secondary mr-3"></i>
                                         <span class="text-gray-700">{{ $facility }}</span>
                                     </div>
                                 @endforeach
@@ -285,7 +299,7 @@
     <section class="py-12 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <h2 class="text-2xl font-bold mb-8">Paket Lainnya</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
                 @foreach ($relatedPackages as $relatedProduct)
                     <livewire:package-card :product="$relatedProduct" :key="$relatedProduct->id" />
                 @endforeach

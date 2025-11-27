@@ -117,6 +117,8 @@ class BookingFlow extends Component
         $this->currentYear = now()->year;
         $this->currentDate = now()->toDateString();
 
+        // ✅ Restore booking progress from session if exists
+        $this->restoreBookingProgress();
 
         if (Auth::check()) {
             $user = Auth::user();
@@ -126,6 +128,106 @@ class BookingFlow extends Component
         }
         // Load availability for current month
         $this->loadAvailability();
+    }
+
+    // ============================================
+    // SESSION MANAGEMENT FOR BOOKING PROGRESS
+    // ============================================
+
+    protected function getSessionKey()
+    {
+        return 'booking_progress_' . $this->product->id;
+    }
+
+    public function saveBookingProgress()
+    {
+        $progressData = [
+            'current_step' => $this->currentStep,
+            'people_count' => $this->peopleCount,
+            'night_count' => $this->nightCount,
+            'selected_start_date' => $this->selectedStartDate,
+            'selected_dates' => $this->selectedDates,
+            'required_units' => $this->requiredUnits,
+            'estimated_price' => $this->estimatedPrice,
+            'selected_addons' => $this->selectedAddons,
+            'addons_total' => $this->addonsTotal,
+            'customer_name' => $this->customerName,
+            'customer_email' => $this->customerEmail,
+            'customer_phone' => $this->customerPhone,
+            'special_request' => $this->specialRequest,
+            'voucher_code' => $this->voucherCode,
+            'applied_voucher' => $this->appliedVoucher?->toArray(),
+            'voucher_discount' => $this->voucherDiscount,
+            'voucher_bonus_meta' => $this->voucherBonusMeta,
+            'total_price' => $this->totalPrice,
+            'current_month' => $this->currentMonth,
+            'current_year' => $this->currentYear,
+            'timestamp' => now()->timestamp,
+        ];
+
+        session([$this->getSessionKey() => $progressData]);
+
+        Log::info('Booking progress saved to session', [
+            'product_id' => $this->product->id,
+            'step' => $this->currentStep,
+        ]);
+    }
+
+    public function restoreBookingProgress()
+    {
+        $sessionKey = $this->getSessionKey();
+        $progressData = session($sessionKey);
+
+        if (!$progressData) {
+            return;
+        }
+
+        // ✅ Check if session data is not too old (max 24 hours)
+        $timestamp = $progressData['timestamp'] ?? 0;
+        if (now()->timestamp - $timestamp > 86400) {
+            $this->clearBookingProgress();
+            return;
+        }
+
+        // ✅ Restore all data
+        $this->currentStep = $progressData['current_step'] ?? 1;
+        $this->peopleCount = $progressData['people_count'] ?? 1;
+        $this->nightCount = $progressData['night_count'] ?? 1;
+        $this->selectedStartDate = $progressData['selected_start_date'] ?? null;
+        $this->selectedDates = $progressData['selected_dates'] ?? [];
+        $this->requiredUnits = $progressData['required_units'] ?? 0;
+        $this->estimatedPrice = $progressData['estimated_price'] ?? 0;
+        $this->selectedAddons = $progressData['selected_addons'] ?? [];
+        $this->addonsTotal = $progressData['addons_total'] ?? 0;
+        $this->customerName = $progressData['customer_name'] ?? '';
+        $this->customerEmail = $progressData['customer_email'] ?? '';
+        $this->customerPhone = $progressData['customer_phone'] ?? '';
+        $this->specialRequest = $progressData['special_request'] ?? '';
+        $this->voucherCode = $progressData['voucher_code'] ?? '';
+        $this->voucherDiscount = $progressData['voucher_discount'] ?? 0;
+        $this->voucherBonusMeta = $progressData['voucher_bonus_meta'] ?? null;
+        $this->totalPrice = $progressData['total_price'] ?? 0;
+        $this->currentMonth = $progressData['current_month'] ?? now()->month;
+        $this->currentYear = $progressData['current_year'] ?? now()->year;
+
+        // ✅ Restore applied voucher object
+        if (!empty($progressData['applied_voucher'])) {
+            $this->appliedVoucher = Voucher::find($progressData['applied_voucher']['id']);
+        }
+
+        Log::info('Booking progress restored from session', [
+            'product_id' => $this->product->id,
+            'step' => $this->currentStep,
+        ]);
+    }
+
+    public function clearBookingProgress()
+    {
+        session()->forget($this->getSessionKey());
+
+        Log::info('Booking progress cleared from session', [
+            'product_id' => $this->product->id,
+        ]);
     }
 
     // ============================================
@@ -331,9 +433,11 @@ class BookingFlow extends Component
             $this->requiredUnits = 1; // touring/area_rental
         }
 
-
         $this->currentStep = 2;
         $this->loadAvailability();
+
+        // ✅ Save progress to session
+        $this->saveBookingProgress();
     }
 
     // ============================================
@@ -410,6 +514,9 @@ class BookingFlow extends Component
 
             // Calculate estimated price
             $this->calculatePrice();
+
+            // ✅ Save progress to session
+            $this->saveBookingProgress();
         } else {
             session()->flash('error', 'Tanggal yang dipilih tidak tersedia. Silakan pilih tanggal lain.');
         }
@@ -545,6 +652,11 @@ class BookingFlow extends Component
         }
 
         $this->calculateTotals();
+
+        // ✅ Save progress to session when addons change
+        if ($this->currentStep >= 3) {
+            $this->saveBookingProgress();
+        }
     }
 
     // ============================================
@@ -622,6 +734,9 @@ class BookingFlow extends Component
         // Recalculate total
         $this->calculateTotals();
 
+        // ✅ Save progress to session
+        $this->saveBookingProgress();
+
         Log::info('Voucher applied in booking flow', [
             'voucher_code' => $this->voucherCode,
             'discount' => $this->voucherDiscount,
@@ -639,6 +754,9 @@ class BookingFlow extends Component
         $this->voucherError = '';
 
         $this->calculateTotals();
+
+        // ✅ Save progress to session
+        $this->saveBookingProgress();
 
         Log::info('Voucher removed in booking flow');
     }
@@ -808,6 +926,9 @@ class BookingFlow extends Component
                 'voucher_applied' => $this->appliedVoucher !== null,
             ]);
 
+            // ✅ Clear booking progress from session after successful payment creation
+            $this->clearBookingProgress();
+
             // ✅ Dispatch event to trigger Snap Modal
             $this->dispatch(
                 'open-snap-modal',
@@ -844,6 +965,9 @@ class BookingFlow extends Component
     {
         if ($step < $this->currentStep) {
             $this->currentStep = $step;
+
+            // ✅ Save progress to session when navigating back
+            $this->saveBookingProgress();
         }
     }
 
@@ -855,12 +979,18 @@ class BookingFlow extends Component
         }
 
         $this->currentStep = 3;
+
+        // ✅ Save progress to session
+        $this->saveBookingProgress();
     }
 
     public function nextToSummary()
     {
         $this->calculateAddonsTotal();
         $this->currentStep = 4;
+
+        // ✅ Save progress to session
+        $this->saveBookingProgress();
     }
 
     // ============================================

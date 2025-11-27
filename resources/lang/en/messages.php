@@ -16,7 +16,7 @@ return [
     'booking_now' => 'Book Now',
     'login' => 'See Deals',
     'bahasa' => 'EN',
-    
+
     // Hero Section
     'badge' => '🌟 Best Coffee Tourism Destination',
     'headline_part1' => 'Experience the Authentic',
@@ -43,7 +43,7 @@ return [
 
     //explore pupuan
     'explore_title' => 'EXPLORE PUPUAN',
-    'explore_heading' => 'Explore Hidden Gem <span class="text-primary">Pupuan</span>',
+    'explore_heading' => 'Explore Hidden Gem <span class="text-secondary">Pupuan</span>',
     'explore_description' => 'Enjoy a variety of stunning natural and cultural destinations around Pupuan. Offering an unforgettable experience.',
     'dest_air_terjun' => 'Sekumpul Waterfall',
     'dest_air_terjun_time' => '15 minutes',
@@ -86,7 +86,7 @@ return [
     'location_heading' => 'Our Location',
 
     //paket wisata home
-    'popular_packages_heading' => 'Popular Travel <span class="text-primary">Packages</span>',
+    'popular_packages_heading' => 'Popular Travel <span class="text-secondary">Packages</span>',
     'popular_packages_description' => 'The best choices for an unforgettable coffee experience at Kampung Kopi Camp',
 
     //article home
@@ -95,17 +95,17 @@ return [
 
     // ========halaman about========
     'about_hero_small' => 'Who We Are',
-    'about_hero_heading' => 'About Kampung <span class="text-primary">Kopi Camp</span>',
+    'about_hero_heading' => 'About Kampung <span class="text-secondary">Kopi Camp</span>',
     'about_hero_description' => 'Our journey in bringing authentic coffee, culture, and tourism experiences in the heart of Pupuan, Bali.',
     'about_highlight_small' => '─ FROM VILLAGE TO THE WORLD',
-    'about_highlight_heading' => 'More Than Just a <span class="text-primary">Coffee Destination</span>',
+    'about_highlight_heading' => 'More Than Just a <span class="text-secondary">Coffee Destination</span>',
     'about_highlight_description' => 'More than just a stopover, Kampung Kopi Camp is an experience — where Balinese culture, coffee, and village atmosphere come together.',
     'about_story_small' => '─ ABOUT US',
-    'about_story_heading' => 'The Story Behind <span class="text-primary">Kampung Kopi</span>',
+    'about_story_heading' => 'The Story Behind <span class="text-secondary">Kampung Kopi</span>',
     'about_story_subheading' => 'Our journey from a simple homestay to a trusted coffee tourism destination',
     'about_story_paragraph1' => 'Kampung Kopi Camp was born from a deep love for the beauty of Pupuan and the richness of Balinese coffee traditions. Started as a simple homestay in 2018, we dreamed of creating a tourism experience that is not only enjoyable but also meaningful for our guests.',
     'about_story_paragraph2' => 'Pupuan, with its stunning terraced rice fields and fertile coffee plantations, offers a charm different from other Bali tourist destinations. Here we built a vision to create a space where travelers can experience the authentic life of the local community.',
-    'value_heading' => 'Our Defining <span class="text-primary">Difference</span>',
+    'value_heading' => 'Our Defining <span class="text-secondary">Difference</span>',
     'value_description' => 'Our commitment to delivering an authentic, sustainable, and meaningful tourism experience.',
     'value_card1_title' => 'Authentic Coffee',
     'value_card1_desc' => 'From bean to cup, we serve genuine Pupuan coffee harvested directly from local farms.',
@@ -152,7 +152,7 @@ return [
     'about_explore_paragraph1' => 'Pupuan, Bali is more than just a destination. Here, you’ll discover a perfect blend of natural beauty, quality coffee, and authentic local culture. Every journey brings you closer to nature as well as the warm hospitality of the Balinese community.',
     'about_explore_paragraph2' => 'From trekking through terraced rice fields, visiting coffee plantations, to experiencing the friendliness of local residents — everything is designed to offer a <em>natural, authentic, and unforgettable</em> experience.',
 
-    'why_explore_title' => 'Why Should <span class="text-primary">Explore Pupuan?</span>',
+    'why_explore_title' => 'Why Should <span class="text-secondary">Explore Pupuan?</span>',
     'why_explore_desc' => 'Pupuan offers more than just a destination. From scenic landscapes and signature coffee to warm local culture — everything blends into an unforgettable experience.',
     'card1_title' => 'Stunning Nature',
     'card1_desc' => 'Green mountain views, terraced rice fields, and refreshing cool air to calm the soul.',
@@ -231,7 +231,7 @@ return [
 
     //paket wisata
     'paket_hero_subheading' => 'Explore the Beauty of Pupuan',
-    'paket_hero_title' => 'Tour Packages <span class="text-primary">Kampung Kopi Camp</span>',
+    'paket_hero_title' => 'Tour Packages <span class="text-secondary">Kampung Kopi Camp</span>',
     'paket_hero_description' => 'Enjoy a unique experience from coffee tours, homestays, to authentic Balinese local culture with Kampung Kopi Camp.',
     'filter_category' => 'all package',
 
@@ -248,7 +248,7 @@ return [
     'step5_title' => 'Show Tickets',
     'step5_desc' => 'Show the tickets at the location and enjoy your travel experience',
 
-    'custom_package_heading' => 'Need a <span class="text-primary">Custom</span> Package?',
+    'custom_package_heading' => 'Need a <span class="text-secondary">Custom</span> Package?',
     'custom_package_description' => 'We can tailor travel packages according to your needs and preferences',
     'custom_package_button' => 'Contact for Custom Package',
 
@@ -264,7 +264,7 @@ return [
     'checkout_time' => 'Check-out is until :time',
     'show_reservation_proof' => 'Please show your reservation proof upon arrival.',
     'detail_paket_subheading' => 'Tour Package Details',
-    'detail_paket_title' => 'Kampung Kopi <span class="text-primary">Camp - Pupuan</span>',
+    'detail_paket_title' => 'Kampung Kopi <span class="text-secondary">Camp - Pupuan</span>',
     'detail_paket_description' => 'Discover complete package information including price, facilities, number of participants, and exciting activities you can enjoy.',
 
 
@@ -280,16 +280,16 @@ return [
     'footer_hours_weekdays' => 'Mon - Fri: 08:00 - 21:00',
     'footer_hours_weekend' => 'Sat - Sun: 09:00 - 23:00',
     'footer_hours_holiday' => 'National Holidays: Closed',
-    'footer_copyright' => '© 2024 Kampung Kopi Camp. All rights reserved.',
+    'footer_copyright' => '© 2025 Kampung Kopi Camp. Powered By Bombora.',
     'footer_privacy' => 'Privacy Policy',
     'footer_terms' => 'Terms of Service',
 
     //article detail
     'article_detail' => 'Article Details',
-    'article_title' => 'Inspiration from <span class="text-primary">Kampung Kopi Camp</span>',
+    'article_title' => 'Inspiration from <span class="text-secondary">Kampung Kopi Camp</span>',
     'article_description' => 'Dive deeper into the journeys, stories, and inspiring experiences from Kampung Kopi Camp in Pupuan, Bali.',
     'article_type' => 'general',
-    
+
 
     //explore pupuan detail
 
@@ -297,7 +297,7 @@ return [
     'blematung_header_category' => 'Waterfall | Explore Pupuan',
     'blematung_header_title' => 'Blemantung Waterfall',
     'blematung_header_subtitle' => 'Hidden beauty with abundant water discharge, surrounded by lush coffee plantations.',
-    'why_special_title' => 'Why Is Blemantung <span class="text-primary">Special?</span>',
+    'why_special_title' => 'Why Is Blemantung <span class="text-secondary">Special?</span>',
     'special_1_title' => 'Tiered Waterfall',
     'special_1_desc' => 'Consists of several levels of waterfall with a total magnificent height reaching 50 meters.',
     'special_2_title' => 'Surrounded by Coffee Plantations',
@@ -308,7 +308,7 @@ return [
     'special_4_desc' => 'There is a natural pool below the waterfall, safe for a short dip and enjoying the clarity of the water.',
     'quote_blematung_text' => 'In Blemantung, time seems to stop. Only the roar of the water breaks the silence, reminding us of the eternal power and beauty of Pupuan\'s nature.',
     'quote_blematung_source' => 'Explore Pupuan Narrative',
-    'trekking_title' => 'Trekking to <span class="text-primary">Blemantung Waterfall</span>',
+    'trekking_title' => 'Trekking to <span class="text-secondary">Blemantung Waterfall</span>',
     'trekking_medan_title' => 'Travel Terrain',
     'trekking_medan_desc' => 'The journey from the parking area to Blemantung Waterfall takes about 10 to 15 minutes. The terrain is dominated by stone steps, and some dirt paths surrounded by shady trees.',
     'trekking_difficulty_title' => 'Difficulty Level',
@@ -327,7 +327,7 @@ return [
     'tagline_agro' => 'Agrotourism | Explore Pupuan',
     'title_durian' => 'Enjoying Pupuan Durian',
     'subtitle_durian' => "Taste fresh durian straight from the tree in Mundeh Kangin Village, while learning more about how this 'King of Fruits' is cultivated.",
-    'section_title_durian' => 'Durian Experience <span class="text-primary">in Pupuan</span>',
+    'section_title_durian' => 'Durian Experience <span class="text-secondary">in Pupuan</span>',
     'point1_title_durian' => 'Cultivation Education',
     'point1_desc_durian' => 'Visitors can learn first-hand the cultivation stages practiced by local farmers.',
     'point2_title_durian' => 'Best Seed Selection',
@@ -337,7 +337,7 @@ return [
     'point4_title_durian' => 'Fruiting Season',
     'point4_desc_durian' => 'Durian trees start blooming around 8 years old, usually during the dry season.',
     'durian_quote' => 'The best way to enjoy durian is to understand the farmers’ dedication in planting, nurturing, and harvesting this delicious fruit.',
-    'durian_step_title' => 'Durian Cultivation <span class="text-primary">Stages</span>',
+    'durian_step_title' => 'Durian Cultivation <span class="text-secondary">Stages</span>',
     'durian_step1_title' => 'Initial Planting Process',
     'durian_step1_desc' => 'The first essential step is selecting the right durian seeds, followed by washing and drying them properly.',
     'durian_step1_item1' => 'Seed Selection:',
@@ -357,7 +357,7 @@ return [
     'hero_desc' => 'Watch and learn the traditional process of tapping sap from palm trees and transforming it into sweet solid palm sugar in Pupuan.',
     'gula_hero_title' => 'Pupuan Palm Sugar',
     'gula_hero_desc' => 'Watch and learn the traditional process of tapping sap from palm trees and transforming it into sweet solid palm sugar in Pupuan.',
-    'gula_judul_section' =>'Pupuan Palm <span class="text-primary">Sugar Production</span>',
+    'gula_judul_section' => 'Pupuan Palm <span class="text-secondary">Sugar Production</span>',
     'gula_poin1_judul' => 'Tapping Technique',
     'gula_poin1_text' => 'The tapping process begins with hitting the flower stalk to soften the sap flow channels.',
     'gula_poin2_judul' => 'Aromatic Indicator',
@@ -367,7 +367,7 @@ return [
     'gula_poin4_judul' => 'Natural Packaging',
     'gula_poin4_text' => 'Palm sugar blocks are wrapped using natural materials such as banana leaves, betel sheaths, and teak leaves.',
     'gula_quote_desc' => 'Behind the sweetness of Pupuan palm sugar lies a long story of tradition, patience, and local wisdom in transforming nature’s gifts.',
-    'gula_proses_section_title' => 'Tapping and <span class="text-primary">Processing Stage</span>',
+    'gula_proses_section_title' => 'Tapping and <span class="text-secondary">Processing Stage</span>',
     'gula_proses1_title' => 'From the Arenga Palm',
     'gula_proses1_desc' => 'Sap is collected from the flower stalk of the arenga palm and can continue for 2 to 3 months.',
     'gula_proses1_target_title' => 'Target:',
@@ -385,7 +385,7 @@ return [
     'buddha_location' => 'Dharma Giri Temple | Pupuan, Tabanan',
     'buddha_title' => 'Reclining Buddha Statue',
     'buddha_description' => 'The stunning Reclining Buddha at Dharma Giri Temple stands magnificently in its pure white form, surrounded by a serene natural atmosphere.',
-    'vihara_why_title' => 'Why Dharma Giri <span class="text-primary">Temple is Special?</span>',
+    'vihara_why_title' => 'Why Dharma Giri <span class="text-secondary">Temple is Special?</span>',
     'vihara_poin1_title' => 'Magnificent Statue',
     'vihara_poin1_desc' => 'A large-scale statue with a majestic look and a clean white appearance.',
     'vihara_poin2_title' => 'Parinirvana Pose',
@@ -395,7 +395,7 @@ return [
     'vihara_poin4_title' => 'Tourist Attraction',
     'vihara_poin4_desc' => 'Visited by Buddhists, local communities, domestic and international tourists.',
     'giri_desc_quote' => 'Vihara Dharma Giri is not just a place of worship, but also home to the breathtaking Sleeping Buddha Statue that brings peace and serenity from the nature of Pupuan.',
-    'guide_title' => 'Vihara Dharma Giri <span class="text-primary">Visitor Guide</span>',
+    'guide_title' => 'Vihara Dharma Giri <span class="text-secondary">Visitor Guide</span>',
     'akses_judul' => 'Access & Location',
     'akses_deskripsi' => 'Vihara Dharma Giri is located on Jalan Raya Pupuan, Pupuan District, Tabanan Regency. Surrounded by lush greenery that creates a peaceful and cool atmosphere.',
     'lokasi_tepat' => 'Exact Location:',
@@ -413,7 +413,7 @@ return [
     'kopi_subtitle' => 'Agrotourism | Explore Pupuan',
     'kopi_judul' => 'Robusta Coffee Roasting',
     'kopi_deskripsi' => 'Witness the journey of coffee beans firsthand, from picking in Robusta plantations to the roasting process that creates the rich taste of Pupuan’s signature coffee.',
-    'kopi_keistimewaan_judul' => 'The Uniqueness of Pupuan <span class="text-primary">Robusta Coffee</span>',
+    'kopi_keistimewaan_judul' => 'The Uniqueness of Pupuan <span class="text-secondary">Robusta Coffee</span>',
     'kopi_poin1_judul' => 'Main Source of Income',
     'kopi_poin1_desc' => 'Coffee plantations are the primary source of livelihood for local farmers in Pupuan.',
     'kopi_poin2_judul' => 'From Farm to Cup',
@@ -423,7 +423,7 @@ return [
     'kopi_poin4_judul' => 'Authentic Robusta Coffee',
     'kopi_poin4_desc' => 'Robusta coffee with a strong, delicious, and authentic Pupuan-specific taste.',
     'kopi_quote' => 'Every sip of Pupuan coffee carries the cool mountain aroma, the farmers’ hard work, and the enduring touch of tradition.',
-    'kopi_panduan_judul' => 'Coffee Agrotourism <span class="text-primary">Guide</span>',
+    'kopi_panduan_judul' => 'Coffee Agrotourism <span class="text-secondary">Guide</span>',
     'kopi_panen_judul' => 'Harvesting and Post-Harvest',
     'kopi_panen_desc' => 'Pupuan is known as a robusta coffee center. Visitors can see farmers harvesting ripe coffee cherries.',
     'kopi_pemetikan_judul' => 'Harvesting:',
@@ -442,7 +442,7 @@ return [
     'terassering_section_tagline' => 'Agrowisata | Explore Pupuan',
     'terassering_title' => 'Trekking Terasering Belimbing',
     'terassering_desc' => 'Explore the world-renowned terraced rice fields with exciting trekking and cycling routes, and enjoy the refreshing beauty of Singsing Sade Waterfall.',
-    'belimbing_section_title' => 'Natural Wonders of <span class="text-primary">Belimbing Village</span>',
+    'belimbing_section_title' => 'Natural Wonders of <span class="text-secondary">Belimbing Village</span>',
     'belimbing_poin1_judul' => 'World-Renowned Terraces',
     'belimbing_poin1_desc' => 'The beauty of Belimbing’s terraced rice fields has gained international recognition.',
     'belimbing_poin2_judul' => '460 Hectares of Land',
@@ -451,7 +451,7 @@ return [
     'belimbing_poin3_desc' => 'The irrigation of the terraced fields is managed traditionally and divided into six Subak systems.',
     'belimbing_poin4_judul' => 'Singsing Sade Waterfall',
     'belimbing_poin4_desc' => 'Beyond the rice fields, Belimbing features the refreshing Singsing Sade Waterfall as a natural attraction.',
-    'trekking_section_title' => 'Trekking Guide & Rice <span class="text-primary">Field Etiquette</span>',
+    'trekking_section_title' => 'Trekking Guide & Rice <span class="text-secondary">Field Etiquette</span>',
     'trekking_card1_title' => 'Recommended Activities',
     'trekking_card1_desc' => 'Belimbing trekking trails offer wide rice field paths. The best views are during planting season or before harvest.',
     'trekking_trekking_title' => 'Trekking:',

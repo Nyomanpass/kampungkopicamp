@@ -22,10 +22,10 @@ class SiteSettingSeeder extends Seeder
             [
                 'key' => 'contact_info',
                 'value' => [
-                    'whatsapp' => '6281234567890',
+                    'whatsapp' => '6282340086554',
                     'email' => 'info@kampungkopicamp.com',
-                    'phone' => '+62 812-3456-7890',
-                    'address' => 'Jl. Pupuan, Tabanan, Bali',
+                    'phone' => '+62 823-4008-6554',
+                    'address' => 'Jl. Raya Pupuan, Batungsel, Kec. Pupuan, Kabupaten Tabanan, Bali 82163',
                 ],
                 'description' => 'Informasi kontak website',
                 'is_active' => true,
@@ -33,7 +33,7 @@ class SiteSettingSeeder extends Seeder
             [
                 'key' => 'google_maps',
                 'value' => [
-                    'embed_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.604370894168!2d115.03691309999999!3d-8.342048799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1760613519348!5m2!1sid!2sid',
+                    'embed_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3947.604370894168!2d115.03691309999999!3d-8.342048799999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1763989335362!5m2!1sid!2sid',
                 ],
                 'description' => 'Google Maps embed link untuk lokasi',
                 'is_active' => true,
@@ -41,10 +41,10 @@ class SiteSettingSeeder extends Seeder
             [
                 'key' => 'social_media',
                 'value' => [
-                    'facebook' => '',
-                    'instagram' => '',
-                    'tiktok' => '',
-                    'youtube' => '',
+                    'facebook' => 'https://www.facebook.com/kampungkopicamp',
+                    'instagram' => 'https://www.instagram.com/kampungkopi_camp',
+                    'tiktok' => 'https://www.tiktok.com/@kampungkopi_camp',
+                    'youtube' => 'https://www.youtube.com/@kampungkopicamp',
                 ],
                 'description' => 'Link media sosial',
                 'is_active' => true,
@@ -99,6 +99,7 @@ class SiteSettingSeeder extends Seeder
                 'description' => 'Peraturan dan kebijakan tempat',
                 'is_active' => true,
             ],
+
         ];
 
         foreach ($settings as $setting) {

@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>KKC - Dashboard</title>
+    <link rel="icon" type="image/png" href="/images/simpleLogo.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     @livewireStyles
@@ -18,7 +19,8 @@
         class="border-2 bg-white border-light-primary/50 w-72 hidden lg:block h-max py-5 rounded-lg sticky top-6 mr-4">
         <!-- Header -->
         <div class="px-5 flex items-center justify-start gap-4">
-            <div class="size-14 rounded-full bg-primary"></div>
+            <div class="size-14 rounded-full bg-light-primary text-white flex items-center justify-center">
+                {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}</div>
             <div class="">
                 <h2 class="font-semibold text-xl">{{ auth()->user()->name }}</h2>
                 <p class="text-sm text-gray-600">{{ auth()->user()->role }}</p>

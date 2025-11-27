@@ -11,7 +11,7 @@
         </div>
 
         <!-- Gradient Overlay -->
-         <div class="absolute inset-0 bg-black/50"></div>
+        <div class="absolute inset-0 bg-black/50"></div>
 
         <!-- Content -->
         <div class="relative z-10 px-6 max-w-4xl mx-auto" data-aos="fade-up" data-aos-delay="300">
@@ -26,17 +26,9 @@
                     {{ $lang === 'id' ? 'Artikel' : 'Articles' }}
                 </a>
                 <span>/</span>
-                <span class="text-primary font-semibold">{{ $texts['article_detail'] ?? 'Detail' }}</span>
+                <span class="text-secondary font-semibold">{{ $texts['article_detail'] ?? 'Detail' }}</span>
             </div>
 
-            <!-- Category Badge -->
-            @if ($blog->category)
-                <div
-                    class="inline-block bg-primary/95 text-white px-4 py-2 rounded-full text-sm font-bold mb-4">
-                    <i class="fas fa-bookmark mr-2"></i>
-                    {{ ucfirst($blog->category) }}
-                </div>
-            @endif
 
             <!-- Title -->
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight" data-aos="fade-up" data-aos-delay="600">
@@ -47,17 +39,17 @@
             <div class="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-200" data-aos="fade-up"
                 data-aos-delay="800">
                 <span class="flex items-center gap-2">
-                    <i class="far fa-calendar text-primary"></i>
+                    <i class="far fa-calendar text-secondary"></i>
                     {{ $blog->published_at ? $blog->published_at->format('d M Y') : $blog->created_at->format('d M Y') }}
                 </span>
                 <span>•</span>
                 <span class="flex items-center gap-2">
-                    <i class="far fa-user text-primary"></i>
+                    <i class="far fa-user text-secondary"></i>
                     {{ $blog->author ? $blog->author->name : 'Admin' }}
                 </span>
                 <span>•</span>
                 <span class="flex items-center gap-2">
-                    <i class="far fa-eye text-primary"></i>
+                    <i class="far fa-eye text-secondary"></i>
                     {{ $blog->views ?? 0 }} {{ $lang === 'id' ? 'views' : 'views' }}
                 </span>
             </div>
@@ -66,7 +58,7 @@
 
 
     {{-- Main Content --}}
-    <div class="container max-w-7xl mx-auto px-6 py-12 grid px-6 lg:px-14 py-16 lg:grid-cols-3 gap-10">
+    <div class="container max-w-7xl mx-auto grid px-6 lg:px-14 py-16 lg:grid-cols-3 gap-10">
 
         {{-- Article Content --}}
         <article class="lg:col-span-2">
@@ -82,7 +74,7 @@
 
                 <div class="p-5 lg:p-8">
                     <!-- Title -->
-                    <h1 class="text-3xl md:text-4xl font-bold text-secondary mb-6 leading-tight">
+                    <h1 class="text-3xl md:text-4xl font-bold text-primary mb-6 leading-tight">
                         {{ $blog->title }}
                     </h1>
 
@@ -109,21 +101,21 @@
 
             {{-- Share Section --}}
             <div class="bg-white rounded-2xl shadow-lg p-6 mb-8" data-aos="fade-up">
-                <h3 class="text-lg font-bold text-secondary mb-4 flex items-center gap-2">
-                    <i class="fas fa-share-alt text-primary"></i>
+                <h3 class="text-lg font-bold text-primary mb-4 flex items-center gap-2">
+                    <i class="fas fa-share-alt text-secondary"></i>
                     {{ $lang === 'id' ? 'Bagikan Artikel' : 'Share Article' }}
                 </h3>
                 <div class="flex flex-wrap gap-3">
                     <a href="https://www.facebook.com/sharer/sharer.php?u={{ urlencode(url()->current()) }}"
                         target="_blank"
-                        class="flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition">
+                        class="flex items-center gap-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition">
                         <i class="fab fa-facebook-f"></i>
                         <span>Facebook</span>
                     </a>
                     <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($blog->title) }}"
                         target="_blank"
                         class="flex items-center gap-2 px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition">
-                        <i class="fab fa-twitter"></i>
+                        <i class="fab fa-x-twitter"></i>
                         <span>Twitter</span>
                     </a>
                     <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . url()->current()) }}"
@@ -146,8 +138,8 @@
         <aside class="space-y-8">
             <!-- Latest Articles -->
             <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-6" data-aos="fade-up" data-aos-delay="200">
-                <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
-                    <div class="w-1 h-8 bg-primary rounded-full"></div>
+                <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-2">
+                    <div class="w-1 h-8 bg-secondary rounded-full"></div>
                     {{ $lang === 'id' ? 'Artikel Terbaru' : 'Latest Articles' }}
                 </h2>
 

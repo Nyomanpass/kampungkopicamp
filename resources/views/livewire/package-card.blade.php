@@ -1,27 +1,33 @@
 <div class="bg-white rounded-lg border border-gray-200 hover:shadow-md transition-all overflow-hidden">
     {{-- Because she competes with no one, no one can compete with her. --}}
     <a href="{{ route('package.detail', $product->slug) }}">
-        <div class="h-48 overflow-hidden">
-            <img src="{{ $product->thumbnail_url }}" alt="{{ $product->name }}"
-                class="w-full h-full object-cover hover:scale-105 transition-transform duration-300 bg-gray-200">
+        <div class="bg-gray-100 aspect-[4/3] overflow-hidden">
+            <img src="{{ $product->images[0] }}" alt="{{ $product->name }}" alt=""
+                class=" w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 ">
         </div>
-        <div class="p-4">
-            <h3 class="text-lg font-semibold mb-2">{{ $product->name }}</h3>
-            <p class="text-gray-600 mb-4">{{ Str::limit($product->description, 100) }}</p>
-
+        <div class="h-auto p-4 flex flex-col justify-between">
             <div>
-                <span class="inline-block bg-green-100 text-green-800 text-xs px-2 py-1 rounded-full mr-2">
-                    {{ $product->availability->count() }} Tersedia
-                </span>
-                <span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">
-                    Durasi: {{ $product->duration }} Hari
-                </span>
+                <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
+                <div class="flex gap-2 text-xs">
+                    <span class="flex items-center gap-1">
+                        <i class="fas fa-users"></i>
+                        {{ $product->capacity_per_unit ?? 1 }} orang
+                    </span>
+                    <span class="flex items-center gap-1">
+                        <i class="fas fa-clock"></i>
+                        per sesi
+                    </span>
+                </div>
             </div>
-            <div class="flex items-center justify-between mt-10">
-                <span class="text-light-primary font-bold text-lg">Rp
-                    {{ number_format($product->price, 0, ',', '.') }}</span>
-                <span class="text-gray-500 text-sm">/ paket</span>
+
+            <div class="flex flex-col items-end mb-2 mt-7">
+                <p class="text-sm">Mulai dari</p>
+                <p class="text-primary text-xl font-bold">
+                    Rp {{ number_format($product->price, 0, ',', '.') }}
+                </p>
             </div>
+
+
         </div>
     </a>
 </div>

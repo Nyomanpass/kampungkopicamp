@@ -33,10 +33,10 @@ class Footer extends Component
 
         // Load Social Media
         $this->socialMedia = SiteSetting::get('social_media', [
-            'facebook' => '',
-            'instagram' => '',
             'tiktok' => '',
             'youtube' => '',
+            'facebook' => '',
+            'instagram' => '',
         ]);
     }
 

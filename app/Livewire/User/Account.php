@@ -7,6 +7,7 @@ use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SiteSetting;
 
 class Account extends Component
 {
@@ -18,13 +19,39 @@ class Account extends Component
     public $new_password;
     public $new_password_confirmation;
 
+    public $contactInfo;
+    public $socialMedia;
+
     public function mount()
     {
         $user = Auth::user();
         $this->name = $user->name;
         $this->email = $user->email;
         $this->phone = $user->phone;
+
+        $this->loadSettings();
     }
+
+
+    private function loadSettings()
+    {
+        // Load Contact Info
+        $this->contactInfo = SiteSetting::get('contact_info', [
+            'whatsapp' => '',
+            'email' => '',
+            'phone' => '',
+            'address' => '',
+        ]);
+
+        // Load Social Media
+        $this->socialMedia = SiteSetting::get('social_media', [
+            'tiktok' => '',
+            'youtube' => '',
+            'facebook' => '',
+            'instagram' => '',
+        ]);
+    }
+
 
     public function updateProfile()
     {

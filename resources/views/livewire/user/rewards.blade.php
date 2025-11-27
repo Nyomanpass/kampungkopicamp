@@ -103,45 +103,96 @@
 
     {{-- Dashboard Vouchers Section --}}
     @if ($dashboardVouchers->count() > 0)
-        <div class="mb-8">
+        <div class="mb-20">
             <h3 class="font-semibold text-gray-900 mb-4">Voucher untuk Kamu</h3>
             <div class="space-y-5">
                 @foreach ($dashboardVouchers as $voucher)
                     <div>
                         <div
-                            class="bg-white rounded-lg border border-gray-100 p-4 flex items-center gap-4 shadow-sm hover:shadow-md transition">
-                            <div class="flex-none">
-                                <div
-                                    class="w-16 h-16 rounded-lg bg-light-primary text-secondary flex items-center justify-center font-semibold text-lg">
-                                    @if ($voucher->type === 'percentage')
-                                        <i class="fas fa-percent"></i>
+                            class="bg-white rounded-lg border border-gray-100 p-4 flex flex-col items-center gap-2 shadow-sm hover:shadow-md transition">
+                            <div class="flex gap-4  items-center justify-between w-full">
+                                <div class="flex gap-4 w-full">
+
+                                    <div class="flex-none ">
+                                        <div
+                                            class="w-16 h-16 rounded-lg bg-secondary text-white flex items-center justify-center font-semibold text-lg">
+                                            @if ($voucher->type === 'percentage')
+                                                <i class="fas fa-percent"></i>
+                                            @else
+                                                <i class="fas fa-tag"></i>
+                                            @endif
+                                        </div>
+                                    </div>
+
+                                    <div class="flex-1 min-w-0">
+                                        <div class="flex items-start justify-between gap-4">
+                                            <div class="min-w-0">
+                                                <p class="font-medium text-gray-900 truncate">{{ $voucher->name }}</p>
+                                                <p class="text-xs text-gray-500 mt-1">{{ $voucher->description }}</p>
+                                            </div>
+                                        </div>
+
+                                        <div class="mt-3 flex items-center gap-3 flex-wrap">
+                                            <div
+                                                class="bg-light-secondary text-gray-800 px-3 py-1 rounded-md text-sm font-mono">
+                                                KODE: {{ $voucher->code }}
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="flex flex-col items-end gap-2">
+                                    @php
+                                        $hasRedeemed = $this->hasUserRedeemed($voucher);
+                                    @endphp
+
+                                    @if ($hasRedeemed)
+                                        <button disabled
+                                            class="inline-flex items-center justify-center px-4 py-4 rounded-md bg-gray-300 text-gray-500 cursor-not-allowed text-sm font-medium"
+                                            type="button" title="Anda sudah menggunakan voucher ini">
+                                            <i class="fas fa-check lg:mr-2"></i>
+                                            <span class="hidden lg:inline">Sudah Digunakan</span>
+                                        </button>
                                     @else
-                                        <i class="fas fa-tag"></i>
+                                        <button
+                                            @click="
+                                            const code = '{{ $voucher->code }}';
+                                            if (navigator.clipboard && navigator.clipboard.writeText) {
+                                                navigator.clipboard.writeText(code).then(() => {
+                                                    $dispatch('copied');
+                                                }).catch(err => {
+                                                    console.error('Failed to copy:', err);
+                                                });
+                                            } else {
+                                                // Fallback method for older browsers or non-secure contexts
+                                                const textarea = document.createElement('textarea');
+                                                textarea.value = code;
+                                                textarea.style.position = 'fixed';
+                                                textarea.style.opacity = '0';
+                                                document.body.appendChild(textarea);
+                                                textarea.select();
+                                                try {
+                                                    document.execCommand('copy');
+                                                    $dispatch('copied');
+                                                } catch (err) {
+                                                    console.error('Fallback copy failed:', err);
+                                                    alert('Gagal menyalin kode voucher');
+                                                }
+                                                document.body.removeChild(textarea);
+                                            }
+                                        "
+                                            class="inline-flex items-center justify-center px-4 py-4 rounded-md bg-light-primary text-white hover:bg-light-primary/90 transition text-sm font-medium"
+                                            type="button">
+                                            <i class="fas fa-copy lg:mr-2"></i>
+                                            <span class="hidden lg:inline">Salin Kode</span>
+                                        </button>
                                     @endif
                                 </div>
+
                             </div>
-
-                            <div class="flex-1 min-w-0">
-                                <div class="flex items-start justify-between gap-4">
-                                    <div class="min-w-0">
-                                        <p class="font-medium text-gray-900 truncate">{{ $voucher->name }}</p>
-                                        <p class="text-xs text-gray-500 mt-1">{{ $voucher->description }}</p>
-                                    </div>
-                                </div>
-
-                                <div class="mt-3 flex items-center gap-3 flex-wrap">
-                                    <div class="bg-secondary text-gray-800 px-3 py-1 rounded-md text-sm font-mono">
-                                        KODE: {{ $voucher->code }}
-                                    </div>
-                                    @if ($voucher->type === 'percentage')
-                                        <span class="text-xs font-semibold text-primary">Diskon
-                                            {{ $voucher->value }}%</span>
-                                    @else
-                                        <span class="text-xs font-semibold text-primary">Diskon Rp
-                                            {{ number_format($voucher->value, 0, ',', '.') }}</span>
-                                    @endif
-                                </div>
-
+                            <div class="w-full">
                                 {{-- Progress bar --}}
                                 @php
                                     $remaining = $this->getRemainingUses($voucher);
@@ -153,50 +204,28 @@
                                             <div class="bg-light-primary h-2 rounded-full transition-all"
                                                 style="width: {{ $percentage }}%;"></div>
                                         </div>
-                                        <p class="text-xs text-gray-500 mt-1">{{ $remaining }} voucher tersisa</p>
+                                        <div class="flex justify-between mt-1">
+
+                                            @if ($voucher->type === 'percentage')
+                                                <span class="text-xs font-semibold text-primary">Diskon
+                                                    {{ $voucher->value }}%</span>
+                                            @else
+                                                <span class="text-xs font-semibold text-primary">Diskon Rp
+                                                    {{ number_format($voucher->value, 0, ',', '.') }}</span>
+                                            @endif
+
+                                            <p class="text-xs text-gray-500 ">{{ $remaining }} voucher tersisa
+                                            </p>
+
+                                        </div>
                                     </div>
                                 @else
                                     <div class="mt-3">
                                         <p class="text-xs text-gray-500">Tidak terbatas</p>
+
                                     </div>
                                 @endif
                             </div>
-
-                            <div class="flex flex-col items-end gap-2">
-                                <button
-                                    @click="
-                                        const code = '{{ $voucher->code }}';
-                                        if (navigator.clipboard && navigator.clipboard.writeText) {
-                                            navigator.clipboard.writeText(code).then(() => {
-                                                $dispatch('copied');
-                                            }).catch(err => {
-                                                console.error('Failed to copy:', err);
-                                            });
-                                        } else {
-                                            // Fallback method for older browsers or non-secure contexts
-                                            const textarea = document.createElement('textarea');
-                                            textarea.value = code;
-                                            textarea.style.position = 'fixed';
-                                            textarea.style.opacity = '0';
-                                            document.body.appendChild(textarea);
-                                            textarea.select();
-                                            try {
-                                                document.execCommand('copy');
-                                                $dispatch('copied');
-                                            } catch (err) {
-                                                console.error('Fallback copy failed:', err);
-                                                alert('Gagal menyalin kode voucher');
-                                            }
-                                            document.body.removeChild(textarea);
-                                        }
-                                    "
-                                    class="inline-flex items-center justify-center px-4 py-2 rounded-md bg-light-primary text-white hover:bg-light-primary/90 transition text-sm font-medium"
-                                    type="button">
-                                    <i class="fas fa-copy lg:mr-2"></i>
-                                    <span class="hidden lg:inline">Salin Kode</span>
-                                </button>
-                            </div>
-
 
                         </div>
                         <div class="flex gap-1 mt-2 flex-wrap">
@@ -230,7 +259,7 @@
             <div class="flex flex-col items-center gap-3">
                 <i class="fas fa-ticket text-gray-300 text-5xl"></i>
                 <p class="font-semibold text-gray-600">Belum ada voucher tersedia</p>
-                <p class="text-sm text-gray-500">Cek kembali nanti untuk voucher menarik!</p>
+                <p class="text-sm text-gray-500">Temukan voucher tersembunyi yang menarik di media sosial kami!</p>
             </div>
         </div>
     @endif

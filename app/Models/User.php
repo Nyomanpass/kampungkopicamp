@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Notifications\ResetPasswordNotification;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -107,7 +109,7 @@ class User extends Authenticatable
     public function canBeDeleted(): bool
     {
         // Tidak bisa hapus admin yang sedang login
-        if ($this->id === auth()->id()) {
+        if ($this->id === Auth::id()) {
             return false;
         }
 
@@ -129,5 +131,16 @@ class User extends Authenticatable
         if (!$this->is_active) return 'Inactive';
         if ($this->trashed()) return 'Deleted';
         return 'Active';
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }
