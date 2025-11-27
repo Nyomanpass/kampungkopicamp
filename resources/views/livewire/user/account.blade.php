@@ -113,10 +113,12 @@
         </div>
         <div class="pb-4 mb-4 border-b border-gray-200 w-full flex flex-col">
             <p class="font-semibold mb-2">Help</p>
-            <a href="" class="py-2 hover:bg-gray-100"><i class="fas fa-headset mr-3"></i>Customer Service</a>
+            <a href="https://wa.me/{{ $contactInfo['whatsapp'] }}" target="_blank" class="py-2 hover:bg-gray-100"><i
+                    class="fas fa-headset mr-3"></i>Customer Service</a>
             <button @click="showFAQ = true" class="py-2 hover:bg-gray-100 text-left">
                 <i class="fas fa-question-circle mr-3"></i>FAQ
             </button>
+
         </div>
         <a href="{{ route('logout') }}" class="py-2 text-danger lg:hidden"><i class="fas fa-sign-out-alt mr-3"></i>Log
             Out</a>
@@ -459,7 +461,7 @@
                         <p class="text-sm text-gray-600 mb-4">
                             Tim customer service kami siap membantu Anda dengan senang hati.
                         </p>
-                        <a href=""
+                        <a href="https://wa.me/{{ $contactInfo['whatsapp'] }}" target="_blank"
                             class="inline-flex items-center gap-2 px-4 py-2 bg-light-primary text-white rounded-lg hover:bg-light-primary/90 text-sm font-medium">
                             <i class="fas fa-headset"></i>
                             Hubungi Customer Service

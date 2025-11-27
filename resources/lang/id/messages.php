@@ -16,7 +16,7 @@ return [
     'booking_now' => 'Pesan Sekarang',
     'login' => 'Promo Menarik',
     'bahasa' => 'ID',
-    
+
     // Hero Section
     'badge' => '🌟 Destinasi Wisata Kopi Terbaik',
     'headline_part1' => 'Rasakan Petualangan',
@@ -43,7 +43,7 @@ return [
 
     //explore pupuan
     'explore_title' => 'EXPLORE PUPUAN',
-    'explore_heading' => 'Jelajahi Hidden Gem <span class="text-primary">Pupuan</span>',
+    'explore_heading' => 'Jelajahi Hidden Gem <span class="text-secondary">Pupuan</span>',
     'explore_description' => 'Nikmati berbagai destinasi alam dan budaya yang menakjubkan di sekitar Pupuan. menawarkan pengalaman yang tak terlupakan.',
     'dest_air_terjun' => 'Air Terjun Sekumpul',
     'dest_air_terjun_time' => '15 menit',
@@ -86,7 +86,7 @@ return [
     'location_heading' => 'Lokasi Kami',
 
     //paket wisata home
-    'popular_packages_heading' => 'Paket Wisata <span class="text-primary">Populer</span>',
+    'popular_packages_heading' => 'Paket Wisata <span class="text-secondary">Populer</span>',
     'popular_packages_description' => 'Pilihan terbaik untuk pengalaman kopi yang tak terlupakan di Kampung Kopi Camp',
 
     //article home
@@ -96,17 +96,17 @@ return [
 
     //=========halaman about==========
     'about_hero_small' => 'Siapa Kami',
-    'about_hero_heading' => 'Tentang Kampung <span class="text-primary">Kopi Camp</span>',
+    'about_hero_heading' => 'Tentang Kampung <span class="text-secondary">Kopi Camp</span>',
     'about_hero_description' => 'Perjalanan kami dalam menghadirkan pengalaman kopi, budaya, dan wisata autentik di jantung Pupuan, Bali.',
     'about_highlight_small' => '─ DARI DESA UNTUK DUNIA',
-    'about_highlight_heading' => 'Lebih Dari Sekedar <span class="text-primary">Destinasi Kopi</span>',
+    'about_highlight_heading' => 'Lebih Dari Sekedar <span class="text-secondary">Destinasi Kopi</span>',
     'about_highlight_description' => 'Lebih dari sekadar tempat singgah, Kampung Kopi Camp adalah pengalaman — di mana budaya, kopi, dan suasana pedesaan Bali berpadu jadi satu.',
     'about_story_small' => '─ TENTANG KAMI',
-    'about_story_heading' => 'Kisah Dibalik <span class="text-primary">Kampung Kopi</span>',
+    'about_story_heading' => 'Kisah Dibalik <span class="text-secondary">Kampung Kopi</span>',
     'about_story_subheading' => 'Jejak perjalanan kami dari homestay sederhana hingga destinasi wisata kopi terpercaya',
     'about_story_paragraph1' => 'Kampung Kopi Camp lahir dari kecintaan mendalam terhadap keindahan alam Pupuan dan kekayaan tradisi kopi Bali. Dimulai sebagai homestay sederhana di tahun 2018, kami bermimpi menghadirkan pengalaman wisata yang tidak hanya menyenangkan, tetapi juga bermakna bagi para tamu.',
     'about_story_paragraph2' => 'Pupuan, dengan lanskap sawah terasering yang memukau dan perkebunan kopi yang subur, menawarkan pesona yang berbeda dari destinasi wisata Bali lainnya. Di sinilah kami membangun visi untuk menciptakan ruang di mana wisatawan dapat merasakan kehidupan otentik masyarakat lokal.',
-    'value_heading' => 'Keunikan yang <span class="text-primary"> Kami Hadirkan</span>',
+    'value_heading' => 'Keunikan yang <span class="text-secondary"> Kami Hadirkan</span>',
     'value_description' => 'Komitmen kami dalam menghadirkan pengalaman wisata yang autentik, berkelanjutan, dan bermakna.',
     'value_card1_title' => 'Kopi Otentik',
     'value_card1_desc' => 'Dari biji hingga cangkir, kami menyajikan kopi Pupuan asli yang dipetik langsung dari kebun lokal.',
@@ -155,7 +155,7 @@ return [
     'about_explore_paragraph1' => 'Pupuan, Bali bukan hanya sebuah destinasi. Di sini, Anda akan menemukan perpaduan sempurna antara keindahan alam, kopi berkualitas, dan budaya lokal yang autentik. Setiap perjalanan membawa Anda lebih dekat dengan alam sekaligus keramahan masyarakat Bali.',
     'about_explore_paragraph2' => 'Mulai dari trekking di hamparan sawah bertingkat, mengunjungi kebun kopi, hingga merasakan kehangatan penduduk lokal — semuanya dirancang untuk menghadirkan pengalaman yang <em>alami, otentik, dan tak terlupakan</em>.',
 
-    'why_explore_title' => 'Kenapa Harus <span class="text-primary">Explore Pupuan?</span>',
+    'why_explore_title' => 'Kenapa Harus <span class="text-secondary">Explore Pupuan?</span>',
     'why_explore_desc' => 'Pupuan menawarkan lebih dari sekadar destinasi. Dari panorama alam, kopi khas, hingga budaya lokal yang hangat—semua menyatu jadi pengalaman yang tak terlupakan.',
     'card1_title' => 'Alam Memukau',
     'card1_desc' => 'Panorama pegunungan hijau, sawah bertingkat, dan udara sejuk yang menenangkan jiwa.',
@@ -210,7 +210,7 @@ return [
     'footer_hours_weekdays' => 'Senin - Jumat: 08.00 - 21.00',
     'footer_hours_weekend' => 'Sabtu - Minggu: 09.00 - 23.00',
     'footer_hours_holiday' => 'Libur Nasional: Tutup',
-    'footer_copyright' => '© 2024 Kampung Kopi Camp. All rights reserved.',
+    'footer_copyright' => '© 2025 Kampung Kopi Camp. Powered By Bombora.',
     'footer_privacy' => 'Kebijakan Privasi',
     'footer_terms' => 'Syarat & Ketentuan',
 
@@ -252,7 +252,7 @@ return [
 
     //paket wisata
     'paket_hero_subheading' => 'Jelajahi Keindahan Pupuan',
-    'paket_hero_title' => 'Paket Wisata <span class="text-primary">Kampung Kopi Camp</span>',
+    'paket_hero_title' => 'Paket Wisata <span class="text-secondary">Kampung Kopi Camp</span>',
     'paket_hero_description' => 'Nikmati pengalaman unik dari tur kopi, homestay, hingga budaya lokal Bali yang autentik bersama Kampung Kopi Camp.',
     'filter_category' => 'semua paket',
 
@@ -277,7 +277,7 @@ return [
     'step5_desc' => 'Tunjukkan tiket di lokasi dan nikmati pengalaman wisata Anda',
 
     //detail paket
-    'custom_package_heading' => 'Butuh Paket <span class="text-primary">Custom?</span>',
+    'custom_package_heading' => 'Butuh Paket <span class="text-secondary">Custom?</span>',
     'custom_package_description' => 'Kami dapat menyesuaikan paket wisata sesuai dengan kebutuhan dan preferensi Anda',
     'custom_package_button' => 'Hubungi untuk Custom Package',
     'reservation_confirmation_title' => 'Konfirmasi Reservasi',
@@ -285,13 +285,13 @@ return [
     'checkout_time' => 'Check-out maksimal pukul :time',
     'show_reservation_proof' => 'Harap tunjukkan bukti reservasi saat tiba di lokasi.',
     'detail_paket_subheading' => 'Detail Paket Wisata',
-    'detail_paket_title' => 'Kampung Kopi <span class="text-primary">Camp - Pupuan</span>',
+    'detail_paket_title' => 'Kampung Kopi <span class="text-secondary">Camp - Pupuan</span>',
     'detail_paket_description' => 'Temukan detail lengkap paket wisata mulai dari harga, fasilitas, jumlah peserta, hingga pilihan aktivitas seru yang bisa kamu nikmati.',
 
 
     //article detail
     'article_detail' => 'Detail Artikel',
-    'article_title' => 'Cerita dan Inspirasi <span class="text-primary">Kampung Kopi Camp</span>',
+    'article_title' => 'Cerita dan Inspirasi <span class="text-secondary">Kampung Kopi Camp</span>',
     'article_description' => 'Baca lebih dalam tentang perjalanan, kisah, dan pengalaman menarik yang menginspirasi dari Kampung Kopi Camp di Pupuan, Bali.',
     'article_type' => 'umum',
 
@@ -301,7 +301,7 @@ return [
     'blematung_header_category' => 'Air Terjun | Explore Pupuan',
     'blematung_header_title' => 'Air Terjun Blemantung',
     'blematung_header_subtitle' => 'Keindahan tersembunyi dengan debit air yang melimpah, dikelilingi rimbunnya perkebunan kopi.',
-    'why_special_title' => 'Mengapa Blemantung <span class="text-primary">Istimewa?</span>',
+    'why_special_title' => 'Mengapa Blemantung <span class="text-secondary">Istimewa?</span>',
     'special_1_title' => 'Air Terjun Bertingkat',
     'special_1_desc' => 'Terdiri dari beberapa tingkat air terjun dengan ketinggian total mencapai 50 meter yang megah.',
     'special_2_title' => 'Dikelilingi Kebun Kopi',
@@ -312,7 +312,7 @@ return [
     'special_4_desc' => 'Terdapat kolam alami di bawah air terjun, aman untuk berendam sebentar dan menikmati kejernihan airnya.',
     'quote_blematung_text' => 'Di Blemantung, waktu seolah berhenti. Hanya terdengar gemuruh air yang memecah keheningan, mengingatkan kita akan kekuatan dan keindahan abadi dari alam Pupuan.',
     'quote_blematung_source' => 'Narasi Explore Pupuan',
-    'trekking_title' => 'Trekking Menuju <span class="text-primary">Air Terjun Blemantung</span>',
+    'trekking_title' => 'Trekking Menuju <span class="text-secondary">Air Terjun Blemantung</span>',
     'trekking_medan_title' => 'Medan Perjalanan',
     'trekking_medan_desc' => 'Perjalanan dari area parkir ke Air Terjun Blemantung memakan waktu sekitar 10 hingga 15 menit. Medan yang dilewati didominasi oleh anak tangga batu, dan beberapa jalur tanah dikelilingi pepohonan rindang.',
     'trekking_difficulty_title' => 'Tingkat Kesulitan',
@@ -331,7 +331,7 @@ return [
     'tagline_agro' => 'Agrowisata | Jelajahi Pupuan',
     'title_durian' => 'Menikmati Durian Pupuan',
     'subtitle_durian' => "Rasakan durian segar langsung dari pohonnya di Desa Mundeh Kangin, sekaligus belajar mendalam tentang budidaya 'Raja Buah' ini.",
-    'section_title_durian' => 'Pengalaman Durian <span class="text-primary">di Pupuan</span>',
+    'section_title_durian' => 'Pengalaman Durian <span class="text-secondary">di Pupuan</span>',
     'point1_title_durian' => 'Edukasi Budidaya',
     'point1_desc_durian' => 'Pengunjung dikenalkan langsung dengan langkah-langkah budidaya durian yang dilakukan petani lokal.',
     'point2_title_durian' => 'Pilihan Benih Terbaik',
@@ -341,7 +341,7 @@ return [
     'point4_title_durian' => 'Masa Berbuah',
     'point4_desc_durian' => 'Tanaman durian mulai berbunga pada usia sekitar 8 tahun, yang biasanya jatuh pada musim kemarau.',
     'durian_quote' => 'Pengalaman terbaik menikmati durian adalah ketika kita tahu betapa besar perjuangan petani dalam menanam, merawat, hingga menghasilkan buah yang lezat ini.',
-    'durian_step_title' => 'Langkah Budidaya <span class="text-primary">Durian</span>',
+    'durian_step_title' => 'Langkah Budidaya <span class="text-secondary">Durian</span>',
     'durian_step1_title' => 'Proses Penanaman Awal',
     'durian_step1_desc' => 'Langkah pertama yang penting adalah memilih benih durian sesuai jenis yang ingin ditanam, diikuti dengan proses pencucian dan pengeringan benih.',
     'durian_step1_item1' => 'Pemilihan Benih:',
@@ -359,7 +359,7 @@ return [
     //gulan aren
     'gula_hero_title' => 'Gula Aren Pupuan',
     'gula_hero_desc' => 'Saksikan dan pelajari proses tradisional penyadapan nira dari pohon aren hingga menjadi gula merah padat yang manis di Pupuan.',
-    'gula_judul_section' => 'Produksi Gula <span class="text-primary">Aren Pupuan</span>',
+    'gula_judul_section' => 'Produksi Gula <span class="text-secondary">Aren Pupuan</span>',
     'gula_poin1_judul' => 'Teknik Pemukulan',
     'gula_poin1_text' => 'Proses penyadapan diawali dengan pemukulan tangkai tandan bunga untuk melemaskan jalur air nira',
     'gula_poin2_judul' => 'Penanda Harum',
@@ -369,7 +369,7 @@ return [
     'gula_poin4_judul' => 'Kemasan Alami',
     'gula_poin4_text' => 'Pembungkusan gula merah menggunakan daun pisang, upih pinang, daun jati, dan perangkat alami lainnya.',
     'gula_quote_desc' => 'Di balik manisnya gula aren Pupuan tersimpan cerita panjang tentang tradisi, kesabaran, dan kearifan lokal dalam mengolah kekayaan alam.',
-    'gula_proses_section_title' => 'Proses Penyadapan <span class="text-primary">dan Pengolahan</span>',
+    'gula_proses_section_title' => 'Proses Penyadapan <span class="text-secondary">dan Pengolahan</span>',
     'gula_proses1_title' => 'Dari Pohon Aren',
     'gula_proses1_desc' => 'Nira dihasilkan melalui penyadapan pohon aren pada tangkai tandan bunga, proses ini bisa berlangsung 2 hingga 3 bulan.',
     'gula_proses1_target_title' => 'Target:',
@@ -387,7 +387,7 @@ return [
     'buddha_location' => 'Vihara Dharma Giri | Pupuan, Tabanan',
     'buddha_title' => 'Patung Buddha Tidur',
     'buddha_description' => 'Patung Buddha Tidur Vihara Dharma Giri yang menakjubkan, tampil megah dengan warna putih bersih di tengah suasana alam yang alami.',
-    'vihara_why_title' => 'Mengapa Vihara Dharma <span class="text-primary">Giri Istimewa?</span>',
+    'vihara_why_title' => 'Mengapa Vihara Dharma <span class="text-secondary">Giri Istimewa?</span>',
     'vihara_poin1_title' => 'Patung Megah',
     'vihara_poin1_desc' => 'Patung dalam ukuran besar dengan tampilan yang megah dan berwarna putih bersih.',
     'vihara_poin2_title' => 'Posisi Parinirvana',
@@ -397,7 +397,7 @@ return [
     'vihara_poin4_title' => 'Tujuan Wisata',
     'vihara_poin4_desc' => 'Tidak hanya umat Buddha, masyarakat lokal hingga wisatawan domestik dan asing banyak berkunjung.',
     'giri_desc_quote' => 'Vihara Dharma Giri bukan sekadar tempat ibadah, tetapi juga rumah bagi Patung Buddha Tidur yang menakjubkan, membawa kedamaian dan ketenangan dari alam Pupuan.',
-    'guide_title' => 'Panduan Kunjungan Vihara <span class="text-primary">Dharma Giri</span>',
+    'guide_title' => 'Panduan Kunjungan Vihara <span class="text-secondary">Dharma Giri</span>',
     'akses_judul' => 'Akses dan Lokasi',
     'akses_deskripsi' => 'Vihara Dharma Giri terletak di Jalan Raya Pupuan, Kecamatan Pupuan, Kabupaten Tabanan. Lokasinya dikelilingi pepohonan rindang yang menciptakan suasana damai dan sejuk.',
     'lokasi_tepat' => 'Lokasi Tepat:',
@@ -415,7 +415,7 @@ return [
     'kopi_subtitle' => 'Agrowisata | Explore Pupuan',
     'kopi_judul' => 'Roasting Kopi Robusta',
     'kopi_deskripsi' => 'Saksikan langsung perjalanan biji kopi, dari pemetikan di kebun Robusta hingga proses roasting yang menghasilkan nikmatnya kopi khas Pupuan.',
-    'kopi_keistimewaan_judul' => 'Keistimewaan Kopi <span class="text-primary">Robusta Pupuan</span>',
+    'kopi_keistimewaan_judul' => 'Keistimewaan Kopi <span class="text-secondary">Robusta Pupuan</span>',
     'kopi_poin1_judul' => 'Mata Pencaharian Utama',
     'kopi_poin1_desc' => 'Kebun kopi adalah penghasilan utama petani lokal di kawasan Pupuan.',
     'kopi_poin2_judul' => 'Dari Kebun ke Cangkir',
@@ -425,7 +425,7 @@ return [
     'kopi_poin4_judul' => 'Kopi Robusta Asli',
     'kopi_poin4_desc' => 'Kopi robusta dengan cita rasa khas Pupuan yang kuat, nikmat, dan otentik.',
     'kopi_quote' => 'Setiap tegukan kopi Pupuan membawa aroma pegunungan yang dingin, hasil kerja keras petani, dan sentuhan tradisi yang tak pernah hilang.',
-    'kopi_panduan_judul' => 'Panduan Agrowisata <span class="text-primary">Proses Kopi</span>',
+    'kopi_panduan_judul' => 'Panduan Agrowisata <span class="text-secondary">Proses Kopi</span>',
     'kopi_panen_judul' => 'Panen dan Pasca Panen',
     'kopi_panen_desc' => 'Pupuan dikenal sebagai sentra kopi robusta. Pengunjung dapat melihat pemetikan buah kopi matang oleh petani.',
     'kopi_pemetikan_judul' => 'Pemetikan:',
@@ -444,7 +444,7 @@ return [
     'terassering_section_tagline' => 'Agrowisata | Jelajahi Pupuan',
     'terassering_title' => 'Trekking Terasering Belimbing',
     'terassering_desc' => 'Jelajahi sawah terasering yang sudah mendunia dengan jalur trekking dan cycling yang menantang, serta kunjungi kesegaran Air Terjun Singsing Sade.',
-    'belimbing_section_title' => 'Potensi Alam <span class="text-primary">Desa Belimbing</span>',
+    'belimbing_section_title' => 'Potensi Alam <span class="text-secondary">Desa Belimbing</span>',
     'belimbing_poin1_judul' => 'Terasering Mendunia',
     'belimbing_poin1_desc' => 'Keindahan lahan pertanian terasering di Desa Belimbing sudah terkenal hingga ke mancanegara.',
     'belimbing_poin2_judul' => 'Lahan 460 Hektare',
@@ -453,7 +453,7 @@ return [
     'belimbing_poin3_desc' => 'Sistem irigasi sawah terasering ini diatur secara tradisional dan dibagi menjadi enam subak.',
     'belimbing_poin4_judul' => 'Air Terjun Singsing Sade',
     'belimbing_poin4_desc' => 'Selain sawah, Desa Belimbing memiliki Air Terjun Singsing Sade yang menawarkan kesegaran alami.',
-    'trekking_section_title' => 'Panduan Trekking & <span class="text-primary">Etika di Sawah</span>',
+    'trekking_section_title' => 'Panduan Trekking & <span class="text-secondary">Etika di Sawah</span>',
     'trekking_card1_title' => 'Rekomendasi Aktivitas',
     'trekking_card1_desc' => 'Jalur trekking Belimbing menawarkan lintasan sawah yang luas. Pemandangan paling indah didapatkan saat musim tanam atau menjelang panen.',
     'trekking_trekking_title' => 'Trekking:',
@@ -469,4 +469,4 @@ return [
     'trekking_etika4' => 'Waktu terbaik berkunjung adalah pagi hari atau sore menjelang senja.',
     'trekking_quote' => 'Setiap langkah di pematang sawah Belimbing adalah perayaan akan keindahan alam dan kearifan budaya Subak yang telah diwariskan turun-temurun.',
 
-];  
+];

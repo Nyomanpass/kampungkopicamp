@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Session; // Pastikan ini diimpor
 class LanguageSwitcher extends Component
 {
     // Properti publik untuk menyimpan bahasa yang sedang aktif
-    public $lang;
+    public $lang = 'id'; // Default ke bahasa Indonesia
     public $open = false; // Untuk toggle dropdown
 
 
@@ -39,9 +39,9 @@ class LanguageSwitcher extends Component
         // 4. Update properti lokal dan reload (agar halaman me-render ulang dengan bahasa baru)
         $this->lang = $lang;
         $this->open = false; // otomatis tutup dropdown
-        
+
         // Opsional: Jika Anda ingin seluruh halaman me-reload penuh (lebih aman)
-        return redirect(request()->header('Referer')); 
+        return redirect(request()->header('Referer'));
     }
 
     public function render()

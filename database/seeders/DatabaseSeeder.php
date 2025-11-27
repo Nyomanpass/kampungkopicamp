@@ -24,6 +24,7 @@ class DatabaseSeeder extends Seeder
             userSeeder::class,
             AddonSeeder::class,
             VoucherSeeder::class,
+            SiteSettingSeeder::class,
         ]);
     }
 }

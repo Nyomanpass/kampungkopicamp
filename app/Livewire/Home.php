@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\PaketWisata;
 use App\Models\Blog;
+use App\Models\SiteSetting;
 use Illuminate\Support\Facades\Session;
 
 
@@ -13,11 +14,38 @@ class Home extends Component
 {
     public $lang;
     public $texts = [];
+    public $contactInfo = [];
+    public $socialMedia = [];
+    public $gmaps = [];
 
     public function mount()
     {
         $this->lang = Session::get('locale', 'id');
+        $this->loadSettings();
         $this->setTexts();
+    }
+
+    private function loadSettings()
+    {
+        // Load Contact Info
+        $this->contactInfo = SiteSetting::get('contact_info', [
+            'whatsapp' => '',
+            'email' => '',
+            'phone' => '',
+            'address' => '',
+        ]);
+
+        // Load Social Media
+        $this->socialMedia = SiteSetting::get('social_media', [
+            'tiktok' => '',
+            'youtube' => '',
+            'facebook' => '',
+            'instagram' => '',
+        ]);
+
+        $this->gmaps = SiteSetting::get('google_maps', [
+            'embed_url' => '',
+        ]);
     }
 
     private function setTexts()
@@ -83,13 +111,13 @@ class Home extends Component
 
             'whatsapp_heading' => __('messages.whatsapp_heading'),
             'whatsapp_description' => __('messages.whatsapp_description'),
-            'whatsapp_number' => __('messages.whatsapp_number'),
+            'whatsapp_number' => $this->contactInfo['phone'] ?? __('messages.whatsapp_number'),
             'phone_heading' => __('messages.phone_heading'),
-            'phone_number' => __('messages.phone_number'),
+            'phone_number' => $this->contactInfo['phone'] ?? __('messages.phone_number'),
             'email_heading' => __('messages.email_heading'),
-            'email_address' => __('messages.email_address'),
-            'address_heading' => __('messages.address_heading'),
-            'address_details' => __('messages.address_details'),
+            'email_address' => $this->contactInfo['email'] ?? __('messages.email_address'),
+            'address_heading' =>  __('messages.address_heading'),
+            'address_details' => $this->contactInfo['address'] ?? __('messages.address_details'),
             'address_map_cta' => __('messages.address_map_cta'),
             'location_heading' => __('messages.location_heading'),
         ];

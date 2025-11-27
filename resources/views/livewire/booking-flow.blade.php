@@ -80,7 +80,7 @@
                         </div>
 
                         <!-- Night Count -->
-                        @if (!$product->type == 'touring')
+                        @if (!($product->type == 'touring'))
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
                                     Jumlah Malam

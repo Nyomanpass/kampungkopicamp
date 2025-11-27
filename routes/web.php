@@ -14,6 +14,8 @@ use App\Livewire\Admin\ArticleCrud;
 use App\Livewire\Admin\Category;
 use App\Livewire\Login;
 use App\Livewire\Register;
+use App\Livewire\ForgotPassword;
+use App\Livewire\ResetPassword;
 use App\Livewire\Package;
 
 use App\Livewire\PackageDetail;
@@ -61,6 +63,8 @@ Route::get('/invoice/{invoice}/preview', [InvoiceController::class, 'preview'])-
 Route::middleware('guest')->group(function () {
       Route::get('/login', action: Login::class)->name('login');
       Route::get('/register', action: Register::class)->name('register');
+      Route::get('/forgot-password', ForgotPassword::class)->name('forgot-password');
+      Route::get('/password/reset/{token}', ResetPassword::class)->name('password.reset');
 });
 
 

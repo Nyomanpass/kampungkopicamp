@@ -128,8 +128,7 @@
                     class="px-5 py-5 bg-white w-full rounded-xl border border-gray-300 shadow-sm hover:shadow-md transition">
                     <div class="flex gap-3 justify-between border-b border-gray-300 pb-4 mb-4">
                         <div class="flex gap-3 items-center">
-                            <div
-                                class="size-10 bg-light-primary/70 flex items-center justify-center text-secondary rounded-lg">
+                            <div class="size-10 bg-secondary flex items-center justify-center text-white rounded-lg">
                                 <i
                                     class="fas {{ $booking->items->where('item_type', 'product')->first() ? $this->getProductIcon($booking->product_type) : 'fa-box' }} text-xl"></i>
                             </div>

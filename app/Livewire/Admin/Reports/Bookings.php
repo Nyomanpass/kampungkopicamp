@@ -235,7 +235,10 @@ class Bookings extends Component
                 })
                 ->selectRaw('
                 booking_items.qty,
-                JULIANDAY(MIN(bookings.end_date, ?)) - JULIANDAY(MAX(bookings.start_date, ?)) as nights
+                DATEDIFF(
+                    LEAST(bookings.end_date, ?),
+                    GREATEST(bookings.start_date, ?)
+                ) as nights
             ', [$endDate->format('Y-m-d'), $startDate->format('Y-m-d')])
                 ->get()
                 ->sum(function ($item) {

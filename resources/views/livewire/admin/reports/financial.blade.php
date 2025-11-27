@@ -110,12 +110,12 @@
 
     {{-- Filters --}}
     <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Filters</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Filter</h3>
 
         <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
             {{-- Date Range --}}
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Date Range</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Rentang Tanggal</label>
                 <select wire:model.live="dateRange"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
                     <option value="today">Today</option>
@@ -167,9 +167,9 @@
         <div class="mt-4 pt-4 border-t border-gray-200">
             <p class="text-sm text-gray-600">
                 <i class="fas fa-calendar-alt mr-2"></i>
-                Showing data from
+                Menampilkan data dari
                 <strong>{{ Carbon\Carbon::parse($startDate)->format('d M Y') }}</strong>
-                to
+                hingga
                 <strong>{{ Carbon\Carbon::parse($endDate)->format('d M Y') }}</strong>
             </p>
         </div>
@@ -184,7 +184,7 @@
                     <i class="fas fa-file-invoice text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Total Invoices</p>
+            <p class="text-sm opacity-90 mb-1">Total Invoice</p>
             <p class="text-2xl font-bold">{{ number_format($totalInvoices) }}</p>
         </div>
 
@@ -229,7 +229,7 @@
                     <i class="fas fa-undo text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Refunded</p>
+            <p class="text-sm opacity-90 mb-1">Pengembalian</p>
             <p class="text-2xl font-bold">Rp {{ number_format($totalRefunded / 1000) }}K</p>
         </div>
 
@@ -336,7 +336,7 @@
                             <tr>
                                 <td colspan="4" class="px-4 py-8 text-center text-gray-400">
                                     <i class="fas fa-inbox text-3xl mb-2"></i>
-                                    <p class="text-sm">No invoices available</p>
+                                    <p class="text-sm">Tidak ada invoice</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -390,7 +390,7 @@
                             <tr>
                                 <td colspan="4" class="px-4 py-8 text-center text-gray-400">
                                     <i class="fas fa-inbox text-3xl mb-2"></i>
-                                    <p class="text-sm">No payments available</p>
+                                    <p class="text-sm">Tidak ada pembayaran</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -439,7 +439,7 @@
                             <tr>
                                 <td colspan="4" class="px-4 py-8 text-center text-gray-400">
                                     <i class="fas fa-inbox text-3xl mb-2"></i>
-                                    <p class="text-sm">No refunds available</p>
+                                    <p class="text-sm">Tidak ada refund</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -495,7 +495,7 @@
                             <tr>
                                 <td colspan="4" class="px-4 py-8 text-center text-gray-400">
                                     <i class="fas fa-check-circle text-3xl mb-2 text-green-400"></i>
-                                    <p class="text-sm">No outstanding invoices</p>
+                                    <p class="text-sm">Tidak ada invoice tertunda</p>
                                 </td>
                             </tr>
                         @endforelse
@@ -601,7 +601,7 @@
                 chartInstances.revenueVsExpenses.render();
             } else {
                 revenueElement.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-line text-4xl mr-3"></i><span>No revenue data available</span></div>';
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-line text-4xl mr-3"></i><span>Tidak ada data pendapatan</span></div>';
             }
         }
 
@@ -611,7 +611,7 @@
 
             if (invoiceData.labels && invoiceData.labels.length > 0) {
                 const invoiceStatusOptions = {
-                    series: invoiceData.data || [],
+                    series: invoiceData.series || [], // ✅ Using 'series'
                     chart: {
                         type: 'donut',
                         height: 350
@@ -651,7 +651,7 @@
                 chartInstances.invoiceStatus.render();
             } else {
                 invoiceElement.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-pie text-4xl mr-3"></i><span>No invoice data available</span></div>';
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-pie text-4xl mr-3"></i><span>Tidak ada data invoice</span></div>';
             }
         }
 
@@ -691,7 +691,7 @@
                 chartInstances.paymentMethods.render();
             } else {
                 paymentElement.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-credit-card text-4xl mr-3"></i><span>No payment data available</span></div>';
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-credit-card text-4xl mr-3"></i><span>Tidak ada data pembayaran</span></div>';
             }
         }
 

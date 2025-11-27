@@ -60,6 +60,13 @@ class Rewards extends Component
         return min(100, ($currentRedemptions / $voucher->usage_limit) * 100);
     }
 
+    public function hasUserRedeemed($voucher)
+    {
+        return \App\Models\VoucherRedemption::where('voucher_id', $voucher->id)
+            ->where('user_id', \Illuminate\Support\Facades\Auth::id())
+            ->exists();
+    }
+
     #[Layout('layouts.user')]
     public function render()
     {
