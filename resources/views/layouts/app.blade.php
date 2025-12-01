@@ -26,7 +26,7 @@
             <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">
                 <img class="md:h-18 h-12 transition-all duration-100 ease-in-out delay-75"
-                    :src="scrolled || mobileMenuOpen ? '/images/logodua.png' : '/images/logo.png'" alt="">
+                    :src="scrolled || mobileMenuOpen ? '/images/logodua-new.png' : '/images/logo-new.png'" alt="">
 
             </a>
 
