@@ -1,5 +1,5 @@
 <div>
-    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
+    <section class="relative w-full h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
         <!-- Background Image -->
@@ -36,33 +36,30 @@
         </div>
     </section>
 
-    <section class="py-20 bg-white">
+    <section class="py-10 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid md:grid-cols-2 gap-12 items-center">
 
             <!-- Text Content -->
-            <div data-aos="fade-right" data-aos-duration="1000">
+            <div>
                 <p class="text-sm font-semibold text-amber-800 mb-3" data-aos="fade-down" data-aos-delay="100">
                     {{ $texts['about_explore_small'] }}
                 </p>
-                <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6" data-aos="fade-up"
-                    data-aos-delay="200">
+                <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6">
                     {{ $texts['about_explore_heading'] }}
                     {{ $texts['about_explore_highlight'] }}
                     <span class="text-secondary">{{ $texts['about_explore_heading_suffix'] }}</span>
                 </h2>
-                <p class="text-gray-700 text-sm md:text-lg mb-6 leading-relaxed" data-aos="fade-up"
-                    data-aos-delay="300">
+                <p class="text-gray-700 text-sm md:text-lg mb-6 leading-relaxed">
                     {!! $texts['about_explore_paragraph1'] !!}
                 </p>
-                <p class="text-gray-700 text-sm md:text-lg mb-10 leading-relaxed" data-aos="fade-up"
-                    data-aos-delay="400">
+                <p class="text-gray-700 text-sm md:text-lg mb-10 leading-relaxed">
                     {!! $texts['about_explore_paragraph2'] !!}
                 </p>
             </div>
 
 
             <!-- Image -->
-            <div class="relative" data-aos="fade-left" data-aos-duration="1000">
+            <div class="relative">
                 <img src="/images/headerexplorepupuan.webp" alt="Explore Pupuan"
                     class="rounded-2xl shadow-lg object-cover">
 
@@ -71,7 +68,7 @@
         </div>
     </section>
 
-    <section class="py-20 bg-[#f9f7f4]">
+    <section class="py-10 bg-[#f9f7f4]">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 text-center">
 
             <!-- Heading -->
@@ -147,7 +144,7 @@
         </div>
     </section>
 
-    <section class="py-16 bg-gray-50">
+    <section class="py-10 bg-gray-50">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 text-center">
 
             <!-- Headline -->
@@ -172,7 +169,7 @@
                         <div class="p-6">
                             <h3 class="text-lg font-semibold mb-2">{{ $card['title'] }}</h3>
                             <p class="text-gray-600 text-[.8rem] md:text-sm mb-4">{{ $card['desc'] }}</p>
-                            <a class="text-primary font-medium hover:underline">
+                            <a href={{ $card['link'] }} class="text-primary font-medium hover:underline">
                                 {{ $texts['lihat_detail'] }}
                             </a>
                         </div>
@@ -186,7 +183,7 @@
 
 
     <!-- Galeri Foto -->
-    <section class="py-16 bg-white pb-32">
+    <section class="py-10 bg-white pb-10">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 text-center mb-8">
             <h2 class="text-2xl text-center md:text-4xl font-extrabold text-primary leading-snug mb-6"
                 data-aos="fade-down" data-aos-duration="1000">

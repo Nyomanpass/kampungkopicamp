@@ -1,6 +1,6 @@
 <div class="min-h-screen">
     {{-- Hero Section --}}
-    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
+    <section class="relative w-full h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
         <!-- Background Image with Parallax -->
@@ -74,7 +74,7 @@
 
                 <div class="p-5 lg:p-8">
                     <!-- Title -->
-                    <h1 class="text-3xl md:text-4xl font-bold text-primary mb-6 leading-tight">
+                    <h1 class="text-2xl md:text-4xl font-bold text-primary mb-6 leading-tight">
                         {{ $blog->title }}
                     </h1>
 

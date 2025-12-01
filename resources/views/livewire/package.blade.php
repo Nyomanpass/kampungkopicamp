@@ -1,6 +1,6 @@
 <div class="min-h-screen bg-white">
     <!-- Hero Section Paket Wisata -->
-    <section class="relative w-full h-[60vh] flex items-center justify-center text-center text-white overflow-hidden"
+    <section class="relative w-full h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
         <!-- Background -->
@@ -38,7 +38,7 @@
             @if (count($accommodationProducts) > 0)
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h2 class="text-3xl font-bold text-primary flex items-center gap-3">
+                        <h2 class="text-xl md:text-3xl font-bold text-primary flex items-center gap-3">
                             Camping & Penginapan
                         </h2>
                         <p class="text-gray-600 mt-2">Nikmati pengalaman camping di alam terbuka</p>
@@ -103,7 +103,7 @@
             @if (count($touringProducts) > 0)
                 <div class="flex items-center justify-between mb-6">
                     <div>
-                        <h2 class="text-3xl font-bold text-primary flex items-center gap-3">
+                        <h2 class="text-xl md:text-3xl font-bold text-primary flex items-center gap-3">
 
                             Paket Touring
                         </h2>

@@ -1,6 +1,6 @@
 <div class="min-h-screen">
     {{-- Hero Section --}}
-    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
+    <section class="relative w-full h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
         <!-- Background Image -->
@@ -58,8 +58,7 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($blogs as $index => $blog)
                     <article
-                        class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden"
-                        data-aos="fade-up" data-aos-delay="{{ $index * 100 }}">
+                        class="group bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-500 overflow-hidden">
 
                         <!-- Image Container with Overlay -->
                         <div class="relative overflow-hidden h-56">

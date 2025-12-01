@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Kampung Kopi Camp | #AyoKePupuan</title>
-    <link rel="icon" type="image/png" href="/images/simpleLogo.png">
+    <link rel="icon" type="image/png" href="/images/logoicon.png">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
     @vite('resources/css/app.css')
     @livewireStyles
@@ -18,14 +18,14 @@
     <header id="navbar" x-cloak x-data="{ scrolled: false, mobileMenuOpen: false }" x-init="window.addEventListener('scroll', () => {
         scrolled = window.pageYOffset > 50;
     });"
-        class="fixed py-4 top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out"
+        class="fixed py-2 md:py-4 top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out"
         :class="mobileMenuOpen || scrolled ?
             'bg-white shadow-md text-primary py-1' :
             'bg-transparent text-white'">
-        <div class="relative h-16 max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-14 py-5">
+        <div class="relative h-16 max-w-7xl mx-auto flex items-center justify-between px-8 lg:px-14 py-1">
             <!-- Logo -->
             <a href="/" class="flex items-center space-x-2">
-                <img class="md:h-16 h-12 transition-all duration-100 ease-in-out delay-75"
+                <img class="md:h-18 h-12 transition-all duration-100 ease-in-out delay-75"
                     :src="scrolled || mobileMenuOpen ? '/images/logodua.png' : '/images/logo.png'" alt="">
 
             </a>
