@@ -230,6 +230,16 @@ class BookingFlow extends Component
         ]);
     }
 
+    public function clearSessionOnNavigate()
+    {
+        // Clear session when user navigates away from booking page
+        $this->clearBookingProgress();
+
+        Log::info('Booking progress cleared due to navigation', [
+            'product_id' => $this->product->id,
+        ]);
+    }
+
     // ============================================
     // MODAL AUTHENTICATION
     // ============================================

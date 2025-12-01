@@ -874,6 +874,46 @@
                     }
                 });
             });
+
+            // ✅ Clear session when user navigates away from booking page
+            let isInternalNavigation = false;
+
+            // Detect Livewire navigation (back/forward buttons or link clicks)
+            window.addEventListener('beforeunload', function(e) {
+                if (!isInternalNavigation) {
+                    // User is leaving the page (refresh, close tab, or external navigation)
+                    $wire.clearSessionOnNavigate();
+                }
+            });
+
+            // Mark internal navigation (form submissions within booking flow)
+            document.addEventListener('livewire:navigating', function() {
+                isInternalNavigation = true;
+            });
+
+            // Reset flag after navigation completes
+            document.addEventListener('livewire:navigated', function() {
+                isInternalNavigation = false;
+            });
+
+            // Clear session when clicking browser back/forward or external links
+            window.addEventListener('popstate', function(e) {
+                $wire.clearSessionOnNavigate();
+            });
+
+            // Detect clicks on links that navigate away from booking flow
+            document.addEventListener('click', function(e) {
+                const link = e.target.closest('a');
+                if (link && link.href) {
+                    const currentPath = window.location.pathname;
+                    const linkPath = new URL(link.href, window.location.origin).pathname;
+
+                    // Check if navigating away from booking page
+                    if (!linkPath.includes('/booking/') || linkPath !== currentPath) {
+                        $wire.clearSessionOnNavigate();
+                    }
+                }
+            });
         </script>
     @endscript
 </div>

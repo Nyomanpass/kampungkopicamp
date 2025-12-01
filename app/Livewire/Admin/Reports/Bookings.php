@@ -299,6 +299,7 @@ class Bookings extends Component
 
     public function exportExcel()
     {
+        $this->loadTables();
         $metrics = [
             'totalBookings' => $this->totalBookings,
             'completedBookings' => $this->completedBookings,
@@ -318,6 +319,8 @@ class Bookings extends Component
 
     public function exportPDF()
     {
+        $this->loadTables();
+
         $data = [
             'title' => 'booking Report',
             'startDate' => $this->startDate,

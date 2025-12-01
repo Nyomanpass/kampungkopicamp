@@ -206,6 +206,9 @@ class Customers extends Component
             ->withSum(['bookings as total_spent' => function ($q) {
                 $q->whereIn('status', ['paid', 'checked_in', 'completed']);
             }], 'total_price')
+            ->withCount(['bookings as total_bookings' => function ($q) {
+                $q->whereIn('status', ['paid', 'checked_in', 'completed']);
+            }])
             ->latest()
             ->limit(10)
             ->get();
@@ -252,25 +255,7 @@ class Customers extends Component
 
     public function exportPDF()
     {
-        $metrics = [
-            'totalCustomers' => $this->totalCustomers,
-            'newCustomers' => $this->newCustomers,
-            'activeCustomers' => $this->activeCustomers,
-            'returningCustomers' => $this->returningCustomers,
-            'customerRetentionRate' => $this->customerRetentionRate,
-            'averageLifetimeValue' => $this->averageLifetimeValue,
-        ];
-
-        $fileName = 'customer-report-' . date('Y-m-d-His') . '.xlsx';
-
-        return Excel::download(
-            new CustomerReportExport($this->topSpenders, $this->recentCustomers, $metrics, $this->startDate, $this->endDate),
-            $fileName
-        );
-    }
-
-    public function exportExcel()
-    {
+        $this->loadTables();
         $data = [
             'title' => 'Customer Report',
             'startDate' => $this->startDate,
@@ -288,11 +273,32 @@ class Customers extends Component
             'generatedAt' => now()->format('d M Y H:i:s'),
         ];
 
-        $pdf = Pdf::loadView('reports.customer-pdf', $data);
+        $pdf = Pdf::loadView('pdf.customer-pdf', $data);
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
         }, 'customer-report-' . date('Y-m-d-His') . '.pdf');
+    }
+
+    public function exportExcel()
+    {
+        $this->loadTables();
+
+        $metrics = [
+            'totalCustomers' => $this->totalCustomers,
+            'newCustomers' => $this->newCustomers,
+            'activeCustomers' => $this->activeCustomers,
+            'returningCustomers' => $this->returningCustomers,
+            'customerRetentionRate' => $this->customerRetentionRate,
+            'averageLifetimeValue' => $this->averageLifetimeValue,
+        ];
+
+        $fileName = 'customer-report-' . date('Y-m-d-His') . '.xlsx';
+
+        return Excel::download(
+            new CustomerReportExport($this->topSpenders, $this->recentCustomers, $metrics, $this->startDate, $this->endDate),
+            $fileName
+        );
     }
 
     #[Layout('layouts.admin')]

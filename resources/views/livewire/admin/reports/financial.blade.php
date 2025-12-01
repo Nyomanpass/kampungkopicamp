@@ -9,7 +9,7 @@
         <div class="flex items-center gap-3">
             {{-- Export Buttons --}}
             <button wire:click="exportExcel"
-                class="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
+                class="px-4 py-2 bg-success hover:bg-success/80 text-white rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
                 <i class="fas fa-file-excel"></i>
                 <span class="hidden md:inline">Excel</span>
             </button>

@@ -151,6 +151,21 @@ class Users extends Component
         $this->switchToList();
     }
 
+    public function removeUserPermanently($userId)
+    {
+        $user = User::withTrashed()->findOrFail($userId);
+
+        if (!$user->canBeDeleted()) {
+            session()->flash('error', 'User tidak dapat dihapus secara permanen! (mungkin karena user tersebut adalah admin yang sedang login)');
+            return;
+        }
+
+        $user->forceDelete();
+
+        session()->flash('success', 'User berhasil dihapus secara permanen!');
+        $this->switchToList();
+    }
+
     public function toggleStatus($userId)
     {
         $user = User::withTrashed()->findOrFail($userId);

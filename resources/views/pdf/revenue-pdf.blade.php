@@ -144,26 +144,26 @@
     {{-- Metrics --}}
     <div class="metrics-grid">
         <div class="metric-card">
-            <div class="metric-label">Total Revenue</div>
+            <div class="metric-label">Total Pendapatan</div>
             <div class="metric-value">Rp {{ number_format($metrics['totalRevenue'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Total Transactions</div>
+            <div class="metric-label">Total Transaksi</div>
             <div class="metric-value">{{ number_format($metrics['totalTransactions']) }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Avg Transaction</div>
+            <div class="metric-label">Rata-rata Transaksi</div>
             <div class="metric-value">Rp {{ number_format($metrics['averageTransactionValue'], 0, ',', '.') }}</div>
         </div>
     </div>
 
     <div class="metrics-grid" style="margin-top: 10px;">
         <div class="metric-card">
-            <div class="metric-label">Total Refunded</div>
+            <div class="metric-label">Total Refund</div>
             <div class="metric-value">Rp {{ number_format($metrics['totalRefunded'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card" style="border-left: 3px solid #5b7042;">
-            <div class="metric-label">Net Revenue</div>
+            <div class="metric-label">Pendapatan Bersih</div>
             <div class="metric-value">Rp {{ number_format($metrics['netRevenue'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card">
@@ -173,7 +173,7 @@
 
     {{-- Top Products --}}
     <div class="section">
-        <div class="section-title">Top Products by Revenue</div>
+        <div class="section-title">Top Products</div>
         <table>
             <thead>
                 <tr>
