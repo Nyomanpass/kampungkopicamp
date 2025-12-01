@@ -91,6 +91,9 @@ class Revenue extends Component
         $this->loadMetrics();
         $this->loadCharts();
         $this->loadTables();
+
+        // Dispatch event to update charts
+        $this->dispatch('charts-updated');
     }
 
     private function loadMetrics()
@@ -127,6 +130,11 @@ class Revenue extends Component
         // Daily Revenue Trend
         $dailyRevenue = Payment::where('status', 'settlement')
             ->whereBetween('paid_at', [$this->startDate, $this->endDate])
+            ->when($this->productFilter, function ($q) {
+                $q->whereHas('booking.items', function ($subQ) {
+                    $subQ->where('product_id', $this->productFilter);
+                });
+            })
             ->selectRaw('DATE(paid_at) as date, SUM(amount) as total')
             ->groupBy('date')
             ->orderBy('date')
@@ -137,12 +145,15 @@ class Revenue extends Component
             'data' => $dailyRevenue->pluck('total')->toArray(),
         ];
 
-        // Revenue by Product
+        // Revenue by Product (Top 10)
         $revenueByProduct = BookingItem::join('bookings', 'booking_items.booking_id', '=', 'bookings.id')
             ->join('products', 'booking_items.product_id', '=', 'products.id')
             ->whereIn('bookings.status', ['paid', 'checked_in', 'completed'])
             ->where('booking_items.item_type', 'product')
             ->whereBetween('bookings.created_at', [$this->startDate, $this->endDate])
+            ->when($this->productFilter, function ($q) {
+                $q->where('products.id', $this->productFilter);
+            })
             ->selectRaw('products.name, SUM(booking_items.subtotal) as total')
             ->groupBy('products.id', 'products.name')
             ->orderByDesc('total')
@@ -154,31 +165,39 @@ class Revenue extends Component
             'data' => $revenueByProduct->pluck('total')->toArray(),
         ];
 
-        // Revenue by Product Type (Glamping vs Touring)
+        // Revenue by Product Type (Bar Chart)
         $revenueByType = BookingItem::join('bookings', 'booking_items.booking_id', '=', 'bookings.id')
             ->join('products', 'booking_items.product_id', '=', 'products.id')
             ->whereIn('bookings.status', ['paid', 'checked_in', 'completed'])
             ->where('booking_items.item_type', 'product')
             ->whereBetween('bookings.created_at', [$this->startDate, $this->endDate])
+            ->when($this->productFilter, function ($q) {
+                $q->where('products.id', $this->productFilter);
+            })
             ->selectRaw('products.type, SUM(booking_items.subtotal) as total')
             ->groupBy('products.type')
             ->get();
 
         $this->revenueByProductTypeData = [
-            'labels' => $revenueByType->pluck('type')->map(fn($t) => ucfirst($t))->toArray(),
-            'series' => $revenueByType->pluck('total')->toArray(),
+            'categories' => $revenueByType->pluck('type')->map(fn($t) => ucfirst(str_replace('_', ' ', $t)))->toArray(),
+            'data' => $revenueByType->pluck('total')->toArray(),
         ];
 
-        // Payment Method Breakdown
+        // Payment Method Breakdown (Bar Chart)
         $paymentMethods = Payment::where('status', 'settlement')
             ->whereBetween('paid_at', [$this->startDate, $this->endDate])
+            ->when($this->productFilter, function ($q) {
+                $q->whereHas('booking.items', function ($subQ) {
+                    $subQ->where('product_id', $this->productFilter);
+                });
+            })
             ->selectRaw('provider, SUM(amount) as total')
             ->groupBy('provider')
             ->get();
 
         $this->paymentMethodData = [
-            'labels' => $paymentMethods->pluck('provider')->map(fn($p) => ucfirst($p))->toArray(),
-            'series' => $paymentMethods->pluck('total')->toArray(),
+            'categories' => $paymentMethods->pluck('provider')->map(fn($p) => ucfirst($p))->toArray(),
+            'data' => $paymentMethods->pluck('total')->toArray(),
         ];
     }
 
@@ -222,6 +241,8 @@ class Revenue extends Component
 
     public function exportPDF()
     {
+        $this->loadTables();
+
         $data = [
             'title' => 'Revenue Report',
             'startDate' => $this->startDate,
@@ -242,11 +263,12 @@ class Revenue extends Component
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'revenue-report-' . date('Y-m-d-His') . '.pdf');
+        }, 'laporan-pendapatan-' . date('Y-m-d-His') . '.pdf');
     }
 
     public function exportExcel()
     {
+        $this->loadTables();
         $metrics = [
             'totalRevenue' => $this->totalRevenue,
             'totalTransactions' => $this->totalTransactions,
@@ -255,7 +277,7 @@ class Revenue extends Component
             'netRevenue' => $this->netRevenue,
         ];
 
-        $fileName = 'revenue-report-' . date('Y-m-d_H-i-s') . '.xlsx';
+        $fileName = 'laporan-pendapatan-' . date('Y-m-d_H-i-s') . '.xlsx';
 
         return Excel::download(
             new RevenueReportExport($this->topProducts, $metrics, $this->startDate, $this->endDate),

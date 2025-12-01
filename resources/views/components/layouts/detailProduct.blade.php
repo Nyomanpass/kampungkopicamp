@@ -15,7 +15,7 @@
         <div class="absolute z-10 top-6 left-0 right-0 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <a href="@if (auth()->check()) {{ route('user.dashboard') }}
             @else
-                {{ route('home') }} @endif"
+                {{ route('package.product') }} @endif"
                 class="absolute z-10 bg-white px-1.5 py-2 rounded-full hover:bg-neutral flex items-center justify-center">
                 <i class="fas fa-angle-left text-xl lg:text-2xl text-dark"></i>
             </a>

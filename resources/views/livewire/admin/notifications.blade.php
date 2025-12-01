@@ -14,7 +14,8 @@
     </button>
 
     {{-- Overlay --}}
-    <div x-show="open" @click="open = false" x-transition.opacity class="fixed inset-0 bg-gray-500/70 z-40 backdrop-blur">
+    <div x-show="open" @click="open = false" x-transition.opacity
+        class="fixed inset-0 bg-black/40 z-40">
     </div>
 
     {{-- Notification Sidebar --}}

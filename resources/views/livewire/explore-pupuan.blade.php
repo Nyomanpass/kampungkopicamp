@@ -183,7 +183,11 @@
 
 
     <!-- Galeri Foto -->
+<<<<<<< HEAD
+    <section class="py-16 bg-white pb-32" x-data="{ imageModal: false, imageSrc: '', imageAlt: '' }" @keydown.escape.window="imageModal = false">
+=======
     <section class="py-10 bg-white pb-10">
+>>>>>>> cd30aed5a07a00f9bd7b7bb4539b810bdb8d1c2c
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 text-center mb-8">
             <h2 class="text-2xl text-center md:text-4xl font-extrabold text-primary leading-snug mb-6"
                 data-aos="fade-down" data-aos-duration="1000">
@@ -199,35 +203,78 @@
 
                 <img src="images/atvpupuan.webp"
                     class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg md:row-span-2" data-aos="zoom-in"
-                    data-aos-delay="100">
+                    data-aos-delay="100"
+                    @click="imageSrc = 'images/atvpupuan.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="images/gallerytiga.webp" class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg"
-                    data-aos="zoom-in" data-aos-delay="200">
+                    data-aos="zoom-in" data-aos-delay="200"
+                    @click="imageSrc = 'images/gallerytiga.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="images/glampingkkc.webp"
                     class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg md:row-span-2" data-aos="zoom-in"
-                    data-aos-delay="300">
+                    data-aos-delay="300"
+                    @click="imageSrc = 'images/glampingkkc.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="images/toiletkampungkopi.webp" class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg"
-                    data-aos="zoom-in" data-aos-delay="400">
+                    data-aos="zoom-in" data-aos-delay="400"
+                    @click="imageSrc = 'images/toiletkampungkopi.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="images/cofeeinpupuan.webp" class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg"
-                    data-aos="zoom-in" data-aos-delay="500">
+                    data-aos="zoom-in" data-aos-delay="500"
+                    @click="imageSrc = 'images/cofeeinpupuan.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="images/apiunggun.webp"
                     class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg md:row-span-2" data-aos="zoom-in"
-                    data-aos-delay="600">
+                    data-aos-delay="600"
+                    @click="imageSrc = 'images/apiunggun.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="/images/airterjunpupuan.webp" class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg"
-                    data-aos="zoom-in" data-aos-delay="700">
+                    data-aos="zoom-in" data-aos-delay="700"
+                    @click="imageSrc = 'images/airterjunpupuan.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="/images/budhapupuan.webp" class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg"
-                    data-aos="zoom-in" data-aos-delay="800">
+                    data-aos="zoom-in" data-aos-delay="800"
+                    @click="imageSrc = 'images/budhapupuan.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
 
                 <img src="/images/pohonairterjun.webp" class="w-full h-80 sm:h-96 md:h-full object-cover rounded-lg"
-                    data-aos="zoom-in" data-aos-delay="900">
+                    data-aos="zoom-in" data-aos-delay="900"
+                    @click="imageSrc = 'images/pohonairterjun.webp'; imageAlt = 'Suasana Camp'; imageModal = true">
             </div>
         </div>
+
+        <template x-teleport="body">
+            <div x-show="imageModal" x-cloak
+                class="fixed inset-0 z-[9999] flex items-center justify-center p-4 bg-gray-700/50" x-transition.opacity
+                @click="imageModal = false">
+
+                <!-- Modal Container -->
+                <div class="relative max-w-5xl w-full mx-auto rounded-xl overflow-hidden" @click.stop
+                    x-transition:enter="transition ease-out duration-300"
+                    x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-200"
+                    x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95">
+
+                    <!-- Close button -->
+                    <button
+                        class="absolute top-3 right-3 z-50 text-white bg-black/40 hover:bg-black/60 rounded-full p-2 transition-colors"
+                        @click="imageModal = false" aria-label="Close">
+                        <i class="fa-solid fa-xmark text-xl"></i>
+                    </button>
+
+                    <!-- Image -->
+                    <div class=" flex items-center justify-center p-4">
+                        <img :src="imageSrc" :alt="imageAlt"
+                            class="max-h-[80vh] w-auto max-w-full object-contain rounded-md" />
+                    </div>
+
+                    <!-- Caption -->
+                    <div class="text-center py-3 flex">
+                        <p class="mx-auto text-sm text-black bg-white/60 w-max px-3 py-1 rounded-full"
+                            x-text="imageAlt"></p>
+                    </div>
+                </div>
+            </div>
+        </template>
     </section>
 
 

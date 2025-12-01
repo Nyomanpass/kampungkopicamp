@@ -126,7 +126,7 @@
                         <div
                             class="w-10 h-10 rounded-full {{ $user->is_admin ? 'bg-secondary/70' : 'bg-light-primary/30' }} flex items-center justify-center flex-shrink-0">
                             <i
-                                class="fas {{ $user->is_admin ? 'fa-user-shield text-accent' : 'fa-user text-primary' }}"></i>
+                                class="fas {{ $user->is_admin ? 'fa-user-shield text-white' : 'fa-user text-primary' }}"></i>
                         </div>
                         <div class="min-w-0">
                             <p class="font-semibold text-gray-900 text-sm truncate">{{ $user->name }}</p>
@@ -149,7 +149,7 @@
                 <td class="px-4 py-3">
                     <span
                         class="px-2 py-1 text-xs font-semibold rounded-full
-                        {{ $user->is_admin ? 'bg-secondary/70 text-accent' : 'bg-light-primary/30 text-primary' }}">
+                        {{ $user->is_admin ? 'bg-secondary/70 text-white' : 'bg-light-primary/30 text-primary' }}">
                         {{ ucfirst($user->role) }}
                     </span>
                 </td>
@@ -195,6 +195,12 @@
                                 class="w-8 h-8 flex items-center justify-center text-success hover:bg-success/20 rounded-lg transition-all"
                                 title="Restore User">
                                 <i class="fas fa-undo text-sm"></i>
+                            </button>
+                            <button
+                                class="w-8 h-8 flex items-center justify-center text-danger hover:bg-danger/20 rounded-lg transition-all"
+                                title="Remove User Permanently"
+                                wire:click="removeUserPermanently({{ $user->id }})">
+                                <i class="fas fa-trash text-sm"></i>
                             </button>
                         @else
                             <button wire:click="toggleStatus({{ $user->id }})"

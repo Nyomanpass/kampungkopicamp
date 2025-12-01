@@ -8,13 +8,13 @@
 
         <div class="flex items-center gap-3">
             {{-- Export Buttons --}}
-            <button wire:click="exportExcel"
-                class="px-4 py-2 bg-primary hover:bg-primary/80 text-white rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
+            <button wire:click="exportExcel" wire:loading.attr="disabled"
+                class="px-4 py-2 bg-success hover:bg-success/80 text-white rounded-lg font-semibold transition-all text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                 <i class="fas fa-file-excel"></i>
                 <span class="hidden md:inline">Excel</span>
             </button>
-            <button wire:click="exportPDF"
-                class="px-4 py-2 bg-danger hover:bg-danger/80 text-white rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
+            <button wire:click="exportPDF" wire:loading.attr="disabled"
+                class="px-4 py-2 bg-danger hover:bg-danger/80 text-white rounded-lg font-semibold transition-all text-sm flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
                 <i class="fas fa-file-pdf"></i>
                 <span class="hidden md:inline">PDF</span>
             </button>
@@ -183,7 +183,7 @@
                     <i class="fas fa-dollar-sign text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Total Revenue</p>
+            <p class="text-sm opacity-90 mb-1">Total Pendapatan</p>
             <p class="text-2xl font-bold">Rp {{ number_format($totalRevenue / 1000) }}K</p>
         </div>
 
@@ -194,18 +194,19 @@
                     <i class="fas fa-shopping-cart text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Transactions</p>
+            <p class="text-sm opacity-90 mb-1">Jumlah Transaksi</p>
             <p class="text-2xl font-bold">{{ $totalTransactions }}</p>
         </div>
 
         {{-- Average Transaction Value --}}
-        <div class="bg-gradient-to-br from-status-completed to-status-completed/70 rounded-xl shadow-lg p-6 text-white">
+        <div
+            class="bg-gradient-to-br from-status-completed to-status-completed/70 rounded-xl shadow-lg p-6 text-white">
             <div class="flex items-center justify-between mb-3">
                 <div class="w-12 h-12 bg-white/20 rounded-lg flex items-center justify-center backdrop-blur-sm">
                     <i class="fas fa-chart-line text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Avg Transaction</p>
+            <p class="text-sm opacity-90 mb-1">Rata-rata Nilai Transaksi</p>
             <p class="text-2xl font-bold">Rp {{ number_format($averageTransactionValue / 1000) }}K</p>
         </div>
 
@@ -216,7 +217,7 @@
                     <i class="fas fa-undo text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Total Refunded</p>
+            <p class="text-sm opacity-90 mb-1">Total Refund</p>
             <p class="text-2xl font-bold">Rp {{ number_format($totalRefunded / 1000) }}K</p>
         </div>
 
@@ -227,7 +228,7 @@
                     <i class="fas fa-wallet text-2xl"></i>
                 </div>
             </div>
-            <p class="text-sm opacity-90 mb-1">Net Revenue</p>
+            <p class="text-sm opacity-90 mb-1">Pendapatan Bersih</p>
             <p class="text-2xl font-bold">Rp {{ number_format($netRevenue / 1000) }}K</p>
         </div>
     </div>
@@ -240,34 +241,36 @@
                 <i class="fas fa-chart-area text-primary"></i>
                 Tren Pendapatan Harian
             </h3>
-            <div id="dailyRevenueChart"></div>
+            <div id="dailyRevenueChart" wire:ignore></div>
         </div>
 
-        {{-- Revenue by Product --}}
-        <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <i class="fas fa-chart-bar text-primary"></i>
-                Top 10 Products by Revenue
-            </h3>
-            <div id="revenueByProductChart"></div>
-        </div>
+
 
         {{-- Revenue by Product Type --}}
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <i class="fas fa-chart-pie text-primary"></i>
-                Revenue by Product Type
+                <i class="fas fa-chart-bar text-success"></i>
+                Pendapatan Berdasarkan Tipe Produk
             </h3>
-            <div id="revenueByProductTypeChart"></div>
+            <div id="revenueByProductTypeChart" wire:ignore></div>
         </div>
 
         {{-- Payment Methods --}}
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <i class="fas fa-credit-card text-primary"></i>
-                Payment Methods Breakdown
+                <i class="fas fa-credit-card text-info"></i>
+                Rincian Metode Pembayaran
             </h3>
-            <div id="paymentMethodChart"></div>
+            <div id="paymentMethodChart" wire:ignore></div>
+        </div>
+
+        {{-- Revenue by Product --}}
+        <div class="bg-white rounded-lg shadow border border-gray-200 p-6 lg:col-span-2">
+            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
+                <i class="fas fa-chart-bar text-primary"></i>
+                Top 10 Product berdasarkan Pendapatan
+            </h3>
+            <div id="revenueByProductChart" wire:ignore></div>
         </div>
     </div>
 
@@ -296,6 +299,7 @@
                             Revenue</th>
                     </tr>
                 </thead>
+                {{-- {{ dd($topProducts[0]) }} --}}
                 <tbody class="divide-y divide-gray-200">
                     @forelse($topProducts as $index => $product)
                         <tr class="hover:bg-gray-50 transition-colors">
@@ -386,168 +390,232 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    document.addEventListener('livewire:navigated', function() {
-        initRevenueCharts();
-    });
-
-    Livewire.on('dataUpdated', () => {
-        initRevenueCharts();
-    });
+    let revenueCharts = {
+        daily: null,
+        product: null,
+        type: null,
+        payment: null
+    };
 
     function initRevenueCharts() {
-        // Daily Revenue Chart
-        const dailyRevenueOptions = {
-            series: [{
-                name: 'Revenue',
-                data: @js($dailyRevenueData['data'])
-            }],
-            chart: {
-                type: 'area',
-                height: 350,
-                toolbar: {
-                    show: true
-                },
-                zoom: {
-                    enabled: true
-                }
-            },
-            colors: ['#10b981'],
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.7,
-                    opacityTo: 0.2,
-                }
-            },
-            xaxis: {
-                categories: @js($dailyRevenueData['categories'])
-            },
-            yaxis: {
-                labels: {
-                    formatter: function(val) {
-                        return 'Rp ' + (val / 1000).toFixed(0) + 'K';
-                    }
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return 'Rp ' + val.toLocaleString('id-ID');
-                    }
-                }
+        // Destroy existing charts
+        Object.values(revenueCharts).forEach(chart => {
+            if (chart) {
+                chart.destroy();
             }
-        };
-        new ApexCharts(document.querySelector("#dailyRevenueChart"), dailyRevenueOptions).render();
+        });
 
-        // Revenue by Product Chart
-        const revenueByProductOptions = {
-            series: [{
-                name: 'Revenue',
-                data: @js($revenueByProductData['data'])
-            }],
-            chart: {
-                type: 'bar',
-                height: 350,
-                toolbar: {
-                    show: false
-                }
-            },
-            colors: ['#5f91a7'],
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    borderRadius: 4
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            xaxis: {
-                categories: @js($revenueByProductData['categories']),
-                labels: {
-                    formatter: function(val) {
-                        return 'Rp ' + (val / 1000).toFixed(0) + 'K';
-                    }
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return 'Rp ' + val.toLocaleString('id-ID');
-                    }
-                }
-            }
-        };
-        new ApexCharts(document.querySelector("#revenueByProductChart"), revenueByProductOptions).render();
+        // Daily Revenue Chart (Area)
+        const dailyEl = document.querySelector('#dailyRevenueChart');
+        if (dailyEl) {
+            const dailyData = @json($dailyRevenueData);
 
-        // Revenue by Product Type Chart
-        const revenueByTypeOptions = {
-            series: @js($revenueByProductTypeData['series']),
-            chart: {
-                type: 'donut',
-                height: 350
-            },
-            labels: @js($revenueByProductTypeData['labels']),
-            colors: ['#6d9e72', '#60b2a1', '#5f91a7'],
-            legend: {
-                position: 'bottom'
-            },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%',
+            if (dailyData.categories && dailyData.categories.length > 0) {
+                revenueCharts.daily = new ApexCharts(dailyEl, {
+                    series: [{
+                        name: 'Revenue',
+                        data: dailyData.data
+                    }],
+                    chart: {
+                        type: 'area',
+                        height: 350,
+                        toolbar: {
+                            show: true
+                        }
+                    },
+                    colors: ['#10b981'],
+                    dataLabels: {
+                        enabled: false
+                    },
+                    stroke: {
+                        curve: 'smooth',
+                        width: 3
+                    },
+                    fill: {
+                        type: 'gradient',
+                        gradient: {
+                            opacityFrom: 0.6,
+                            opacityTo: 0.1
+                        }
+                    },
+                    xaxis: {
+                        categories: dailyData.categories
+                    },
+                    yaxis: {
                         labels: {
-                            show: true,
-                            total: {
-                                show: true,
-                                label: 'Total',
-                                formatter: function(w) {
-                                    const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                    return 'Rp ' + (total / 1000).toFixed(0) + 'K';
-                                }
-                            }
+                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
                         }
                     }
-                }
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return 'Rp ' + val.toLocaleString('id-ID');
-                    }
-                }
+                });
+                revenueCharts.daily.render();
+            } else {
+                dailyEl.innerHTML =
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-area text-4xl mr-3"></i><span>Tidak ada data</span></div>';
             }
-        };
-        new ApexCharts(document.querySelector("#revenueByProductTypeChart"), revenueByTypeOptions).render();
+        }
 
-        // Payment Methods Chart
-        const paymentMethodOptions = {
-            series: @js($paymentMethodData['series']),
-            chart: {
-                type: 'pie',
-                height: 350
-            },
-            labels: @js($paymentMethodData['labels']),
-            colors: ['#6d9e72', '#4b7d6e', '#5f91a7', '#f59e0b'],
-            legend: {
-                position: 'bottom'
-            },
-            tooltip: {
-                y: {
-                    formatter: function(val) {
-                        return 'Rp ' + val.toLocaleString('id-ID');
+        // Revenue by Product Chart (Horizontal Bar)
+        const productEl = document.querySelector('#revenueByProductChart');
+        if (productEl) {
+            const productData = @json($revenueByProductData);
+
+            if (productData.categories && productData.categories.length > 0) {
+                revenueCharts.product = new ApexCharts(productEl, {
+                    series: [{
+                        name: 'Revenue',
+                        data: productData.data
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    colors: ['#5f91a7'],
+                    plotOptions: {
+                        bar: {
+                            horizontal: true,
+                            borderRadius: 6
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    xaxis: {
+                        categories: productData.categories,
+                        labels: {
+                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                        }
                     }
-                }
+                });
+                revenueCharts.product.render();
+            } else {
+                productEl.innerHTML =
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-bar text-4xl mr-3"></i><span>Tidak ada data</span></div>';
             }
-        };
-        new ApexCharts(document.querySelector("#paymentMethodChart"), paymentMethodOptions).render();
+        }
+
+        // Revenue by Product Type Chart (Vertical Bar)
+        const typeEl = document.querySelector('#revenueByProductTypeChart');
+        if (typeEl) {
+            const typeData = @json($revenueByProductTypeData);
+
+            if (typeData.categories && typeData.categories.length > 0) {
+                revenueCharts.type = new ApexCharts(typeEl, {
+                    series: [{
+                        name: 'Revenue',
+                        data: typeData.data
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    colors: ['#6d9e72'],
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 8,
+                            columnWidth: '50%'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    xaxis: {
+                        categories: typeData.categories
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                        }
+                    }
+                });
+                revenueCharts.type.render();
+            } else {
+                typeEl.innerHTML =
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-bar text-4xl mr-3"></i><span>Tidak ada data</span></div>';
+            }
+        }
+
+        // Payment Methods Chart (Vertical Bar)
+        const paymentEl = document.querySelector('#paymentMethodChart');
+        if (paymentEl) {
+            const paymentData = @json($paymentMethodData);
+
+            if (paymentData.categories && paymentData.categories.length > 0) {
+                revenueCharts.payment = new ApexCharts(paymentEl, {
+                    series: [{
+                        name: 'Amount',
+                        data: paymentData.data
+                    }],
+                    chart: {
+                        type: 'bar',
+                        height: 350,
+                        toolbar: {
+                            show: false
+                        }
+                    },
+                    colors: ['#60b2a1'],
+                    plotOptions: {
+                        bar: {
+                            borderRadius: 8,
+                            columnWidth: '50%'
+                        }
+                    },
+                    dataLabels: {
+                        enabled: false
+                    },
+                    xaxis: {
+                        categories: paymentData.categories
+                    },
+                    yaxis: {
+                        labels: {
+                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                        }
+                    },
+                    tooltip: {
+                        y: {
+                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                        }
+                    }
+                });
+                revenueCharts.payment.render();
+            } else {
+                paymentEl.innerHTML =
+                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-credit-card text-4xl mr-3"></i><span>Tidak ada data</span></div>';
+            }
+        }
     }
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initRevenueCharts);
+
+    // Reinitialize after Livewire navigation
+    document.addEventListener('livewire:navigated', () => {
+        setTimeout(initRevenueCharts, 100);
+    });
+
+    // Listen for Livewire updates - using window.Livewire
+    window.addEventListener('charts-updated', () => {
+        console.log('Charts update triggered'); // Debug log
+        setTimeout(initRevenueCharts, 150);
+    });
 </script>

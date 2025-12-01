@@ -1,4 +1,4 @@
-<div class="overflow-x-hidden">
+<div>
     <!-- Hero Section -->
     <section class="relative w-full min-h-screen overflow-hidden">
         <!-- Background Video -->
@@ -565,7 +565,7 @@
 
 
     <!-- Contact Section -->
-       <section class="bg-[#f9f7f4] text-gray-800" id="contact">
+    <section class="bg-[#f9f7f4] text-gray-800" id="contact">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
             <!-- Info Kontak -->
