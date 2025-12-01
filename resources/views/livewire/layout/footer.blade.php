@@ -4,7 +4,7 @@
         <!-- Logo & Deskripsi -->
         <div>
             <div class="flex items-center mb-4 space-x-2">
-                <img src="/images/Logo.png" alt="Logo" class="h-20">
+                <img src="/images/logo.png" alt="Logo" class="h-20">
             </div>
             <p class="text-sm mb-6 text-white">{{ $texts['desc'] }}</p>
 
