@@ -1,5 +1,5 @@
 <div>
-    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
+    <section class="relative w-full h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
         <!-- Background Image -->
@@ -199,7 +199,7 @@
             </div>
 
             <!-- Kolom Kanan: Lokasi & Media Sosial -->
-            <div class="space-y-8" data-aos="fade-left" data-aos-delay="200">
+            <div class="space-y-8" data-aos="fade-up" data-aos-delay="200">
 
                 <!-- Lokasi Kami -->
                 <div class="bg-white rounded-xl p-6 shadow-lg" data-aos="zoom-in" data-aos-delay="100">

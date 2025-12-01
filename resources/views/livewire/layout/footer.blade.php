@@ -4,7 +4,7 @@
         <!-- Logo & Deskripsi -->
         <div>
             <div class="flex items-center mb-4 space-x-2">
-                <img src="/images/simpleLogo.png" alt="Logo" class="h-16">
+                <img src="/images/logo-new.png" alt="Logo" class="h-20">
             </div>
             <p class="text-sm mb-6 text-white">{{ $texts['desc'] }}</p>
 
@@ -39,21 +39,21 @@
 
             <ul class="space-y-4 text-sm">
                 <li class="flex items-center">
-                    <div class="flex items-center justify-center w-16 h-8 rounded-full bg-secondary text-white mr-3">
+                    <div class="flex items-center justify-center w-16 h-8 rounded-full text-white mr-3">
                         <i class="fa-solid fa-location-dot"></i>
                     </div>
                     <div class="">
-                        {!! nl2br(e($texts['address'])) !!}
+                        {{$texts['address']}}
                     </div>
                 </li>
                 <li class="flex items-center">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white mr-3">
+                    <div class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
                         <i class="fa-solid fa-phone "></i>
                     </div>
                     {{ $texts['phone'] }}
                 </li>
                 <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white mr-3">
+                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
                         <i class="fa-solid fa-envelope"></i>
                     </span>
                     {{ $texts['email'] }}
@@ -66,19 +66,19 @@
             <h3 class="font-semibold text-lg mb-4">{{ $texts['open_hours'] }}</h3>
             <ul class="space-y-2 text-sm">
                 <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white mr-3">
+                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
                         <i class="fa-solid fa-clock"></i>
                     </span>
                     {{ $texts['hours_weekdays'] }}
                 </li>
                 <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white mr-3">
+                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
                         <i class="fa-solid fa-clock"></i>
                     </span>
                     {{ $texts['hours_weekend'] }}
                 </li>
                 <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full bg-secondary text-white mr-3">
+                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
                         <i class="fa-solid fa-mug-hot"></i>
                     </span>
                     {{ $texts['hours_holiday'] }}

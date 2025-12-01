@@ -1,5 +1,5 @@
 <div>
-    <section class="relative w-full h-[55vh] flex items-center justify-center text-center text-white overflow-hidden"
+    <section class="relative w-full h-[70vh] flex items-center justify-center text-center text-white overflow-hidden"
         data-aos="fade-zoom-in" data-aos-duration="1200" data-aos-easing="ease-in-out" data-aos-once="true">
 
         <!-- Background -->
@@ -28,7 +28,7 @@
         </div>
     </section>
 
-    <section class="py-20 bg-white text-gray-800">
+    <section class="py-5 bg-white text-gray-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <!-- Bagian Judul -->
             <div data-aos="fade-up" data-aos-duration="800">
@@ -47,7 +47,7 @@
 
 
             <!-- Grid Gambar -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-14">
                 <!-- Gambar 1 -->
                 <div class="relative rounded-xl overflow-hidden shadow-lg h-[500px]" data-aos="fade-right"
                     data-aos-delay="100" data-aos-duration="1000">
@@ -80,7 +80,7 @@
 
 
 
-    <section class="py-20 bg-white text-gray-800">
+    <section class="bg-white text-gray-800">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
             <!-- Bagian Teks -->
@@ -180,8 +180,8 @@
     </section>
 
     <!-- Perjalanan Kami -->
-    <section class="py-20 bg-white">
-        <div class="max-w-6xl mx-auto px-6 lg:px-14 py-16">
+    <section class="bg-white">
+        <div class="max-w-6xl mx-auto px-6 lg:px-16 py-16">
 
             <!-- Heading -->
             <div data-aos="fade-up" data-aos-duration="1000">
@@ -195,7 +195,7 @@
                 @foreach ($texts['journey'] as $item)
                     <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="{{ $loop->iteration * 100 }}">
                         <span
-                            class="absolute -left-9 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-primary text-white text-sm md:text-md font-bold">
+                            class="absolute -left-9 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-secondary text-white text-sm md:text-md font-bold">
                             {{ $item['year'] }}
                         </span>
                         <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
@@ -210,8 +210,8 @@
 
 
 
-    <section class="py-16 bg-white pb-32" x-data="{ imageModal: false, imageSrc: '', imageAlt: '' }" @keydown.escape.window="imageModal = false">
-        <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 text-center mb-8">
+    <section class="bg-white" x-data="{ imageModal: false, imageSrc: '', imageAlt: '' }" @keydown.escape.window="imageModal = false">
+        <div class="max-w-7xl mx-auto px-6 lg:px-14 py-7 text-center mb-8">
             <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6 text-center"
                 data-aos="fade-down" data-aos-duration="1000">
                 {{ $texts['gallery_heading'] }}
@@ -299,7 +299,7 @@
     </section>
 
 
-    <section class="pb-32 bg-white">
+    <section class="bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <!-- Heading -->
             <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6 text-center"
@@ -335,7 +335,7 @@
 
 
 
-    <section class="py-20 bg-[#f9f7f4] text-gray-800" id="contact">
+    <section class="bg-[#f9f7f4] text-gray-800" id="contact">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
             <!-- Info Kontak -->

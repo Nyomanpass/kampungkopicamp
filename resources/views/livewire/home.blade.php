@@ -1,4 +1,4 @@
-<div class="overflow-x-hidden">
+<div>
     <!-- Hero Section -->
     <section class="relative w-full min-h-screen overflow-hidden">
         <!-- Background Video -->
@@ -71,7 +71,7 @@
 
 
     <!-- About Section -->
-    <section id="about" class="relative py-12 sm:py-16 lg:py-20">
+    <section id="about" class="relative py-10">
         <div class="container max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <div class="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
 
@@ -153,7 +153,7 @@
 
 
     <!-- Paket Wisata Section -->
-    <section class="py-12 sm:py-16 lg:py-20 bg-white" id="paket">
+    <section class="bg-white" id="paket">
         <div class="container max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <!-- Section Header -->
             <div class="text-center mb-12" data-aos="fade-down">
@@ -274,7 +274,7 @@
 
 
     <!-- Explore Pupuan Section -->
-    <section class="py-20 bg-white">
+    <section class="bg-white pb-10">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
             <div class="relative grid grid-cols-2 gap-4 rounded-2xl overflow-hidden" data-aos="zoom-in"
@@ -344,7 +344,7 @@
 
 
     <!-- CTA Parallax Section -->
-    <section class="relative h-[70vh] pb-10 bg-gray-900 overflow-hidden">
+    <section class="relative h-[65vh] pb-10 bg-gray-900 overflow-hidden">
         <!-- Background image -->
         <div class="absolute inset-0">
             <img src="images/pupuan.webp" alt="{{ $texts['heading'] }}" class="w-full h-full object-cover scale-110"
@@ -373,7 +373,7 @@
 
 
     <!-- Gallery Section -->
-    <section class="relative bg-[#f9f7f4] py-16 min-h-screen" data-aos="fade-up" data-aos-duration="1000"
+    <section class="relative bg-[#f9f7f4] py-10 min-h-screen" data-aos="fade-up" data-aos-duration="1000"
         data-aos-once="true" x-data="{ imageModal: false, imageSrc: '', imageAlt: '' }" @keydown.escape.window="imageModal = false">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <h2 class="text-2xl text-center md:text-4xl font-extrabold text-primary leading-snug mb-6"
@@ -470,7 +470,7 @@
         $lang = app()->getLocale() ?? 'id';
     @endphp
 
-    <section class="py-12 sm:py-16 lg:py-20 bg-white">
+    <section class="py-10 bg-white">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
             <!-- Section Header -->
             <h2 class="text-2xl text-center md:text-4xl font-extrabold text-primary leading-snug mb-6"
@@ -565,7 +565,7 @@
 
 
     <!-- Contact Section -->
-    <section class="py-20 bg-[#f9f7f4] text-gray-800" id="contact">
+    <section class="bg-[#f9f7f4] text-gray-800" id="contact">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
 
             <!-- Info Kontak -->
@@ -580,8 +580,8 @@
                         {{ $texts['whatsapp_heading'] }}
                     </h4>
                     <p class="text-sm text-gray-600 mb-4">{{ $texts['whatsapp_description'] }}</p>
-                    <a href="https://wa.me/{{ $contactInfo['whatsapp'] }}" target="_blank"
-                        class="flex items-center bg-primary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition justify-center w-full">
+                    <a href="https://wa.me/628123456789" target="_blank"
+                        class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition">
                         <i class="fa-brands fa-whatsapp text-xl mr-2"></i> {{ $texts['whatsapp_number'] }}
                     </a>
                 </div>
@@ -610,7 +610,7 @@
                     <p class="text-sm text-gray-600 mb-4">{!! nl2br(e($texts['address_details'])) !!}</p>
                     <a href="https://www.google.com/maps?ll=-8.342049,115.036913&z=14&t=m&hl=id&gl=ID&mapclient=embed&cid=9951410633565317211"
                         target="_blank"
-                        class="inline-block bg-primary hover:bg-secondary/90 px-4 py-2 rounded-lg font-medium transition text-white">
+                        class="inline-block bg-secondary hover:bg-secondary/90 px-4 py-2 rounded-lg font-medium transition text-white">
                         <i class="fa-solid fa-map-location-dot mr-2"></i> {{ $texts['address_map_cta'] }}
                     </a>
                 </div>
@@ -624,12 +624,12 @@
                     <i class="fa-solid fa-map text-secondary mr-2"></i> {{ $texts['location_heading'] }}
                 </h3>
 
-
                 {{-- Tambahkan wrapper dengan rasio aspek tetap untuk Mobile --}}
                 <div class="relative h-[400px] w-full" style="padding-top: 56.25%;">
-
-                    <iframe src="{{ $gmaps['embed_url'] }}" class="absolute top-0 left-0 w-full h-full rounded-lg"
-                        style="border:0;" allowfullscreen="" loading="lazy">
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7895.1750634993!2d115.03386611055907!3d-8.343715401760706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1759163429473!5m2!1sid!2sid"
+                        class="absolute top-0 left-0 w-full h-full rounded-lg" style="border:0;" allowfullscreen=""
+                        loading="lazy">
                     </iframe>
                 </div>
 
@@ -637,7 +637,6 @@
 
         </div>
     </section>
-
 
 
 </div>

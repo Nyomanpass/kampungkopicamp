@@ -273,7 +273,7 @@ class Customers extends Component
             'generatedAt' => now()->format('d M Y H:i:s'),
         ];
 
-        $pdf = Pdf::loadView('pdf.customer-pdf', $data);
+        $pdf = Pdf::loadView('reports.customer-pdf', $data);
 
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();

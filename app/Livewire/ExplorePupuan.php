@@ -54,7 +54,7 @@ class ExplorePupuan extends Component
             'cards' => [
                 [
                     'image' => '/images/airterjunpupuanblemantung.webp',
-                    'link' => '/explore-pupuan/airterjun',
+                    'link' => '/explore-pupuan/air-terjun-blemantung',
                     'title' => __('messages.visit_card1_title'),
                     'desc'  => __('messages.visit_card1_desc'),
                 ],
@@ -66,13 +66,13 @@ class ExplorePupuan extends Component
                 ],
                 [
                     'image' => '/images/explorepupuansatu.webp',
-                    'link' => '/explore-pupuan/patuhbudha',
+                    'link' => '/explore-pupuan/buddha-tidur',
                     'title' => __('messages.visit_card3_title'),
                     'desc'  => __('messages.visit_card3_desc'),
                 ],
                 [
                     'image' => '/images/gulaarenpupuan.jpg',
-                    'link' => '/explore-pupuan/gulaaren',
+                    'link' => '/explore-pupuan/gula-aren',
                     'title' => __('messages.visit_card4_title'),
                     'desc'  => __('messages.visit_card4_desc'),
                 ],

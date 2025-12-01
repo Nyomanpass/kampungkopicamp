@@ -8,6 +8,8 @@ use App\Livewire\Paketwisata;
 use App\Livewire\PaketDetail;
 use App\Livewire\Article;
 use App\Livewire\ExplorePupuan;
+use App\Livewire\ExplorePupuan\Detail;
+
 use App\Livewire\ArticleDetail;
 use App\Livewire\Admin\PaketWisataCrud;
 use App\Livewire\Admin\ArticleCrud;
@@ -41,6 +43,8 @@ Route::get('/', Home::class)->name('home');
 Route::get('/about', About::class)->name('about');
 Route::get('/contact', Contact::class)->name('contact');
 Route::get('/explore-pupuan', ExplorePupuan::class)->name('explore-pupuan');
+Route::get('/explore-pupuan/{slug}', Detail::class)->name('explore-pupuan.detail');
+
 Route::get('/article', \App\Livewire\Blog::class)->name('article');
 Route::get('/article/{slug}', \App\Livewire\DetailBlog::class)->name('article.detail');
 
