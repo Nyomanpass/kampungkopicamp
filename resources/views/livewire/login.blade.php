@@ -2,7 +2,7 @@
     <div class="w-full lg:min-w-xl p-8 bg-white rounded-lg shadow-lg">
         <div class="mb-10 lg:mb-14">
             <a href="/">
-                <img src="/images/logodua.png" alt="Logo" class="w-52 h-full mb-6 mx-auto object-cover">
+                <img src="/images/logodua-new.png" alt="Logo" class="w-52 h-full mb-6 mx-auto object-cover">
             </a>
             <h2 class="text-2xl md:text-3xl lg:text-4xl font-semibold text-center mb-2">Selamat Datang Kembali!</h2>
             <p class="text-center text-warna-300">Silahkan login untuk mendapatkan promo menarik Kampung Kopi.</p>
