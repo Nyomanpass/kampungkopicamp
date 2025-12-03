@@ -69,8 +69,8 @@ class Vouchers extends Component
             'max_discount' => 'nullable|numeric|min:0',
             'usage_limit' => 'nullable|integer|min:1',
             'user_usage_limit' => 'nullable|integer|min:1',
-            'start_date' => 'nullable|date',
-            'end_date' => 'nullable|date|after_or_equal:start_date',
+            'start_date' => 'required|date',
+            'end_date' => 'required|date|after_or_equal:start_date',
             'is_active' => 'boolean',
             'show_in_dashboard' => 'boolean',
         ];
@@ -85,6 +85,8 @@ class Vouchers extends Component
 
     protected $messages = [
         'code.unique' => 'Voucher code already exists.',
+        'start_date.required' => 'Start date is required.',
+        'end_date.required' => 'End date is required.',
         'end_date.after_or_equal' => 'End date must be after or equal to start date.',
     ];
 
@@ -179,8 +181,8 @@ class Vouchers extends Component
                 'max_discount' => $this->max_discount,
                 'usage_limit' => $this->usage_limit,
                 'user_usage_limit' => $this->user_usage_limit,
-                'start_date' => $this->start_date ? Carbon::parse($this->start_date) : null,
-                'end_date' => $this->end_date ? Carbon::parse($this->end_date) : null,
+                'start_date' => Carbon::parse($this->start_date),
+                'end_date' => Carbon::parse($this->end_date),
                 'is_active' => $this->is_active,
                 'show_in_dashboard' => $this->show_in_dashboard,
             ]);
@@ -222,8 +224,8 @@ class Vouchers extends Component
                 'max_discount' => $this->max_discount,
                 'usage_limit' => $this->usage_limit,
                 'user_usage_limit' => $this->user_usage_limit,
-                'start_date' => $this->start_date ? Carbon::parse($this->start_date) : null,
-                'end_date' => $this->end_date ? Carbon::parse($this->end_date) : null,
+                'start_date' => Carbon::parse($this->start_date),
+                'end_date' => Carbon::parse($this->end_date),
                 'is_active' => $this->is_active,
                 'show_in_dashboard' => $this->show_in_dashboard,
             ]);

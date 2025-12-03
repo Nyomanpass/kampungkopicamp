@@ -105,9 +105,9 @@ class GenerateProductAvailability extends Command
         $generated = 0;
         $skipped = 0;
 
-        // ✅ Get default stock values
-        $defaultUnits = $product->type === 'touring' ? 0 : 10;
-        $defaultSeats = $product->type === 'touring' ? 20 : 0;
+        // ✅ Get default stock values from product settings
+        $defaultUnits = $product->default_units ?? ($product->type === 'touring' ? 0 : 10);
+        $defaultSeats = $product->default_seats ?? ($product->type === 'touring' ? 20 : 0);
 
         $current = $startDate->copy();
 

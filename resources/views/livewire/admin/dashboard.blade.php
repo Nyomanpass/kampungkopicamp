@@ -6,8 +6,8 @@
             <p class="text-sm text-gray-600 mt-1">Selamat Datang Kembali! Ini Informasi Ringkas Hari ini.</p>
         </div>
 
-        <div class="flex items-center gap-3">
-            {{-- Date Range Filter --}}
+        {{-- <div class="flex items-center gap-3">
+
             <select wire:model.live="dateRange"
                 class="px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
                 <option value="today">Today</option>
@@ -15,14 +15,12 @@
                 <option value="month">This Month</option>
                 <option value="year">This Year</option>
             </select>
-
-            {{-- Refresh Button --}}
             <button wire:click="refreshData"
                 class="px-4 py-2 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-semibold transition-all text-sm flex items-center gap-2">
                 <i class="fas fa-sync-alt"></i>
                 <span class="hidden md:inline">Refresh</span>
             </button>
-        </div>
+        </div> --}}
     </div>
 
 
@@ -159,7 +157,7 @@
                 </div>
                 <span class="text-xs bg-white/20 px-2 py-1 rounded-full backdrop-blur-sm">Pending</span>
             </div>
-            <p class="text-sm opacity-90 mb-1">Pending Payments</p>
+            <p class="text-sm opacity-90 mb-1">Pembayaran Pending</p>
             <p class="text-2xl font-bold">Rp {{ number_format($pendingPayments / 1000) }}K</p>
         </div>
     </div>
@@ -276,7 +274,7 @@
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <i class="fas fa-chart-line text-primary"></i>
-                Revenue Trend
+                Grafik Pendapatan
             </h3>
             <div id="revenueTrendChart"></div>
         </div>
@@ -619,31 +617,42 @@
 
         // Payment Methods Chart
         const paymentMethodsOptions = {
-            series: @js($paymentMethodsData['series']),
+            series: [{
+                name: 'Amount',
+                data: @js($paymentMethodsData['data'])
+            }],
             chart: {
-                type: 'donut',
-                height: 300
+                type: 'bar',
+                height: 300,
+                toolbar: {
+                    show: false
+                }
             },
-            labels: @js($paymentMethodsData['labels']),
-            colors: ['#6d9e72', '#60b2a1', '#5f91a7'],
-            legend: {
-                position: 'bottom'
-            },
+            colors: ['#c2644f', '#6d9e72', '#4b7d6e'],
             plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%',
-                        labels: {
-                            show: true,
-                            total: {
-                                show: true,
-                                label: 'Total',
-                                formatter: function(w) {
-                                    const total = w.globals.seriesTotals.reduce((a, b) => a + b, 0);
-                                    return 'Rp ' + (total / 1000).toFixed(0) + 'K';
-                                }
-                            }
-                        }
+                bar: {
+                    horizontal: false,
+                    borderRadius: 6,
+                    columnWidth: '50%'
+                }
+            },
+            dataLabels: {
+                enabled: false
+            },
+            xaxis: {
+                categories: @js($paymentMethodsData['labels'])
+            },
+            yaxis: {
+                labels: {
+                    formatter: function(val) {
+                        return 'Rp ' + (val / 1000).toFixed(0) + 'K';
+                    }
+                }
+            },
+            tooltip: {
+                y: {
+                    formatter: function(val) {
+                        return 'Rp ' + (val / 1000).toFixed(0) + 'K';
                     }
                 }
             }
@@ -651,5 +660,6 @@
         const paymentMethodsChart = new ApexCharts(document.querySelector("#paymentMethodsChart"),
             paymentMethodsOptions);
         paymentMethodsChart.render();
+
     }
 </script>

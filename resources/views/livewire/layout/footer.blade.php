@@ -30,6 +30,12 @@
                 <li><a href="{{ route('explore-pupuan') }}" class="hover:text-white/40">Explore Pupuan</a></li>
                 <li><a href="{{ route('article') }}" class="hover:text-white/40">Artikel</a></li>
                 <li><a href="{{ route('contact') }}" class="hover:text-white/40">Contact</a></li>
+                <li><a href="{{ route('privacy-policy') }}"
+                        class="hover:text-white/40">{{ app()->getLocale() == 'id' ? 'Kebijakan Privasi' : 'Privacy Policy' }}</a>
+                </li>
+                <li><a href="{{ route('terms-of-service') }}"
+                        class="hover:text-white/40">{{ app()->getLocale() == 'id' ? 'Syarat & Ketentuan' : 'Terms of Service' }}</a>
+                </li>
             </ul>
         </div>
 
@@ -43,7 +49,7 @@
                         <i class="fa-solid fa-location-dot"></i>
                     </div>
                     <div class="">
-                        {{$texts['address']}}
+                        {{ $texts['address'] }}
                     </div>
                 </li>
                 <li class="flex items-center">
@@ -93,8 +99,10 @@
         class="border-t border-white mt-10 pt-6 px-6 lg:px-8 max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-gray-400">
         <p class="text-white text-center">{{ $texts['copyright'] }}</p>
         <div class="flex space-x-6 mt-4 md:mt-0">
-            <a href="#" class="hover:text-secondary text-white">{{ $texts['privacy'] }}</a>
-            <a href="#" class="hover:text-secondary text-white">{{ $texts['terms'] }}</a>
+            <a href="{{ route('privacy-policy') }}"
+                class="hover:text-secondary text-white">{{ $texts['privacy'] }}</a>
+            <a href="{{ route('terms-of-service') }}"
+                class="hover:text-secondary text-white">{{ $texts['terms'] }}</a>
         </div>
     </div>
 </footer>

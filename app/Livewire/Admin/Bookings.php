@@ -20,6 +20,9 @@ use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\BookingCompleted;
+use App\Mail\BookingRefunded;
 
 class Bookings extends Component
 {
@@ -752,6 +755,21 @@ class Bookings extends Component
                 'status' => $this->newStatus,
             ]);
 
+            // ✅ Send email if status changed to completed for online bookings
+            if ($this->newStatus === 'completed' && $booking->booking_source !== 'walk-in' && $booking->customer_email) {
+                try {
+                    Mail::to($booking->customer_email)->send(new BookingCompleted($booking));
+                    Log::info("Booking completed email sent to {$booking->customer_email}", [
+                        'booking_token' => $booking->booking_token,
+                    ]);
+                } catch (\Exception $mailError) {
+                    Log::error("Failed to send booking completed email: " . $mailError->getMessage(), [
+                        'booking_token' => $booking->booking_token,
+                        'email' => $booking->customer_email,
+                    ]);
+                }
+            }
+
             // Log status change (optional: buat table booking_logs)
             Log::info("Booking {$booking->booking_token} status changed from {$oldStatus} to {$this->newStatus}", [
                 'notes' => $this->statusNotes,
@@ -788,6 +806,22 @@ class Bookings extends Component
         try {
             $booking = Booking::findOrFail($this->selectedBookingId);
             $booking->update(['status' => 'completed']);
+
+            // ✅ Send email if booking is from online source (not walk-in)
+            if ($booking->booking_source !== 'walk-in' && $booking->customer_email) {
+                try {
+                    Mail::to($booking->customer_email)->send(new BookingCompleted($booking));
+                    Log::info("Booking completed email sent to {$booking->customer_email}", [
+                        'booking_token' => $booking->booking_token,
+                    ]);
+                } catch (\Exception $mailError) {
+                    Log::error("Failed to send booking completed email: " . $mailError->getMessage(), [
+                        'booking_token' => $booking->booking_token,
+                        'email' => $booking->customer_email,
+                    ]);
+                }
+            }
+
             $this->selectedBooking->refresh();
             session()->flash('success', 'Booking completed successfully!');
         } catch (\Exception $e) {
@@ -1377,6 +1411,27 @@ class Bookings extends Component
 
             DB::commit();
 
+            // Send refund email
+            if ($booking->customer_email) {
+                try {
+                    Mail::to($booking->customer_email)->send(
+                        new BookingRefunded($booking, $creditNote, $this->refundType, $this->refundAmount, $this->refundReason)
+                    );
+                    Log::info("Refund email sent to {$booking->customer_email}", [
+                        'booking_token' => $booking->booking_token,
+                        'refund_type' => $this->refundType,
+                        'amount' => $this->refundAmount,
+                        'credit_note_id' => $creditNote->id,
+                    ]);
+                } catch (\Exception $mailError) {
+                    Log::error("Failed to send refund email: " . $mailError->getMessage(), [
+                        'booking_token' => $booking->booking_token,
+                        'email' => $booking->customer_email,
+                        'error' => $mailError->getMessage(),
+                    ]);
+                }
+            }
+
             $this->showRefundModal = false;
             session()->flash('success', ucfirst($this->refundType) . ' Refund berhasil diproses! Credit Note: ' . $creditNote->id);
 
@@ -1688,7 +1743,7 @@ class Bookings extends Component
                 $query->whereDate('end_date', '<=', $this->endDate);
             })
             ->orderBy($this->sortBy, $this->sortDirection)
-            ->paginate(10);
+            ->paginate(10)->onEachSide(1);
 
         $products = Product::where('type', $this->productType)
             ->where('is_active', true)

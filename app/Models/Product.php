@@ -27,6 +27,8 @@ class Product extends Model
         'capacity_per_unit',
         'max_participant',
         'duration_type',
+        'default_units',
+        'default_seats',
         'images',
         'facilities',
         'is_active',

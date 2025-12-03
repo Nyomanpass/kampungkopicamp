@@ -329,6 +329,7 @@
                                                 Day{{ \Carbon\Carbon::parse($booking->start_date)->diffInDays($booking->end_date) > 1 ? 's' : '' }}
                                             </p>
                                         </div>
+
                                         <div class="flex justify-between">
                                             <p class="font-medium">Check-in</p>
                                             <p class="font-medium">
@@ -351,8 +352,17 @@
                                     </div>
                                 </div>
 
-                                {{-- Addons --}}
                                 <div class="pb-4">
+                                    <p class="font-semibold mb-4">Special Requests</p>
+                                    @if ($booking->special_requests)
+                                        <p class="text-sm text-gray-700">{{ $booking->special_requests }}</p>
+                                    @else
+                                        <p class="text-sm text-gray-500">Tidak ada special requests</p>
+                                    @endif
+                                </div>
+
+                                {{-- Addons --}}
+                                <div class="pb-5">
                                     <p class="font-semibold mb-4">Addon</p>
                                     @php
                                         $addonItems = $booking
@@ -381,6 +391,8 @@
                                         <p class="text-sm text-gray-500">Tidak ada addon</p>
                                     @endif
                                 </div>
+
+
                             </div>
 
                             {{-- Order summary --}}

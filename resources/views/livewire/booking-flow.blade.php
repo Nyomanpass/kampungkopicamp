@@ -60,9 +60,6 @@
                                 Jumlah Orang
                             </label>
                             <input type="number" wire:model="peopleCount" min="1"
-                                @if ($product->type == 'touring') max="{{ $product->max_participant }}"
-                            @else
-                                max="{{ $product->capacity_per_unit }}" @endif
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
                             @error('peopleCount')
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
@@ -819,7 +816,7 @@
                                 </button>
 
                                 <p class="text-xs text-gray-600 text-center mt-4">
-                                    Dengan melanjutkan, Anda menyetujui <a href="#"
+                                    Dengan melanjutkan, Anda menyetujui <a href="{{ route('terms-of-service') }}"
                                         class="text-primary hover:underline">Syarat & Ketentuan</a> kami
                                 </p>
                             </div>

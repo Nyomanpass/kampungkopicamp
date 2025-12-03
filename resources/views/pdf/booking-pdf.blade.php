@@ -12,7 +12,7 @@
             box-sizing: border-box;
         }
 
-        
+
         body {
             font-family: 'DejaVu Sans', Arial, sans-serif;
             font-size: 10px;
@@ -134,34 +134,37 @@
 <body>
     <div class="header">
         <h1>{{ $title }}</h1>
-        <p>Period: {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+        @if (isset($month) && isset($year))
+            <p>Periode: {{ $month }} {{ $year }}</p>
+        @endif
+        <p>{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
             {{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</p>
-        <p>Generated: {{ $generatedAt }}</p>
+        <p>Dibuat: {{ $generatedAt }}</p>
     </div>
 
     {{-- Metrics --}}
     <div class="metrics-grid">
         <div class="metric-card">
-            <div class="metric-label">Total Bookings</div>
+            <div class="metric-label">Total Booking</div>
             <div class="metric-value">{{ number_format($metrics['totalBookings']) }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Completed</div>
+            <div class="metric-label">Selesai</div>
             <div class="metric-value">{{ number_format($metrics['completedBookings']) }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Cancelled</div>
+            <div class="metric-label">Dibatalkan</div>
             <div class="metric-value">{{ number_format($metrics['cancelledBookings']) }}</div>
         </div>
     </div>
 
     <div class="metrics-grid" style="margin-top: 10px;">
         <div class="metric-card">
-            <div class="metric-label">Conversion Rate</div>
+            <div class="metric-label">Tingkat Konversi</div>
             <div class="metric-value">{{ number_format($metrics['conversionRate'], 1) }}%</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Avg Booking Value</div>
+            <div class="metric-label">Nilai Rata-Rata Booking</div>
             <div class="metric-value">Rp {{ number_format($metrics['averageBookingValue'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card">
@@ -172,15 +175,15 @@
 
     {{-- Top Products --}}
     <div class="section">
-        <div class="section-title">Top Products by Bookings</div>
+        <div class="section-title">Produk Terpopuler Berdasarkan Booking</div>
         <table>
             <thead>
                 <tr>
                     <th style="width: 5%">#</th>
-                    <th style="width: 40%">Product Name</th>
-                    <th style="width: 20%">Type</th>
-                    <th style="width: 15%" class="text-center">Bookings</th>
-                    <th style="width: 20%" class="text-center">Qty Sold</th>
+                    <th style="width: 40%">Nama Produk</th>
+                    <th style="width: 20%">Tipe</th>
+                    <th style="width: 15%" class="text-center">Booking</th>
+                    <th style="width: 20%" class="text-center">Qty Terjual</th>
                 </tr>
             </thead>
             <tbody>
@@ -194,7 +197,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center" style="color: #999;">No data available</td>
+                        <td colspan="5" class="text-center" style="color: #999;">Tidak ada data</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -203,26 +206,40 @@
 
     {{-- Status Breakdown --}}
     <div class="section">
-        <div class="section-title">Booking Status Breakdown</div>
+        <div class="section-title">Rincian Status Booking</div>
         <table>
             <thead>
                 <tr>
                     <th style="width: 50%">Status</th>
-                    <th style="width: 25%" class="text-center">Count</th>
-                    <th style="width: 25%" class="text-right">Total Value</th>
+                    <th style="width: 25%" class="text-center">Jumlah</th>
+                    <th style="width: 25%" class="text-right">Total Nilai</th>
                 </tr>
             </thead>
             <tbody>
                 @forelse ($statusBreakdown as $status)
+                    @php
+                        $statusLabels = [
+                            'draft' => 'Draft',
+                            'pending_payment' => 'Menunggu Pembayaran',
+                            'paid' => 'Dibayar',
+                            'checked_in' => 'Check In',
+                            'completed' => 'Selesai',
+                            'cancelled' => 'Dibatalkan',
+                            'refunded' => 'Dikembalikan',
+                            'no_show' => 'Tidak Hadir',
+                            'expired' => 'Kedaluwarsa',
+                        ];
+                    @endphp
                     <tr>
-                        <td>{{ ucfirst(str_replace('_', ' ', $status->status)) }}</td>
+                        <td>{{ $statusLabels[$status->status] ?? ucfirst(str_replace('_', ' ', $status->status)) }}
+                        </td>
                         <td class="text-center"><strong>{{ $status->count }}</strong></td>
                         <td class="text-right"><strong>Rp
                                 {{ number_format($status->total_value, 0, ',', '.') }}</strong></td>
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="3" class="text-center" style="color: #999;">No data available</td>
+                        <td colspan="3" class="text-center" style="color: #999;">Tidak ada data</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -230,8 +247,8 @@
     </div>
 
     <div class="footer">
-        <p><strong>Kampung Kopi Camp</strong> | Booking Report</p>
-        <p>{{ now()->format('d M Y H:i:s') }} | Confidential Document</p>
+        <p><strong>Kampung Kopi Camp</strong> | Laporan Booking</p>
+        <p>{{ now()->format('d M Y H:i:s') }} | Dokumen Rahasia</p>
     </div>
 </body>
 

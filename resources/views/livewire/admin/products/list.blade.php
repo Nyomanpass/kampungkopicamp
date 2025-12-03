@@ -196,14 +196,13 @@
                             </div>
                         @endif
 
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-gray-600">Max Participant</span>
-                            <span class="font-semibold text-gray-900">{{ $product->max_participant }} person(s)</span>
-                        </div>
+
 
                         @if ($product->type == 'touring')
-                            <div class="h-[20px]">
-
+                            <div class="flex items-center justify-between text-sm">
+                                <span class="text-gray-600">Max Participant</span>
+                                <span class="font-semibold text-gray-900">{{ $product->max_participant }}
+                                    person(s)</span>
                             </div>
                         @endif
                     </div>

@@ -107,9 +107,17 @@
             <h3 class="font-semibold text-gray-900 mb-4">Voucher untuk Kamu</h3>
             <div class="space-y-5">
                 @foreach ($dashboardVouchers as $voucher)
+                    @php
+                        $hasRedeemed = $this->hasUserRedeemed($voucher);
+                    @endphp
                     <div>
                         <div
-                            class="bg-white rounded-lg border border-gray-100 p-4 flex flex-col items-center gap-2 shadow-sm hover:shadow-md transition">
+                            class="bg-white rounded-lg border border-gray-100 p-4 flex flex-col items-center gap-2 shadow-sm hover:shadow-md transition relative">
+                            {{-- Overlay --}}
+                            @if ($hasRedeemed)
+                                <div class="absolute inset-0 bg-gray-100/60 rounded-lg"></div>
+                            @endif
+
                             <div class="flex gap-4  items-center justify-between w-full">
                                 <div class="flex gap-4 w-full">
 

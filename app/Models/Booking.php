@@ -25,6 +25,7 @@ class Booking extends Model
         'customer_name',
         'customer_email',
         'customer_phone',
+        'special_requests',
         'bonus_meta',
         'voucher_id',
         'discount_amount',

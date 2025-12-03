@@ -64,7 +64,7 @@ class PaymentService
                         'expiry' => [
                               'start_time' => Carbon::now()->format('Y-m-d H:i:s O'),
                               'unit' => 'minutes',
-                              'duration' => 5,
+                              'duration' => 120,
                         ],
                         'callbacks' => [
                               'finish' => route('booking.finish', $booking->booking_token),

@@ -1,51 +1,56 @@
 # 🚀 Production Deployment Guide - Kampung Kopi Camp
 
 ## 📋 Table of Contents
-- [Pre-Deployment Checklist](#pre-deployment-checklist)
-- [Server Requirements](#server-requirements)
-- [Environment Configuration](#environment-configuration)
-- [Database Setup](#database-setup)
-- [File Storage & Permissions](#file-storage--permissions)
-- [Security Setup](#security-setup)
-- [Performance Optimization](#performance-optimization)
-- [Third-Party Services](#third-party-services)
-- [Monitoring & Logging](#monitoring--logging)
-- [Backup Strategy](#backup-strategy)
-- [Post-Deployment Tasks](#post-deployment-tasks)
-- [Troubleshooting](#troubleshooting)
+
+-   [Pre-Deployment Checklist](#pre-deployment-checklist)
+-   [Server Requirements](#server-requirements)
+-   [Environment Configuration](#environment-configuration)
+-   [Database Setup](#database-setup)
+-   [File Storage & Permissions](#file-storage--permissions)
+-   [Security Setup](#security-setup)
+-   [Performance Optimization](#performance-optimization)
+-   [Third-Party Services](#third-party-services)
+-   [Monitoring & Logging](#monitoring--logging)
+-   [Backup Strategy](#backup-strategy)
+-   [Post-Deployment Tasks](#post-deployment-tasks)
+-   [Troubleshooting](#troubleshooting)
 
 ---
 
 ## 🔍 Pre-Deployment Checklist
 
 ### Code Quality
-- [ ] All features tested thoroughly in staging environment
-- [ ] No debug code (`dd()`, `dump()`, `var_dump()`) left in codebase
-- [ ] All console.log() removed from JavaScript
-- [ ] Code reviewed and optimized
-- [ ] All TODOs addressed or documented
+
+-   [ ] All features tested thoroughly in staging environment
+-   [ ] No debug code (`dd()`, `dump()`, `var_dump()`) left in codebase
+-   [ ] All console.log() removed from JavaScript
+-   [ ] Code reviewed and optimized
+-   [ ] All TODOs addressed or documented
 
 ### Testing
-- [ ] Run all unit tests: `php artisan test`
-- [ ] Test booking flow end-to-end
-- [ ] Test payment gateway (Midtrans sandbox → production)
-- [ ] Test email notifications
-- [ ] Test all reports (Revenue, Bookings, Customers, Financial)
-- [ ] Test admin panel functionality
-- [ ] Test user registration & login
-- [ ] Mobile responsiveness verified
-- [ ] Cross-browser testing completed
+
+-   [ ] Run all unit tests: `php artisan test`
+-   [ ] Test booking flow end-to-end
+-   [ ] Test payment gateway (Midtrans sandbox → production)
+-   [ ] Test email notifications
+-   [ ] Test all reports (Revenue, Bookings, Customers, Financial)
+-   [ ] Test admin panel functionality
+-   [ ] Test user registration & login
+-   [ ] Mobile responsiveness verified
+-   [ ] Cross-browser testing completed
 
 ### Version Control
-- [ ] All changes committed to git
-- [ ] Create production release tag: `git tag -a v1.0.0 -m "Production Release"`
-- [ ] Push to repository: `git push origin main --tags`
+
+-   [ ] All changes committed to git
+-   [ ] Create production release tag: `git tag -a v1.0.0 -m "Production Release"`
+-   [ ] Push to repository: `git push origin main --tags`
 
 ---
 
 ## 💻 Server Requirements
 
 ### Minimum Specifications
+
 ```
 PHP: >= 8.1
 MySQL/MariaDB: >= 8.0 / 10.4
@@ -55,6 +60,7 @@ NPM: >= 9.x
 ```
 
 ### Required PHP Extensions
+
 ```
 BCMath
 Ctype
@@ -72,10 +78,11 @@ ZIP
 ```
 
 ### Server Software (Choose One)
-- **Option 1**: Apache + mod_rewrite enabled
-- **Option 2**: Nginx + PHP-FPM
-- **Option 3**: Laravel Forge (Recommended)
-- **Option 4**: Cloudways / DigitalOcean App Platform
+
+-   **Option 1**: Apache + mod_rewrite enabled
+-   **Option 2**: Nginx + PHP-FPM
+-   **Option 3**: Laravel Forge (Recommended)
+-   **Option 4**: Cloudways / DigitalOcean App Platform
 
 ---
 
@@ -155,16 +162,18 @@ SESSION_SAME_SITE=lax
 ```
 
 ### 3. Important Security Notes
-- ⚠️ **NEVER** commit `.env` to git
-- ⚠️ Use strong database passwords (minimum 16 characters)
-- ⚠️ Keep `APP_DEBUG=false` in production
-- ⚠️ Use HTTPS (SSL Certificate required)
+
+-   ⚠️ **NEVER** commit `.env` to git
+-   ⚠️ Use strong database passwords (minimum 16 characters)
+-   ⚠️ Keep `APP_DEBUG=false` in production
+-   ⚠️ Use HTTPS (SSL Certificate required)
 
 ---
 
 ## 🗄️ Database Setup
 
 ### 1. Create Production Database
+
 ```sql
 CREATE DATABASE kampungkopicamp_prod CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 CREATE USER 'kopi_user'@'localhost' IDENTIFIED BY 'your_strong_password';
@@ -173,6 +182,7 @@ FLUSH PRIVILEGES;
 ```
 
 ### 2. Run Migrations
+
 ```bash
 # Fresh migration (for new database)
 php artisan migrate --force
@@ -182,6 +192,7 @@ php artisan migrate --force
 ```
 
 ### 3. Seed Initial Data (Admin User)
+
 ```bash
 # Create admin user
 php artisan db:seed --class=UserSeeder --force
@@ -198,7 +209,9 @@ php artisan tinker
 ```
 
 ### 4. Database Backup Script
+
 Create automated daily backups:
+
 ```bash
 # Create backup script
 nano /home/scripts/backup-db.sh
@@ -229,11 +242,13 @@ crontab -e
 ## 📁 File Storage & Permissions
 
 ### 1. Create Storage Link
+
 ```bash
 php artisan storage:link
 ```
 
 ### 2. Set Correct Permissions
+
 ```bash
 # For Apache/Nginx user (usually www-data)
 sudo chown -R www-data:www-data /path/to/kampungkopicamp
@@ -243,7 +258,9 @@ sudo chmod -R 775 /path/to/kampungkopicamp/bootstrap/cache
 ```
 
 ### 3. Storage Directories
+
 Ensure these directories exist and are writable:
+
 ```bash
 storage/app/public/
 storage/app/public/certificates/
@@ -260,6 +277,7 @@ storage/logs/
 ## 🔒 Security Setup
 
 ### 1. SSL Certificate (HTTPS)
+
 ```bash
 # Option 1: Let's Encrypt (Free)
 sudo apt install certbot python3-certbot-nginx
@@ -270,7 +288,9 @@ sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 ```
 
 ### 2. Security Headers (Nginx)
+
 Add to nginx config:
+
 ```nginx
 # Prevent clickjacking
 add_header X-Frame-Options "SAMEORIGIN" always;
@@ -289,6 +309,7 @@ add_header Content-Security-Policy "default-src 'self' https:; script-src 'self'
 ```
 
 ### 3. Hide Server Information
+
 ```nginx
 # Nginx
 server_tokens off;
@@ -299,7 +320,9 @@ ServerTokens Prod
 ```
 
 ### 4. Rate Limiting
+
 Laravel already has throttling in `RouteServiceProvider`:
+
 ```php
 // routes/web.php - Already configured
 RateLimiter::for('web', function (Request $request) {
@@ -308,6 +331,7 @@ RateLimiter::for('web', function (Request $request) {
 ```
 
 ### 5. Block Common Attack Vectors
+
 ```nginx
 # Block access to sensitive files
 location ~ /\.(env|git|htaccess) {
@@ -327,6 +351,7 @@ location ~* ^/storage/.*\.(php|php3|php4|php5|phtml)$ {
 ## ⚡ Performance Optimization
 
 ### 1. Optimize Application
+
 ```bash
 # Cache configuration
 php artisan config:cache
@@ -345,6 +370,7 @@ php artisan event:cache
 ```
 
 ### 2. Compile Assets
+
 ```bash
 # Production build
 npm run build
@@ -354,6 +380,7 @@ npm run build
 ```
 
 ### 3. Enable OPcache (php.ini)
+
 ```ini
 opcache.enable=1
 opcache.memory_consumption=256
@@ -365,6 +392,7 @@ opcache.enable_cli=1
 ```
 
 ### 4. Database Optimization
+
 ```sql
 -- Index frequently queried columns (already done in migrations)
 -- Run ANALYZE to update statistics
@@ -375,6 +403,7 @@ ANALYZE TABLE users;
 ```
 
 ### 5. Redis Setup (Optional but Recommended)
+
 ```bash
 # Install Redis
 sudo apt install redis-server
@@ -391,6 +420,7 @@ REDIS_PORT=6379
 ```
 
 ### 6. Queue Workers
+
 ```bash
 # Install Supervisor
 sudo apt install supervisor
@@ -426,6 +456,7 @@ Laravel menggunakan task scheduler untuk menjalankan tugas otomatis. Sistem ini 
 ### 1. Setup Laravel Scheduler (WAJIB)
 
 #### Untuk Linux Server
+
 ```bash
 # Edit crontab
 crontab -e
@@ -438,6 +469,7 @@ crontab -e
 ```
 
 #### Untuk Windows Server (Task Scheduler)
+
 ```powershell
 # Buat file batch: C:\scripts\laravel-scheduler.bat
 @echo off
@@ -457,6 +489,7 @@ php artisan schedule:run
 Berdasarkan project ini, tasks berikut akan berjalan otomatis:
 
 #### A. **Pembersihan Booking Expired** (Setiap Jam)
+
 ```php
 // File: app/Console/Kernel.php
 // Membersihkan booking yang sudah expired (> 24 jam tanpa pembayaran)
@@ -464,7 +497,7 @@ $schedule->call(function () {
     $expiredBookings = Booking::where('status', 'pending')
         ->where('created_at', '<', now()->subHours(24))
         ->get();
-    
+
     foreach ($expiredBookings as $booking) {
         $booking->update(['status' => 'expired']);
     }
@@ -472,6 +505,7 @@ $schedule->call(function () {
 ```
 
 #### B. **Pengingat Pembayaran** (Setiap 6 Jam)
+
 ```php
 // Mengirim email reminder untuk booking yang belum dibayar
 $schedule->call(function () {
@@ -479,7 +513,7 @@ $schedule->call(function () {
         ->where('created_at', '>', now()->subHours(20))
         ->where('created_at', '<', now()->subHours(4))
         ->get();
-    
+
     foreach ($pendingBookings as $booking) {
         // Kirim email reminder
         Mail::to($booking->email)->send(new PaymentReminder($booking));
@@ -488,16 +522,19 @@ $schedule->call(function () {
 ```
 
 #### C. **Backup Database Otomatis** (Setiap Hari Jam 2 Pagi)
+
 ```php
 $schedule->command('backup:run')->dailyAt('02:00');
 ```
 
 #### D. **Cleanup Log Files** (Setiap Minggu)
+
 ```php
 $schedule->command('log:clear')->weekly();
 ```
 
 #### E. **Generate Reports** (Setiap Hari Jam 6 Pagi)
+
 ```php
 // Generate daily report untuk admin
 $schedule->call(function () {
@@ -506,7 +543,7 @@ $schedule->call(function () {
         'bookings' => Booking::whereDate('created_at', today())->count(),
         'revenue' => Payment::whereDate('created_at', today())->sum('amount'),
     ];
-    
+
     // Kirim ke admin
     Mail::to('admin@kampungkopicamp.com')->send(new DailyReport($dailyStats));
 })->dailyAt('06:00');
@@ -515,6 +552,7 @@ $schedule->call(function () {
 ### 3. Verifikasi Scheduler Berjalan
 
 #### Test Manual
+
 ```bash
 # Jalankan scheduler sekali untuk test
 php artisan schedule:run
@@ -528,6 +566,7 @@ php artisan schedule:list
 ```
 
 #### Monitoring Scheduler
+
 ```bash
 # Buat log file untuk monitoring
 touch storage/logs/scheduler.log
@@ -564,10 +603,10 @@ class Kernel extends ConsoleKernel
             $expiredBookings = Booking::where('status', 'pending')
                 ->where('created_at', '<', now()->subHours(24))
                 ->get();
-            
+
             foreach ($expiredBookings as $booking) {
                 $booking->update(['status' => 'expired']);
-                
+
                 // Kirim email notifikasi
                 try {
                     Mail::to($booking->email)->send(new PaymentExpired($booking));
@@ -575,7 +614,7 @@ class Kernel extends ConsoleKernel
                     \Log::error('Failed to send expired email: ' . $e->getMessage());
                 }
             }
-            
+
             \Log::info('Expired ' . $expiredBookings->count() . ' bookings');
         })->hourly()->name('expire-bookings');
 
@@ -587,7 +626,7 @@ class Kernel extends ConsoleKernel
                     now()->subHours(19)
                 ])
                 ->get();
-            
+
             foreach ($reminderBookings as $booking) {
                 try {
                     Mail::to($booking->email)->send(new PaymentReminder($booking));
@@ -595,7 +634,7 @@ class Kernel extends ConsoleKernel
                     \Log::error('Failed to send reminder: ' . $e->getMessage());
                 }
             }
-            
+
             \Log::info('Sent ' . $reminderBookings->count() . ' payment reminders');
         })->hourly()->name('payment-reminders');
 
@@ -604,7 +643,7 @@ class Kernel extends ConsoleKernel
             \DB::table('notifications')
                 ->where('created_at', '<', now()->subDays(30))
                 ->delete();
-            
+
             \Log::info('Cleaned up old notifications');
         })->daily()->name('cleanup-notifications');
 
@@ -619,9 +658,9 @@ class Kernel extends ConsoleKernel
                     ->where('status', 'success')
                     ->sum('amount'),
             ];
-            
+
             \Log::info('Daily Stats: ' . json_encode($stats));
-            
+
             // Uncomment untuk kirim email ke admin
             // Mail::to('admin@kampungkopicamp.com')->send(new DailyReport($stats));
         })->dailyAt('06:00')->name('daily-report');
@@ -634,9 +673,23 @@ class Kernel extends ConsoleKernel
             \DB::statement('OPTIMIZE TABLE bookings');
             \DB::statement('OPTIMIZE TABLE payments');
             \DB::statement('OPTIMIZE TABLE booking_items');
-            
+
             \Log::info('Database optimized');
         })->weekly()->sundays()->at('03:00')->name('optimize-database');
+
+        // 7. Generate product availability (Monthly - Setiap tanggal 1)
+        // ⚠️ PENTING: Command ini menggunakan default stock dari product.default_units dan product.default_seats
+        // Pastikan setiap product sudah memiliki nilai default stock yang benar
+        $schedule->command('availability:generate --months=2')
+            ->monthlyOn(1, '00:00')
+            ->name('generate-availability')
+            ->withoutOverlapping()
+            ->onSuccess(function () {
+                \Log::info('Monthly availability generation completed');
+            })
+            ->onFailure(function () {
+                \Log::error('Monthly availability generation failed');
+            });
     }
 
     protected function commands()
@@ -674,30 +727,100 @@ class CleanupExpiredBookings extends Command
     public function handle()
     {
         $this->info('Starting cleanup...');
-        
+
         $expired = Booking::where('status', 'pending')
             ->where('created_at', '<', now()->subHours(24))
             ->get();
-        
+
         $count = $expired->count();
-        
+
         foreach ($expired as $booking) {
             $booking->update(['status' => 'expired']);
         }
-        
+
         $this->info("Cleaned up {$count} expired bookings");
-        
+
         return Command::SUCCESS;
     }
 }
 ```
 
 Kemudian jadwalkan di `Kernel.php`:
+
 ```php
 $schedule->command('bookings:cleanup-expired')->hourly();
 ```
 
-### 6. Queue Workers (Background Jobs)
+### 6. Product Availability & Default Stock Management
+
+#### ⚠️ PENTING: Cara Kerja Default Stock
+
+Sistem ini menggunakan **default stock per product** yang tersimpan di table `products`:
+
+-   **products.default_units**: Default stok untuk accommodation/area_rental (contoh: 10 units)
+-   **products.default_seats**: Default stok untuk touring (contoh: 20 seats)
+
+**Command `availability:generate`** akan:
+
+1. Membaca nilai `default_units` atau `default_seats` dari masing-masing product
+2. Generate availability untuk 2 bulan ke depan berdasarkan nilai default tersebut
+3. Hanya mengupdate record yang **belum di-override** manual
+
+#### Cara Update Default Stock
+
+**Via Admin Panel (Recommended):**
+
+1. Login ke admin panel
+2. Menu Products → Edit Product
+3. Di section "Default Stock", ubah nilai sesuai kebutuhan
+4. Tentukan date range (opsional) untuk apply ke tanggal tertentu
+5. Klik "Update Default Stock"
+
+**Via Command Line (One-time setup):**
+
+```bash
+# Update existing products dengan default stock dari availability yang ada
+php artisan products:update-default-stock
+
+# Output:
+# Successfully updated 3 products with default stock values!
+```
+
+#### Manual Generate Availability
+
+```bash
+# Generate untuk 2 bulan ke depan (semua products)
+php artisan availability:generate --months=2
+
+# Generate untuk product tertentu
+php artisan availability:generate --product=1 --months=2
+
+# Force regenerate (overwrite non-overridden dates)
+php artisan availability:generate --months=2 --force
+
+# Output example:
+# Products Processed: 3
+# Records Generated: 180
+# Records Skipped: 0
+# Date Range: 2025-12-03 to 2026-02-03
+```
+
+#### Verifikasi Default Stock
+
+```bash
+# Check default stock per product
+php artisan tinker
+>>> App\Models\Product::select('id', 'name', 'type', 'default_units', 'default_seats')->get();
+
+# Expected output:
+# [
+#   {id: 1, name: "Glamping Standar", type: "accommodation", default_units: 19, default_seats: 0},
+#   {id: 2, name: "Kopi Tour", type: "touring", default_units: 0, default_seats: 10},
+#   {id: 3, name: "Tenda Exclusive", type: "accommodation", default_units: 16, default_seats: 0}
+# ]
+```
+
+### 7. Queue Workers (Background Jobs)
 
 Untuk proses yang berat (email, report generation), gunakan queue:
 
@@ -737,6 +860,7 @@ sudo supervisorctl status
 ### 7. Monitoring & Debugging
 
 #### Check Cron is Running
+
 ```bash
 # Linux - Check cron service
 sudo systemctl status cron
@@ -749,6 +873,7 @@ crontab -l
 ```
 
 #### Laravel Scheduler Log
+
 ```bash
 # Monitor scheduler activity
 tail -f storage/logs/scheduler.log
@@ -758,6 +883,7 @@ tail -f storage/logs/laravel.log
 ```
 
 #### Test Scheduled Tasks
+
 ```bash
 # Run scheduler manually
 php artisan schedule:run
@@ -771,18 +897,19 @@ php artisan schedule:run -v
 
 ### 8. Production Checklist
 
-- [ ] Cron job setup dan berjalan setiap menit
-- [ ] `php artisan schedule:list` menampilkan semua tasks
-- [ ] Test manual: `php artisan schedule:run`
-- [ ] Monitor logs: `tail -f storage/logs/scheduler.log`
-- [ ] Queue workers running (jika menggunakan queue)
-- [ ] Email notifications terkirim
-- [ ] Booking expired otomatis setelah 24 jam
-- [ ] Database optimization berjalan mingguan
+-   [ ] Cron job setup dan berjalan setiap menit
+-   [ ] `php artisan schedule:list` menampilkan semua tasks
+-   [ ] Test manual: `php artisan schedule:run`
+-   [ ] Monitor logs: `tail -f storage/logs/scheduler.log`
+-   [ ] Queue workers running (jika menggunakan queue)
+-   [ ] Email notifications terkirim
+-   [ ] Booking expired otomatis setelah 24 jam
+-   [ ] Database optimization berjalan mingguan
 
 ### 9. Troubleshooting Scheduler
 
 #### Scheduler tidak jalan:
+
 ```bash
 # 1. Cek cron service
 sudo systemctl status cron
@@ -801,6 +928,7 @@ crontab -l
 ```
 
 #### Tasks tidak execute:
+
 ```bash
 # 1. Cek timezone di .env
 APP_TIMEZONE=Asia/Makassar
@@ -821,14 +949,16 @@ php artisan schedule:run -vvv
 ## 🔌 Third-Party Services
 
 ### 1. Midtrans Payment Gateway
-- [ ] Switch from **Sandbox** to **Production** environment
-- [ ] Update credentials in `.env`
-- [ ] Test payment flow with real transaction
-- [ ] Configure webhook URL: `https://yourdomain.com/midtrans/notification`
-- [ ] Whitelist your server IP in Midtrans dashboard
-- [ ] Set up payment notification handling
+
+-   [ ] Switch from **Sandbox** to **Production** environment
+-   [ ] Update credentials in `.env`
+-   [ ] Test payment flow with real transaction
+-   [ ] Configure webhook URL: `https://yourdomain.com/midtrans/notification`
+-   [ ] Whitelist your server IP in Midtrans dashboard
+-   [ ] Set up payment notification handling
 
 **Midtrans Production Setup:**
+
 1. Login to https://dashboard.midtrans.com/
 2. Switch to Production mode
 3. Go to Settings → Access Keys
@@ -838,42 +968,50 @@ php artisan schedule:run -vvv
 7. Set: `https://yourdomain.com/midtrans/notification`
 
 ### 2. Email Service
+
 Choose one provider:
 
 **Option 1: Gmail SMTP** (Good for testing, may have limits)
-- Enable 2FA on Google Account
-- Create App-Specific Password
-- Use in `.env` MAIL_PASSWORD
+
+-   Enable 2FA on Google Account
+-   Create App-Specific Password
+-   Use in `.env` MAIL_PASSWORD
 
 **Option 2: Mailgun** (Recommended)
-- Sign up at mailgun.com
-- Verify your domain
-- Add DNS records (SPF, DKIM)
-- Get API credentials
+
+-   Sign up at mailgun.com
+-   Verify your domain
+-   Add DNS records (SPF, DKIM)
+-   Get API credentials
 
 **Option 3: SendGrid**
-- Sign up at sendgrid.com
-- Verify sender identity
-- Create API key
+
+-   Sign up at sendgrid.com
+-   Verify sender identity
+-   Create API key
 
 ### 3. Google Maps API (for Contact Section)
-- [ ] Create API key at Google Cloud Console
-- [ ] Restrict API key by HTTP referrer
-- [ ] Enable Maps JavaScript API and Places API
+
+-   [ ] Create API key at Google Cloud Console
+-   [ ] Restrict API key by HTTP referrer
+-   [ ] Enable Maps JavaScript API and Places API
 
 ---
 
 ## 📊 Monitoring & Logging
 
 ### 1. Error Tracking - Laravel Telescope (Development Only)
+
 If you want error tracking in production, use external services:
 
 **Recommended Services:**
-- **Sentry.io** (Free tier available)
-- **Bugsnag**
-- **Rollbar**
+
+-   **Sentry.io** (Free tier available)
+-   **Bugsnag**
+-   **Rollbar**
 
 ### 2. Application Monitoring
+
 ```bash
 # Install Laravel Horizon for queue monitoring (optional)
 composer require laravel/horizon
@@ -884,12 +1022,15 @@ php artisan horizon:publish
 ```
 
 ### 3. Server Monitoring
+
 **Free Tools:**
-- **UptimeRobot** - Monitor uptime (free 50 monitors)
-- **Google Analytics** - Track visitor behavior
-- **Cloudflare Analytics** - Traffic analysis
+
+-   **UptimeRobot** - Monitor uptime (free 50 monitors)
+-   **Google Analytics** - Track visitor behavior
+-   **Cloudflare Analytics** - Traffic analysis
 
 ### 4. Log Rotation
+
 ```bash
 # Configure logrotate
 sudo nano /etc/logrotate.d/kampungkopi
@@ -906,7 +1047,9 @@ sudo nano /etc/logrotate.d/kampungkopi
 ```
 
 ### 5. Application Health Check
+
 Create monitoring endpoint:
+
 ```php
 // routes/web.php
 Route::get('/health', function () {
@@ -923,11 +1066,13 @@ Route::get('/health', function () {
 ## 💾 Backup Strategy
 
 ### 1. Database Backups
-- **Frequency**: Daily at 2 AM
-- **Retention**: 30 days
-- **Location**: Off-server storage (AWS S3, Google Cloud, etc.)
+
+-   **Frequency**: Daily at 2 AM
+-   **Retention**: 30 days
+-   **Location**: Off-server storage (AWS S3, Google Cloud, etc.)
 
 ### 2. File Backups
+
 ```bash
 # Create backup script
 nano /home/scripts/backup-files.sh
@@ -953,46 +1098,52 @@ chmod +x /home/scripts/backup-files.sh
 ```
 
 ### 3. Automated Backup Service
+
 Consider using:
-- **Laravel Backup Package** (spatie/laravel-backup)
-- **Server backup** (Cloudways, Forge built-in)
-- **AWS S3** versioning
+
+-   **Laravel Backup Package** (spatie/laravel-backup)
+-   **Server backup** (Cloudways, Forge built-in)
+-   **AWS S3** versioning
 
 ---
 
 ## ✅ Post-Deployment Tasks
 
 ### 1. Immediate Checks (First Hour)
-- [ ] Test homepage loads correctly
-- [ ] Test user registration
-- [ ] Test login functionality
-- [ ] Test booking flow from start to finish
-- [ ] Test payment with small amount (Rp 10,000)
-- [ ] Verify email notifications are sent
-- [ ] Check admin panel access
-- [ ] Test all reports generate correctly
-- [ ] Verify SSL certificate is working (HTTPS)
-- [ ] Test on mobile devices
+
+-   [ ] Test homepage loads correctly
+-   [ ] Test user registration
+-   [ ] Test login functionality
+-   [ ] Test booking flow from start to finish
+-   [ ] Test payment with small amount (Rp 10,000)
+-   [ ] Verify email notifications are sent
+-   [ ] Check admin panel access
+-   [ ] Test all reports generate correctly
+-   [ ] Verify SSL certificate is working (HTTPS)
+-   [ ] Test on mobile devices
 
 ### 2. First 24 Hours
-- [ ] Monitor error logs: `tail -f storage/logs/laravel.log`
-- [ ] Check database performance
-- [ ] Monitor server resources (CPU, RAM, Disk)
-- [ ] Verify scheduled tasks are running
-- [ ] Test payment webhook from Midtrans
+
+-   [ ] Monitor error logs: `tail -f storage/logs/laravel.log`
+-   [ ] Check database performance
+-   [ ] Monitor server resources (CPU, RAM, Disk)
+-   [ ] Verify scheduled tasks are running
+-   [ ] Test payment webhook from Midtrans
 
 ### 3. First Week
-- [ ] Review application logs daily
-- [ ] Check backup success
-- [ ] Monitor user feedback
-- [ ] Test all user-reported issues
-- [ ] Update documentation if needed
+
+-   [ ] Review application logs daily
+-   [ ] Check backup success
+-   [ ] Monitor user feedback
+-   [ ] Test all user-reported issues
+-   [ ] Update documentation if needed
 
 ### 4. Ongoing Maintenance
-- [ ] Weekly security updates: `composer update`
-- [ ] Monthly review of error logs
-- [ ] Quarterly performance optimization
-- [ ] Regular backup testing (restore test)
+
+-   [ ] Weekly security updates: `composer update`
+-   [ ] Monthly review of error logs
+-   [ ] Quarterly performance optimization
+-   [ ] Regular backup testing (restore test)
 
 ---
 
@@ -1001,6 +1152,7 @@ Consider using:
 ### Common Issues & Solutions
 
 #### 1. White Screen / 500 Error
+
 ```bash
 # Check logs
 tail -f storage/logs/laravel.log
@@ -1017,6 +1169,7 @@ sudo chmod -R 775 storage bootstrap/cache
 ```
 
 #### 2. Database Connection Error
+
 ```bash
 # Verify credentials
 php artisan tinker
@@ -1030,6 +1183,7 @@ mysql -u username -p -h hostname database_name
 ```
 
 #### 3. Storage Files Not Loading
+
 ```bash
 # Recreate symbolic link
 php artisan storage:link
@@ -1040,12 +1194,14 @@ ls -la storage/app/public
 ```
 
 #### 4. Midtrans Webhook Not Working
-- Check Midtrans dashboard for notification logs
-- Verify webhook URL is correct
-- Check server firewall allows Midtrans IPs
-- Review `storage/logs/laravel.log` for webhook errors
+
+-   Check Midtrans dashboard for notification logs
+-   Verify webhook URL is correct
+-   Check server firewall allows Midtrans IPs
+-   Review `storage/logs/laravel.log` for webhook errors
 
 #### 5. Emails Not Sending
+
 ```bash
 # Test email configuration
 php artisan tinker
@@ -1056,6 +1212,7 @@ php artisan queue:work --once
 ```
 
 #### 6. Performance Issues
+
 ```bash
 # Clear all caches
 php artisan optimize:clear
@@ -1072,48 +1229,53 @@ php artisan optimize
 ## 📞 Emergency Contacts
 
 ### Key Personnel
-- **Developer**: [Your Name] - [Email/Phone]
-- **Server Admin**: [Name] - [Email/Phone]
-- **Business Owner**: [Name] - [Email/Phone]
+
+-   **Developer**: [Your Name] - [Email/Phone]
+-   **Server Admin**: [Name] - [Email/Phone]
+-   **Business Owner**: [Name] - [Email/Phone]
 
 ### Service Providers
-- **Hosting Provider**: [Provider Name] - [Support URL/Phone]
-- **Domain Registrar**: [Registrar] - [Support Contact]
-- **Midtrans Support**: https://midtrans.com/support
-- **Email Service**: [Provider Support]
+
+-   **Hosting Provider**: [Provider Name] - [Support URL/Phone]
+-   **Domain Registrar**: [Registrar] - [Support Contact]
+-   **Midtrans Support**: https://midtrans.com/support
+-   **Email Service**: [Provider Support]
 
 ---
 
 ## 📝 Deployment Checklist Summary
 
 ### Pre-Launch
-- [ ] All testing completed
-- [ ] Production `.env` configured
-- [ ] SSL certificate installed
-- [ ] Database migrated and seeded
-- [ ] Storage permissions set
-- [ ] Assets compiled
-- [ ] Caching enabled
-- [ ] Backups configured
-- [ ] Monitoring setup
-- [ ] Payment gateway switched to production
-- [ ] Cron job configured (Laravel Scheduler)
-- [ ] Queue workers running (if using queues)
-- [ ] Scheduled tasks tested
+
+-   [ ] All testing completed
+-   [ ] Production `.env` configured
+-   [ ] SSL certificate installed
+-   [ ] Database migrated and seeded
+-   [ ] Storage permissions set
+-   [ ] Assets compiled
+-   [ ] Caching enabled
+-   [ ] Backups configured
+-   [ ] Monitoring setup
+-   [ ] Payment gateway switched to production
+-   [ ] Cron job configured (Laravel Scheduler)
+-   [ ] Queue workers running (if using queues)
+-   [ ] Scheduled tasks tested
 
 ### Launch Day
-- [ ] Deploy code to server
-- [ ] Run migrations
-- [ ] Clear and rebuild cache
-- [ ] Test critical flows
-- [ ] Monitor logs for errors
-- [ ] Announce launch
+
+-   [ ] Deploy code to server
+-   [ ] Run migrations
+-   [ ] Clear and rebuild cache
+-   [ ] Test critical flows
+-   [ ] Monitor logs for errors
+-   [ ] Announce launch
 
 ### Post-Launch
-- [ ] Monitor performance
-- [ ] Address user feedback
-- [ ] Daily log review
-- [ ] Backup verification
+
+-   [ ] Monitor performance
+-   [ ] Address user feedback
+-   [ ] Daily log review
+-   [ ] Backup verification
 
 ---
 
@@ -1177,6 +1339,7 @@ tail -f storage/logs/laravel.log
 ```
 
 ### Quick Verification Commands
+
 ```bash
 # Check application is running
 curl -I https://yourdomain.com
@@ -1206,16 +1369,16 @@ tail -f storage/logs/laravel.log
 
 ## 📚 Additional Resources
 
-- [Laravel Deployment Documentation](https://laravel.com/docs/10.x/deployment)
-- [Midtrans Documentation](https://docs.midtrans.com/)
-- [Laravel Security Best Practices](https://laravel.com/docs/10.x/security)
-- [PHP Production Best Practices](https://www.php.net/manual/en/tutorial.php)
+-   [Laravel Deployment Documentation](https://laravel.com/docs/10.x/deployment)
+-   [Midtrans Documentation](https://docs.midtrans.com/)
+-   [Laravel Security Best Practices](https://laravel.com/docs/10.x/security)
+-   [PHP Production Best Practices](https://www.php.net/manual/en/tutorial.php)
 
 ---
 
 ## 🔄 Version History
 
-- **v1.0.0** - Initial Production Release - December 2025
+-   **v1.0.0** - Initial Production Release - December 2025
 
 ---
 

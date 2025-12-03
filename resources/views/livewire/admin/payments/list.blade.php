@@ -140,8 +140,10 @@
                 {{-- Customer --}}
                 <td class="px-4 py-3">
                     <div class="text-xs">
-                        <p class="text-gray-900 font-medium">{{ $payment->booking->user->name ?? 'Guest' }}</p>
-                        <p class="text-gray-500">{{ $payment->booking->user->email ?? '-' }}</p>
+                        <p class="text-gray-900 font-medium">
+                            {{ $payment->booking->user->name ?? ($payment->booking->customer_name ?? 'Guest') }}</p>
+                        <p class="text-gray-500">
+                            {{ $payment->booking->user->email ?? ($payment->booking->customer_email ?? '-') }}</p>
                     </div>
                 </td>
 

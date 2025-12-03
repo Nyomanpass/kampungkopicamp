@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Blade;
+use Carbon\Carbon;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -32,5 +33,10 @@ class AppServiceProvider extends ServiceProvider
         Blade::directive('date', function ($expression) {
             return "<?php echo formatDate($expression); ?>";
         });
+
+        //
+        // if (config('app.debug')) {
+        //     Carbon::setTestNow(Carbon::now()->addDays(2));
+        // }
     }
 }

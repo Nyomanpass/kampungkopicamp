@@ -234,33 +234,16 @@
     </div>
 
     {{-- Charts --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" x-data="customerCharts()" x-init="init()"
+        wire:key="customer-charts-{{ $selectedMonth }}-{{ $selectedYear }}">
         {{-- New Customers Trend --}}
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6 lg:col-span-2">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <i class="fas fa-chart-line text-primary"></i>
                 Trend Customer Baru
             </h3>
-            <div id="newCustomersTrendChart"></div>
+            <div id="newCustomersTrendChart" x-ref="trendChart"></div>
         </div>
-
-        {{-- Customers by Source --}}
-        {{-- <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <i class="fas fa-chart-pie text-primary"></i>
-                Customers by Email Domain
-            </h3>
-            <div id="customersBySourceChart"></div>
-        </div> --}}
-
-        {{-- Customer Activity --}}
-        {{-- <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
-                <i class="fas fa-chart-donut text-primary"></i>
-                Customer Activity Segments
-            </h3>
-            <div id="customerActivityChart"></div>
-        </div> --}}
     </div>
 
     {{-- Customer Segments --}}
@@ -391,81 +374,99 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    document.addEventListener('livewire:navigated', function() {
-        initCustomerCharts();
-    });
+    function customerCharts() {
+        return {
+            charts: {
+                trend: null
+            },
 
-    function initCustomerCharts() {
-        // New Customers Trend
-        const newCustomersTrendOptions = {
-            series: [{
-                name: 'New Customers',
-                data: @js($newCustomersTrendData['data'])
-            }],
-            chart: {
-                type: 'area',
-                height: 350,
-                toolbar: {
-                    show: true
-                }
-            },
-            colors: ['#5b7042'],
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            fill: {
-                type: 'gradient',
-                gradient: {
-                    shadeIntensity: 1,
-                    opacityFrom: 0.7,
-                    opacityTo: 0.2,
-                }
-            },
-            xaxis: {
-                categories: @js($newCustomersTrendData['categories'])
-            }
-        };
-        new ApexCharts(document.querySelector("#newCustomersTrendChart"), newCustomersTrendOptions).render();
+            init() {
+                console.log('Alpine Customer Charts: Initializing...');
+                this.renderCharts();
 
-        // Customers by Source
-        const customersBySourceOptions = {
-            series: @js($customersBySourceData['series']),
-            chart: {
-                type: 'pie',
-                height: 350
-            },
-            labels: @js($customersBySourceData['labels']),
-            colors: ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ef4444'],
-            legend: {
-                position: 'bottom'
-            }
-        };
-        new ApexCharts(document.querySelector("#customersBySourceChart"), customersBySourceOptions).render();
+                // Listen to Livewire event
+                this.$wire.on('chartDataUpdated', () => {
+                    console.log('Alpine Customer: Chart data updated, re-rendering...');
+                    this.renderCharts();
+                });
 
-        // Customer Activity
-        const customerActivityOptions = {
-            series: @js($customerActivityData['series']),
-            chart: {
-                type: 'donut',
-                height: 350
+                // Watch for filter changes
+                this.$watch('$wire.selectedMonth', () => {
+                    console.log('Alpine Customer: Month changed, re-rendering...');
+                    setTimeout(() => this.renderCharts(), 100);
+                });
+
+                this.$watch('$wire.selectedYear', () => {
+                    console.log('Alpine Customer: Year changed, re-rendering...');
+                    setTimeout(() => this.renderCharts(), 100);
+                });
             },
-            labels: @js($customerActivityData['labels']),
-            colors: ['#6b7280', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6'],
-            legend: {
-                position: 'bottom'
-            },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%'
+
+            destroyCharts() {
+                Object.values(this.charts).forEach(chart => {
+                    if (chart) {
+                        try {
+                            chart.destroy();
+                        } catch (e) {
+                            console.log('Error destroying chart:', e);
+                        }
                     }
+                });
+            },
+
+            async renderCharts() {
+                console.log('Alpine Customer: Rendering charts...');
+                this.destroyCharts();
+
+                // Get data from Livewire component using $wire
+                const newCustomersTrendData = this.$wire.newCustomersTrendData;
+
+                console.log('Alpine Customer: Chart data:', {
+                    trend: newCustomersTrendData
+                });
+
+                // New Customers Trend Chart
+                if (this.$refs.trendChart && newCustomersTrendData?.categories?.length > 0) {
+                    this.charts.trend = new ApexCharts(this.$refs.trendChart, {
+                        series: [{
+                            name: 'New Customers',
+                            data: newCustomersTrendData.data || []
+                        }],
+                        chart: {
+                            type: 'area',
+                            height: 350,
+                            toolbar: {
+                                show: true
+                            }
+                        },
+                        colors: ['#5b7042'],
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'smooth',
+                            width: 3
+                        },
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                shadeIntensity: 1,
+                                opacityFrom: 0.7,
+                                opacityTo: 0.2,
+                            }
+                        },
+                        xaxis: {
+                            categories: newCustomersTrendData.categories || []
+                        }
+                    });
+                    this.charts.trend.render();
+                } else if (this.$refs.trendChart) {
+                    this.$refs.trendChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400">' +
+                        '<i class="fas fa-chart-line text-4xl mr-3"></i>' +
+                        '<span>Tidak ada data customer baru</span></div>';
                 }
             }
-        };
-        new ApexCharts(document.querySelector("#customerActivityChart"), customerActivityOptions).render();
+        }
     }
 </script>

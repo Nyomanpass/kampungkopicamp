@@ -16,11 +16,10 @@ use App\Exports\FinancialReportExport;
 
 class Financial extends Component
 {
-    public $dateRange = 'month';
+    public $selectedMonth;
+    public $selectedYear;
     public $startDate;
     public $endDate;
-    public $customStartDate;
-    public $customEndDate;
     public $invoiceStatus = '';
 
     // Metrics
@@ -45,28 +44,21 @@ class Financial extends Component
 
     public function mount()
     {
+        $this->selectedMonth = now()->month;
+        $this->selectedYear = now()->year;
         $this->setDateRange();
         $this->loadData();
     }
 
-    public function updatedDateRange()
+    public function updatedSelectedMonth()
     {
-        if ($this->dateRange !== 'custom') {
-            $this->setDateRange();
-            $this->loadData();
-        }
+        $this->setDateRange();
+        $this->loadData();
     }
 
-    public function applyCustomDateRange()
+    public function updatedSelectedYear()
     {
-        $this->validate([
-            'customStartDate' => 'required|date',
-            'customEndDate' => 'required|date|after_or_equal:customStartDate',
-        ]);
-
-        $this->startDate = Carbon::parse($this->customStartDate)->startOfDay();
-        $this->endDate = Carbon::parse($this->customEndDate)->endOfDay();
-
+        $this->setDateRange();
         $this->loadData();
     }
 
@@ -77,16 +69,44 @@ class Financial extends Component
 
     private function setDateRange()
     {
-        $this->endDate = now()->endOfDay();
+        if ($this->selectedMonth == 0) {
+            // All Time - from earliest invoice to now
+            $earliestInvoice = Invoice::orderBy('created_at', 'asc')->first();
+            $this->startDate = $earliestInvoice
+                ? Carbon::parse($earliestInvoice->created_at)->startOfDay()->format('Y-m-d H:i:s')
+                : Carbon::now()->subYears(5)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
+        } elseif ($this->selectedMonth == 13) {
+            // Full Year - January 1 to December 31 of selected year
+            $this->startDate = Carbon::create($this->selectedYear, 1, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, 12, 31)->endOfDay()->format('Y-m-d H:i:s');
+        } else {
+            // Regular monthly filter
+            $this->startDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->endOfMonth()->endOfDay()->format('Y-m-d H:i:s');
+        }
+    }
 
-        $this->startDate = match ($this->dateRange) {
-            'today' => now()->startOfDay(),
-            'week' => now()->subWeek()->startOfDay(),
-            'month' => now()->subMonth()->startOfDay(),
-            'quarter' => now()->subMonths(3)->startOfDay(),
-            'year' => now()->subYear()->startOfDay(),
-            default => now()->subMonth()->startOfDay(),
-        };
+    public function getMonthNameProperty()
+    {
+        $months = [
+            0 => 'Keseluruhan',
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+            13 => 'Tahun Penuh'
+        ];
+
+        return $months[$this->selectedMonth] ?? 'Unknown';
     }
 
     private function loadData()
@@ -94,6 +114,9 @@ class Financial extends Component
         $this->loadMetrics();
         $this->loadCharts();
         $this->loadTables();
+
+        // Dispatch event to update charts in JavaScript
+        $this->dispatch('chartDataUpdated');
     }
 
     private function loadMetrics()
@@ -264,7 +287,9 @@ class Financial extends Component
     public function exportPDF()
     {
         $data = [
-            'title' => 'Financial Report',
+            'title' => 'Laporan Keuangan',
+            'month' => $this->monthName,
+            'year' => $this->selectedYear,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
             'metrics' => [
@@ -282,9 +307,18 @@ class Financial extends Component
 
         $pdf = Pdf::loadView('pdf.financial-pdf', $data);
 
+        // Generate filename based on period type
+        if ($this->selectedMonth == 0) {
+            $fileName = 'laporan-keuangan-keseluruhan.pdf';
+        } elseif ($this->selectedMonth == 13) {
+            $fileName = 'laporan-keuangan-tahun-' . $this->selectedYear . '.pdf';
+        } else {
+            $fileName = 'laporan-keuangan-' . strtolower($this->monthName) . '-' . $this->selectedYear . '.pdf';
+        }
+
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'financial-report-' . date('Y-m-d-His') . '.pdf');
+        }, $fileName);
     }
 
     public function exportExcel()
@@ -298,10 +332,17 @@ class Financial extends Component
             'totalTax' => $this->totalTax,
         ];
 
-        $fileName = 'financial-report-' . date('Y-m-d-His') . '.xlsx';
+        // Generate filename based on period type
+        if ($this->selectedMonth == 0) {
+            $fileName = 'laporan-keuangan-keseluruhan.xlsx';
+        } elseif ($this->selectedMonth == 13) {
+            $fileName = 'laporan-keuangan-tahun-' . $this->selectedYear . '.xlsx';
+        } else {
+            $fileName = 'laporan-keuangan-' . strtolower($this->monthName) . '-' . $this->selectedYear . '.xlsx';
+        }
 
         return Excel::download(
-            new FinancialReportExport($this->recentInvoices, $this->recentPayments, $metrics, $this->startDate, $this->endDate),
+            new FinancialReportExport($this->recentInvoices, $this->recentPayments, $metrics, $this->startDate, $this->endDate, $this->monthName, $this->selectedYear),
             $fileName
         );
     }

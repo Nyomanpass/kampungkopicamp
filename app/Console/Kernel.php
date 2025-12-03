@@ -5,6 +5,7 @@ namespace App\Console;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 use App\Models\Booking;
+use App\Models\Payment;
 use App\Mail\PaymentReminder;
 use App\Mail\PaymentExpired;
 use Illuminate\Support\Facades\Mail;
@@ -26,21 +27,32 @@ class Kernel extends ConsoleKernel
             $expiredBookings = Booking::where('status', 'pending')
                 ->where('created_at', '<', now()->subHours(24))
                 ->get();
-            
+
             $count = 0;
             foreach ($expiredBookings as $booking) {
                 $booking->update(['status' => 'expired']);
-                
+                //payment data
+                $payment = Payment::where('booking_id', $booking->id)->first();
+
+                // Release availability
+                foreach ($booking->items as $item) {
+                    DB::table('availabilities')
+                        ->where('product_id', $item->product_id)
+                        ->where('date', $item->date)
+                        ->increment('available_quantity', $item->quantity);
+                }
+
+
                 // Kirim email notifikasi expired
                 try {
-                    Mail::to($booking->email)->send(new PaymentExpired($booking));
+                    Mail::to($booking->email)->send(new PaymentExpired($booking, $payment));
                 } catch (\Exception $e) {
                     Log::error('Failed to send expired email for booking #' . $booking->id . ': ' . $e->getMessage());
                 }
-                
+
                 $count++;
             }
-            
+
             if ($count > 0) {
                 Log::info("[Scheduler] Expired {$count} bookings");
             }
@@ -57,7 +69,7 @@ class Kernel extends ConsoleKernel
                     now()->subHours(20)->addMinutes(30)
                 ])
                 ->get();
-            
+
             $count = 0;
             foreach ($reminderBookings as $booking) {
                 try {
@@ -67,7 +79,7 @@ class Kernel extends ConsoleKernel
                     Log::error('Failed to send reminder for booking #' . $booking->id . ': ' . $e->getMessage());
                 }
             }
-            
+
             if ($count > 0) {
                 Log::info("[Scheduler] Sent {$count} payment reminders");
             }
@@ -81,7 +93,7 @@ class Kernel extends ConsoleKernel
             $deleted = DB::table('notifications')
                 ->where('created_at', '<', now()->subDays(30))
                 ->delete();
-            
+
             if ($deleted > 0) {
                 Log::info("[Scheduler] Cleaned up {$deleted} old notifications");
             }
@@ -93,7 +105,7 @@ class Kernel extends ConsoleKernel
         // Generate statistik harian untuk monitoring
         $schedule->call(function () {
             $yesterday = now()->subDay();
-            
+
             $stats = [
                 'date' => $yesterday->toDateString(),
                 'total_bookings' => Booking::whereDate('created_at', $yesterday)->count(),
@@ -109,13 +121,13 @@ class Kernel extends ConsoleKernel
                     ->where('role', 'customer')
                     ->count(),
             ];
-            
+
             Log::info("[Scheduler] Daily Stats: " . json_encode($stats));
-            
+
             // Uncomment jika ingin kirim email ke admin
             // Mail::to(config('mail.admin_email', 'admin@kampungkopicamp.com'))
             //     ->send(new DailyReport($stats));
-            
+
         })->dailyAt('06:00')->name('daily-report');
 
         // ========================================
@@ -124,7 +136,7 @@ class Kernel extends ConsoleKernel
         // Optimize table untuk performance
         $schedule->call(function () {
             $tables = ['bookings', 'payments', 'booking_items', 'users', 'notifications'];
-            
+
             foreach ($tables as $table) {
                 try {
                     DB::statement("OPTIMIZE TABLE {$table}");
@@ -132,7 +144,7 @@ class Kernel extends ConsoleKernel
                     Log::error("[Scheduler] Failed to optimize table {$table}: " . $e->getMessage());
                 }
             }
-            
+
             Log::info("[Scheduler] Database tables optimized");
         })->weekly()->sundays()->at('03:00')->name('optimize-database');
 
@@ -144,7 +156,7 @@ class Kernel extends ConsoleKernel
             $logPath = storage_path('logs');
             $files = glob($logPath . '/laravel-*.log');
             $deleted = 0;
-            
+
             foreach ($files as $file) {
                 if (filemtime($file) < now()->subDays(14)->timestamp) {
                     if (unlink($file)) {
@@ -152,7 +164,7 @@ class Kernel extends ConsoleKernel
                     }
                 }
             }
-            
+
             if ($deleted > 0) {
                 Log::info("[Scheduler] Cleaned up {$deleted} old log files");
             }
@@ -168,7 +180,7 @@ class Kernel extends ConsoleKernel
                 ->where('date', '<', now()->toDateString())
                 ->where('status', '!=', 'booked')
                 ->update(['status' => 'unavailable']);
-            
+
             if ($updated > 0) {
                 Log::info("[Scheduler] Updated {$updated} past availabilities");
             }
@@ -184,23 +196,28 @@ class Kernel extends ConsoleKernel
                 $packages = DB::table('paket_wisatas')
                     ->where('status', 'active')
                     ->get();
-                
+
                 cache()->put('active_packages', $packages, now()->addHours(12));
-                
+
                 // Cache artikel blog terbaru
                 $articles = DB::table('articles')
                     ->where('status', 'published')
                     ->orderBy('created_at', 'desc')
                     ->limit(10)
                     ->get();
-                
+
                 cache()->put('recent_articles', $articles, now()->addHours(12));
-                
+
                 Log::info("[Scheduler] Cache warmed up successfully");
             } catch (\Exception $e) {
                 Log::error("[Scheduler] Cache warm-up failed: " . $e->getMessage());
             }
         })->twiceDaily(7, 16)->name('cache-warmup');
+
+        // ========================================
+        // NOTE: Command-based scheduled tasks (bookings:expire, bookings:check-noshow, etc)
+        // are defined in routes/console.php for better organization
+        // ========================================
 
         // ========================================
         // OPTIONAL: BACKUP DATABASE (Jika menggunakan spatie/laravel-backup)
@@ -215,7 +232,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

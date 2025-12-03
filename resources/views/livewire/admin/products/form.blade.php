@@ -328,54 +328,86 @@
             {{-- Right Column: Settings --}}
             <div class="space-y-6">
                 {{-- Default Stock Settings --}}
-                @if (!$productId)
-                    <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-                        <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                            <i class="fas fa-warehouse text-primary"></i>
-                            Default Stock
-                        </h3>
+                <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+                        <i class="fas fa-warehouse text-primary"></i>
+                        Default Stock
+                    </h3>
 
-                        <p class="text-xs text-gray-600 mb-4">
-                            <i class="fas fa-info-circle"></i>
+                    <p class="text-xs text-gray-600 mb-4">
+                        <i class="fas fa-info-circle"></i>
+                        @if (!$productId)
                             Data ini akan digunakan sebagai stok awal saat membuat produk baru untuk 2 bulan kedepan.
-                            Stok
-                            ini dapat diubah per
-                            hari nantinya.
-                        </p>
+                            Stok ini dapat diubah per hari nantinya.
+                        @else
+                            Update default stock untuk tanggal-tanggal mendatang yang belum di-override.
+                        @endif
+                    </p>
 
-                        <div class="space-y-4">
-                            @if ($type !== 'touring')
-                                {{-- Default Units --}}
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                                        Default Units
-                                    </label>
-                                    <input type="number" wire:model="default_units"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
-                                        placeholder="10" min="0">
-                                    <p class="text-xs text-gray-500 mt-1">Available units per day</p>
-                                    @error('default_units')
-                                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
+                    <div class="space-y-4">
+                        @if ($type !== 'touring')
+                            {{-- Default Units --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Default Units
+                                </label>
+                                <input type="number" wire:model="default_units"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                                    placeholder="10" min="0">
+                                <p class="text-xs text-gray-500 mt-1">Available units per day</p>
+                                @error('default_units')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @else
+                            {{-- Default Seats (for touring) --}}
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-1">
+                                    Default Seats
+                                </label>
+                                <input type="number" wire:model="default_seats"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                                    placeholder="20" min="0">
+                                <p class="text-xs text-gray-500 mt-1">Available seats per day</p>
+                                @error('default_seats')
+                                    <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endif
+
+                        @if ($productId)
+                            {{-- Date Range for Update --}}
+                            <div class="pt-3 border-t border-gray-200">
+                                <label class="block text-sm font-medium text-gray-700 mb-2">
+                                    Apply Range Tanggal (Optional)
+                                </label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <input type="date" wire:model="stock_update_start_date"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                                            placeholder="Start Date">
+                                        <p class="text-xs text-gray-500 mt-1">From</p>
+                                    </div>
+                                    <div>
+                                        <input type="date" wire:model="stock_update_end_date"
+                                            class="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                                            placeholder="End Date">
+                                        <p class="text-xs text-gray-500 mt-1">To</p>
+                                    </div>
                                 </div>
-                            @else
-                                {{-- Default Seats (for touring) --}}
-                                <div>
-                                    <label class="block text-sm font-medium text-gray-700 mb-1">
-                                        Default Seats
-                                    </label>
-                                    <input type="number" wire:model="default_seats"
-                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
-                                        placeholder="20" min="0">
-                                    <p class="text-xs text-gray-500 mt-1">Available seats per day</p>
-                                    @error('default_seats')
-                                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            @endif
-                        </div>
+                                <p class="text-xs text-gray-500 mt-2">
+                                    Kosongkan untuk update semua tanggal mendatang yang belum di-override
+                                </p>
+                            </div>
+
+                            <button type="button" wire:click="updateDefaultStock"
+                                class="w-full bg-primary hover:bg-primary/80 text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
+                                <i class="fas fa-sync-alt"></i>
+                                Update Default Stock
+                            </button>
+                        @endif
                     </div>
-                @endif
+                </div>
 
                 {{-- Status --}}
                 <div class="bg-white rounded-lg shadow border border-gray-200 p-6">

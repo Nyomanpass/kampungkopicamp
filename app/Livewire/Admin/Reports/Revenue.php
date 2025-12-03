@@ -17,11 +17,10 @@ use App\Exports\RevenueReportExport;
 
 class Revenue extends Component
 {
-    public $dateRange = 'month';
+    public $selectedMonth;
+    public $selectedYear;
     public $startDate;
     public $endDate;
-    public $customStartDate;
-    public $customEndDate;
     public $productFilter = '';
 
     // Metrics
@@ -43,27 +42,22 @@ class Revenue extends Component
 
     public function mount()
     {
+        // Set default to current month and year
+        $this->selectedMonth = now()->month;
+        $this->selectedYear = now()->year;
         $this->setDateRange();
         $this->loadData();
     }
 
-    public function updatedDateRange()
+    public function updatedSelectedMonth()
     {
-        if ($this->dateRange !== 'custom') {
-            $this->setDateRange();
-            $this->loadData();
-        }
+        $this->setDateRange();
+        $this->loadData();
     }
 
-    public function applyCustomDateRange()
+    public function updatedSelectedYear()
     {
-        $this->validate([
-            'customStartDate' => 'required|date',
-            'customEndDate' => 'required|date|after_or_equal:customStartDate',
-        ]);
-
-        $this->startDate = $this->customStartDate;
-        $this->endDate = $this->customEndDate;
+        $this->setDateRange();
         $this->loadData();
     }
 
@@ -74,16 +68,48 @@ class Revenue extends Component
 
     private function setDateRange()
     {
-        $this->endDate = now()->format('Y-m-d');
+        // Check for special values: 0 = All Time, 13 = Full Year
+        if ($this->selectedMonth == 0) {
+            // All Time - get earliest payment date
+            $earliestPayment = Payment::where('status', 'settlement')
+                ->orderBy('paid_at', 'asc')
+                ->first();
 
-        $this->startDate = match ($this->dateRange) {
-            'today' => now()->format('Y-m-d'),
-            'week' => now()->subWeek()->format('Y-m-d'),
-            'month' => now()->subMonth()->format('Y-m-d'),
-            'quarter' => now()->subMonths(3)->format('Y-m-d'),
-            'year' => now()->subYear()->format('Y-m-d'),
-            default => now()->subMonth()->format('Y-m-d'),
-        };
+            $this->startDate = $earliestPayment
+                ? Carbon::parse($earliestPayment->paid_at)->startOfDay()->format('Y-m-d H:i:s')
+                : Carbon::now()->subYears(5)->startOfDay()->format('Y-m-d H:i:s');
+
+            $this->endDate = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
+        } elseif ($this->selectedMonth == 13) {
+            // Full Year - January to December of selected year
+            $this->startDate = Carbon::create($this->selectedYear, 1, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, 12, 31)->endOfDay()->format('Y-m-d H:i:s');
+        } else {
+            // Specific month
+            $this->startDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->endOfMonth()->endOfDay()->format('Y-m-d H:i:s');
+        }
+    }
+
+    public function getMonthNameProperty()
+    {
+        $months = [
+            0 => 'Keseluruhan',
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+            13 => 'Tahun Penuh'
+        ];
+        return $months[$this->selectedMonth] ?? '';
     }
 
     private function loadData()
@@ -93,7 +119,7 @@ class Revenue extends Component
         $this->loadTables();
 
         // Dispatch event to update charts
-        $this->dispatch('charts-updated');
+        $this->dispatch('chartDataUpdated');
     }
 
     private function loadMetrics()
@@ -244,7 +270,9 @@ class Revenue extends Component
         $this->loadTables();
 
         $data = [
-            'title' => 'Revenue Report',
+            'title' => 'Laporan Pendapatan',
+            'month' => $this->monthName,
+            'year' => $this->selectedYear,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
             'metrics' => [
@@ -261,9 +289,18 @@ class Revenue extends Component
         $pdf = Pdf::loadView('pdf.revenue-pdf', $data)
             ->setPaper('a4', 'portrait');
 
+        // Generate filename based on period type
+        if ($this->selectedMonth == 0) {
+            $fileName = 'laporan-pendapatan-keseluruhan.pdf';
+        } elseif ($this->selectedMonth == 13) {
+            $fileName = 'laporan-pendapatan-tahun-' . $this->selectedYear . '.pdf';
+        } else {
+            $fileName = 'laporan-pendapatan-' . strtolower($this->monthName) . '-' . $this->selectedYear . '.pdf';
+        }
+
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'laporan-pendapatan-' . date('Y-m-d-His') . '.pdf');
+        }, $fileName);
     }
 
     public function exportExcel()
@@ -277,10 +314,17 @@ class Revenue extends Component
             'netRevenue' => $this->netRevenue,
         ];
 
-        $fileName = 'laporan-pendapatan-' . date('Y-m-d_H-i-s') . '.xlsx';
+        // Generate filename based on period type
+        if ($this->selectedMonth == 0) {
+            $fileName = 'laporan-pendapatan-keseluruhan.xlsx';
+        } elseif ($this->selectedMonth == 13) {
+            $fileName = 'laporan-pendapatan-tahun-' . $this->selectedYear . '.xlsx';
+        } else {
+            $fileName = 'laporan-pendapatan-' . strtolower($this->monthName) . '-' . $this->selectedYear . '.xlsx';
+        }
 
         return Excel::download(
-            new RevenueReportExport($this->topProducts, $metrics, $this->startDate, $this->endDate),
+            new RevenueReportExport($this->topProducts, $metrics, $this->startDate, $this->endDate, $this->monthName, $this->selectedYear),
             $fileName
         );
     }

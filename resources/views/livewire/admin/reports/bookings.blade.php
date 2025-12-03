@@ -25,42 +25,40 @@
     <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
         <h3 class="text-lg font-bold text-gray-900 mb-4">Filter</h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-            {{-- Date Range --}}
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            {{-- Period Filter --}}
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Rentang Tanggal</label>
-                <select wire:model.live="dateRange"
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Periode</label>
+                <select wire:model.live="selectedMonth"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                    <option value="today">Today</option>
-                    <option value="week">Last 7 Days</option>
-                    <option value="month">Last 30 Days</option>
-                    <option value="quarter">Last 3 Months</option>
-                    <option value="year">Last Year</option>
-                    <option value="custom">Custom Range</option>
+                    <option value="0">Keseluruhan</option>
+                    <option value="13">1 Tahun Penuh</option>
+                    <option disabled>──────────</option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
                 </select>
             </div>
 
-            {{-- Custom Dates --}}
-            @if ($dateRange === 'custom')
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Start Date</label>
-                    <input type="date" wire:model="customStartDate"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">End Date</label>
-                    <input type="date" wire:model="customEndDate"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                </div>
-
-                <div class="flex items-end">
-                    <button wire:click="applyCustomDateRange"
-                        class="w-full px-4 py-2 bg-primary hover:bg-light-primary text-white rounded-lg font-semibold transition-all text-sm">
-                        Apply
-                    </button>
-                </div>
-            @endif
+            {{-- Year Filter --}}
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tahun</label>
+                <select wire:model.live="selectedYear"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                    @for ($year = 2020; $year <= now()->year; $year++)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endfor
+                </select>
+            </div>
 
             {{-- Status Filter --}}
             <div>
@@ -97,10 +95,16 @@
         <div class="mt-4 pt-4 border-t border-gray-200">
             <p class="text-sm text-gray-600">
                 <i class="fas fa-calendar-alt mr-2"></i>
-                Menampilkan data dari
-                <strong>{{ Carbon\Carbon::parse($startDate)->format('d M Y') }}</strong>
-                hingga
-                <strong>{{ Carbon\Carbon::parse($endDate)->format('d M Y') }}</strong>
+                Menampilkan data untuk
+                @if ($selectedMonth == 0)
+                    <strong>Keseluruhan</strong>
+                @elseif($selectedMonth == 13)
+                    <strong>Tahun Penuh {{ $selectedYear }}</strong>
+                @else
+                    <strong>{{ $this->monthName }} {{ $selectedYear }}</strong>
+                @endif
+                ({{ Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+                {{ Carbon\Carbon::parse($endDate)->format('d M Y') }})
             </p>
         </div>
     </div>
@@ -175,14 +179,15 @@
     </div>
 
     {{-- Charts --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" x-data="bookingCharts()" x-init="init()"
+        wire:key="booking-charts-{{ $selectedMonth }}-{{ $selectedYear }}">
         {{-- Daily Bookings Trend --}}
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6 lg:col-span-2">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <i class="fas fa-chart-line text-primary"></i>
                 Tren Booking Harian
             </h3>
-            <div id="dailyBookingsChart"></div>
+            <div id="dailyBookingsChart" x-ref="dailyChart"></div>
         </div>
 
         {{-- Booking Status Distribution --}}
@@ -191,7 +196,7 @@
                 <i class="fas fa-chart-pie text-primary"></i>
                 Distribusi Status Booking
             </h3>
-            <div id="bookingStatusChart"></div>
+            <div id="bookingStatusChart" x-ref="statusChart"></div>
         </div>
 
         {{-- Bookings by Product --}}
@@ -200,7 +205,7 @@
                 <i class="fas fa-chart-bar text-primary"></i>
                 10 Produk Teratas berdasarkan Booking
             </h3>
-            <div id="bookingsByProductChart"></div>
+            <div id="bookingsByProductChart" x-ref="productChart"></div>
         </div>
 
         {{-- Occupancy Rate --}}
@@ -209,7 +214,7 @@
                 <i class="fas fa-chart-area text-primary"></i>
                 Tingkat Hunian berdasarkan Produk
             </h3>
-            <div id="occupancyRateChart"></div>
+            <div id="occupancyRateChart" x-ref="occupancyChart"></div>
         </div>
     </div>
 
@@ -409,153 +414,231 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    document.addEventListener('livewire:navigated', function() {
-        initBookingCharts();
-    });
+    function bookingCharts() {
+        return {
+            charts: {
+                daily: null,
+                status: null,
+                product: null,
+                occupancy: null
+            },
 
-    Livewire.on('dataUpdated', () => {
-        initBookingCharts();
-    });
+            init() {
+                // Initial render
+                this.renderCharts();
 
-    function initBookingCharts() {
-        // Daily Bookings Chart
-        const dailyBookingsOptions = {
-            series: [{
-                name: 'Bookings',
-                data: @js($dailyBookingsData['data'])
-            }],
-            chart: {
-                type: 'line',
-                height: 350,
-                toolbar: {
-                    show: true
-                },
-                zoom: {
-                    enabled: true
-                }
-            },
-            colors: ['#5f91a7'],
-            dataLabels: {
-                enabled: false
-            },
-            stroke: {
-                curve: 'smooth',
-                width: 3
-            },
-            markers: {
-                size: 5,
-                hover: {
-                    size: 7
-                }
-            },
-            xaxis: {
-                categories: @js($dailyBookingsData['categories'])
-            },
-            yaxis: {
-                title: {
-                    text: 'Number of Bookings'
-                }
-            }
-        };
-        new ApexCharts(document.querySelector("#dailyBookingsChart"), dailyBookingsOptions).render();
+                // Listen for Livewire updates
+                this.$wire.on('chartDataUpdated', () => {
+                    console.log('Alpine: Chart data updated, re-rendering...');
+                    this.renderCharts();
+                });
 
-        // Booking Status Chart
-        const statusOptions = {
-            series: @js($bookingStatusData['data']),
-            chart: {
-                type: 'donut',
-                height: 350
+                // Also re-render when wire:key changes (when filter changes)
+                this.$watch('$wire.selectedMonth', () => {
+                    console.log('Alpine: Month changed, re-rendering...');
+                    setTimeout(() => this.renderCharts(), 100);
+                });
+
+                this.$watch('$wire.selectedYear', () => {
+                    console.log('Alpine: Year changed, re-rendering...');
+                    setTimeout(() => this.renderCharts(), 100);
+                });
             },
-            labels: @js($bookingStatusData['labels']),
-            colors: ['#c2644f', '#6d9e72', '#4b7d6e', '#b1b1a4', '#e0a15a', '#a06a44', '#85b582', '#e0a15a',
-                '#5da6a4'
-            ],
-            legend: {
-                position: 'bottom'
-            },
-            plotOptions: {
-                pie: {
-                    donut: {
-                        size: '65%'
+
+            destroyCharts() {
+                Object.values(this.charts).forEach(chart => {
+                    if (chart) {
+                        try {
+                            chart.destroy();
+                        } catch (e) {
+                            console.log('Error destroying chart:', e);
+                        }
                     }
-                }
-            }
-        };
-        new ApexCharts(document.querySelector("#bookingStatusChart"), statusOptions).render();
+                });
+            },
 
-        // Bookings by Product Chart
-        const productOptions = {
-            series: [{
-                name: 'Bookings',
-                data: @js($bookingsByProductData['data'])
-            }],
-            chart: {
-                type: 'bar',
-                height: 350,
-                toolbar: {
-                    show: false
-                }
-            },
-            colors: ['#60b2a1'],
-            plotOptions: {
-                bar: {
-                    horizontal: true,
-                    borderRadius: 4
-                }
-            },
-            dataLabels: {
-                enabled: false
-            },
-            xaxis: {
-                categories: @js($bookingsByProductData['categories'])
-            }
-        };
-        new ApexCharts(document.querySelector("#bookingsByProductChart"), productOptions).render();
+            async renderCharts() {
+                console.log('Alpine: Rendering charts...');
 
-        // Occupancy Rate Chart
-        const occupancyOptions = {
-            series: [{
-                name: 'Occupancy Rate',
-                data: @js(array_column($occupancyRateData, 'rate'))
-            }],
-            chart: {
-                type: 'bar',
-                height: 350,
-                toolbar: {
-                    show: false
+                // Destroy existing charts
+                this.destroyCharts();
+
+                // Get fresh data from Livewire component
+                const dailyData = this.$wire.dailyBookingsData;
+                const statusData = this.$wire.bookingStatusData;
+                const productData = this.$wire.bookingsByProductData;
+                const occupancyData = this.$wire.occupancyRateData;
+
+                console.log('Alpine: Chart data from $wire:', {
+                    daily: dailyData,
+                    status: statusData,
+                    product: productData,
+                    occupancy: occupancyData
+                });
+
+                // Daily Bookings Chart
+                if (this.$refs.dailyChart && dailyData?.categories?.length > 0) {
+                    this.charts.daily = new ApexCharts(this.$refs.dailyChart, {
+                        series: [{
+                            name: 'Bookings',
+                            data: dailyData.data || []
+                        }],
+                        chart: {
+                            type: 'line',
+                            height: 350,
+                            toolbar: {
+                                show: true
+                            },
+                            zoom: {
+                                enabled: true
+                            }
+                        },
+                        colors: ['#5f91a7'],
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'smooth',
+                            width: 3
+                        },
+                        markers: {
+                            size: 5,
+                            hover: {
+                                size: 7
+                            }
+                        },
+                        xaxis: {
+                            categories: dailyData.categories || []
+                        },
+                        yaxis: {
+                            title: {
+                                text: 'Number of Bookings'
+                            }
+                        }
+                    });
+                    this.charts.daily.render();
+                } else if (this.$refs.dailyChart) {
+                    this.$refs.dailyChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-line text-4xl mr-3"></i><span>Tidak ada data booking</span></div>';
                 }
-            },
-            colors: ['#10b981'],
-            plotOptions: {
-                bar: {
-                    horizontal: false,
-                    borderRadius: 4,
-                    dataLabels: {
-                        position: 'top'
-                    }
+
+                // Booking Status Chart
+                if (this.$refs.statusChart && statusData?.labels?.length > 0) {
+                    this.charts.status = new ApexCharts(this.$refs.statusChart, {
+                        series: statusData.data || [],
+                        chart: {
+                            type: 'donut',
+                            height: 350
+                        },
+                        labels: statusData.labels || [],
+                        colors: ['#c2644f', '#6d9e72', '#4b7d6e', '#b1b1a4', '#e0a15a', '#a06a44',
+                            '#85b582',
+                            '#e0a15a', '#5da6a4'
+                        ],
+                        legend: {
+                            position: 'bottom'
+                        },
+                        plotOptions: {
+                            pie: {
+                                donut: {
+                                    size: '65%'
+                                }
+                            }
+                        }
+                    });
+                    this.charts.status.render();
+                } else if (this.$refs.statusChart) {
+                    this.$refs.statusChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-pie text-4xl mr-3"></i><span>Tidak ada data status</span></div>';
                 }
-            },
-            dataLabels: {
-                enabled: true,
-                formatter: function(val) {
-                    return val.toFixed(1) + '%';
-                },
-                offsetY: -20,
-                style: {
-                    fontSize: '12px',
-                    colors: ['#304758']
+
+                // Bookings by Product Chart
+                if (this.$refs.productChart && productData?.categories?.length > 0) {
+                    this.charts.product = new ApexCharts(this.$refs.productChart, {
+                        series: [{
+                            name: 'Bookings',
+                            data: productData.data || []
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#60b2a1'],
+                        plotOptions: {
+                            bar: {
+                                horizontal: true,
+                                borderRadius: 4
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: productData.categories || []
+                        }
+                    });
+                    this.charts.product.render();
+                } else if (this.$refs.productChart) {
+                    this.$refs.productChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-bar text-4xl mr-3"></i><span>Tidak ada data produk</span></div>';
                 }
-            },
-            xaxis: {
-                categories: @js(array_column($occupancyRateData, 'name'))
-            },
-            yaxis: {
-                title: {
-                    text: 'Occupancy Rate (%)'
-                },
-                max: 100
+
+                // Occupancy Rate Chart
+                if (this.$refs.occupancyChart && Array.isArray(occupancyData) && occupancyData.length > 0) {
+                    this.charts.occupancy = new ApexCharts(this.$refs.occupancyChart, {
+                        series: [{
+                            name: 'Occupancy Rate',
+                            data: occupancyData.map(item => item.rate) || []
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#10b981'],
+                        plotOptions: {
+                            bar: {
+                                horizontal: false,
+                                borderRadius: 4,
+                                dataLabels: {
+                                    position: 'top'
+                                }
+                            }
+                        },
+                        dataLabels: {
+                            enabled: true,
+                            formatter: function(val) {
+                                return val.toFixed(1) + '%';
+                            },
+                            offsetY: -20,
+                            style: {
+                                fontSize: '12px',
+                                colors: ['#304758']
+                            }
+                        },
+                        xaxis: {
+                            categories: occupancyData.map(item => item.name) || []
+                        },
+                        yaxis: {
+                            title: {
+                                text: 'Occupancy Rate (%)'
+                            },
+                            max: 100
+                        }
+                    });
+                    this.charts.occupancy.render();
+                } else if (this.$refs.occupancyChart) {
+                    this.$refs.occupancyChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-area text-4xl mr-3"></i><span>Tidak ada data tingkat hunian</span></div>';
+                }
+
+                console.log('Alpine: Charts rendered successfully');
             }
-        };
-        new ApexCharts(document.querySelector("#occupancyRateChart"), occupancyOptions).render();
+        }
     }
 </script>
