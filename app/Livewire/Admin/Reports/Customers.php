@@ -18,11 +18,11 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class Customers extends Component
 {
-    public $dateRange = 'month';
+    public $selectedMonth;
+    public $monthName;
+    public $selectedYear;
     public $startDate;
     public $endDate;
-    public $customStartDate;
-    public $customEndDate;
 
     // Metrics
     public $totalCustomers = 0;
@@ -45,42 +45,70 @@ class Customers extends Component
 
     public function mount()
     {
+        // Set default to current month and year
+        $this->selectedMonth = now()->month;
+        $this->selectedYear = now()->year;
         $this->setDateRange();
         $this->loadData();
     }
 
-    public function updatedDateRange()
+    public function updatedSelectedMonth()
     {
-        if ($this->dateRange !== 'custom') {
-            $this->setDateRange();
-            $this->loadData();
-        }
+        $this->setDateRange();
+        $this->loadData();
     }
 
-    public function applyCustomDateRange()
+    public function updatedSelectedYear()
     {
-        $this->validate([
-            'customStartDate' => 'required|date',
-            'customEndDate' => 'required|date|after_or_equal:customStartDate',
-        ]);
-
-        $this->startDate = $this->customStartDate;
-        $this->endDate = $this->customEndDate;
+        $this->setDateRange();
         $this->loadData();
     }
 
     private function setDateRange()
     {
-        $this->endDate = now()->format('Y-m-d');
+        // Check for special values: 0 = All Time, 13 = Full Year
+        if ($this->selectedMonth == 0) {
+            // All Time - get earliest user registration date
+            $earliestUser = User::where('role', 'user')
+                ->orderBy('created_at', 'asc')
+                ->first();
 
-        $this->startDate = match ($this->dateRange) {
-            'today' => now()->format('Y-m-d'),
-            'week' => now()->subWeek()->format('Y-m-d'),
-            'month' => now()->subMonth()->format('Y-m-d'),
-            'quarter' => now()->subMonths(3)->format('Y-m-d'),
-            'year' => now()->subYear()->format('Y-m-d'),
-            default => now()->subMonth()->format('Y-m-d'),
-        };
+            $this->startDate = $earliestUser
+                ? Carbon::parse($earliestUser->created_at)->startOfDay()->format('Y-m-d H:i:s')
+                : Carbon::now()->subYears(5)->startOfDay()->format('Y-m-d H:i:s');
+
+            $this->endDate = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
+        } elseif ($this->selectedMonth == 13) {
+            // Full Year - January to December of selected year
+            $this->startDate = Carbon::create($this->selectedYear, 1, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, 12, 31)->endOfDay()->format('Y-m-d H:i:s');
+        } else {
+            // Specific month
+            $this->startDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->endOfMonth()->endOfDay()->format('Y-m-d H:i:s');
+        }
+    }
+
+    public function getMonthNameProperty()
+    {
+        $months = [
+            0 => 'Keseluruhan',
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+            13 => '1 Tahun Penuh',
+        ];
+
+        return $months[$this->selectedMonth] ?? 'Unknown';
     }
 
     private function loadData()
@@ -258,6 +286,8 @@ class Customers extends Component
         $this->loadTables();
         $data = [
             'title' => 'Customer Report',
+            'monthName' => $this->monthName,
+            'year' => $this->selectedYear,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
             'metrics' => [
@@ -293,7 +323,7 @@ class Customers extends Component
             'averageLifetimeValue' => $this->averageLifetimeValue,
         ];
 
-        $fileName = 'customer-report-' . date('Y-m-d-His') . '.xlsx';
+        $fileName = 'customer-report-' . $this->monthName . '-' . $this->selectedYear . '.xlsx';
 
         return Excel::download(
             new CustomerReportExport($this->topSpenders, $this->recentCustomers, $metrics, $this->startDate, $this->endDate),

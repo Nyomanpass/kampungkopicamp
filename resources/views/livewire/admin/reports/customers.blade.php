@@ -112,54 +112,54 @@
 
     {{-- Filters --}}
     <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
-        <h3 class="text-lg font-bold text-gray-900 mb-4">Filters</h3>
+        <h3 class="text-lg font-bold text-gray-900 mb-4">Filter</h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {{-- Date Range --}}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {{-- Month Filter --}}
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Date Range</label>
-                <select wire:model.live="dateRange"
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Periode</label>
+                <select wire:model.live="selectedMonth"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                    <option value="today">Today</option>
-                    <option value="week">Last 7 Days</option>
-                    <option value="month">Last 30 Days</option>
-                    <option value="quarter">Last 3 Months</option>
-                    <option value="year">Last Year</option>
-                    <option value="custom">Custom Range</option>
+                    <option value="0">Keseluruhan</option>
+                    <option value="13">1 Tahun Penuh</option>
+                    <option disabled>──────────</option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
                 </select>
             </div>
 
-            {{-- Custom Dates --}}
-            @if ($dateRange === 'custom')
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Start Date</label>
-                    <input type="date" wire:model="customStartDate"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">End Date</label>
-                    <input type="date" wire:model="customEndDate"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                </div>
-
-                <div class="flex items-end">
-                    <button wire:click="applyCustomDateRange"
-                        class="w-full px-4 py-2 bg-primary hover:bg-light-primary text-white rounded-lg font-semibold transition-all text-sm">
-                        Apply
-                    </button>
-                </div>
-            @endif
+            {{-- Year Filter --}}
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tahun</label>
+                <select wire:model.live="selectedYear"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                    @for ($year = now()->year; $year >= 2020; $year--)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endfor
+                </select>
+            </div>
         </div>
 
         {{-- Date Range Display --}}
         <div class="mt-4 pt-4 border-t border-gray-200">
             <p class="text-sm text-gray-600">
                 <i class="fas fa-calendar-alt mr-2"></i>
-                Showing data from
-                <strong>{{ Carbon\Carbon::parse($startDate)->format('d M Y') }}</strong>
-                to
-                <strong>{{ Carbon\Carbon::parse($endDate)->format('d M Y') }}</strong>
+                Menampilkan data <strong>{{ $monthName }}</strong> tahun <strong>{{ $selectedYear }}</strong>
+                <span class="text-gray-400 mx-2">|</span>
+                <span class="text-xs">
+                    {{ Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+                    {{ Carbon\Carbon::parse($endDate)->format('d M Y') }}
+                </span>
             </p>
         </div>
     </div>
