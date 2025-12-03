@@ -94,6 +94,10 @@ class Products extends Component
     public $overrideSeats;
     public $overrideReason;
 
+    // stock update
+    public $stock_update_start_date;
+    public $stock_update_end_date;
+
     // validation rules
     protected function rules()
     {
@@ -195,9 +199,23 @@ class Products extends Component
         if ($product->type === 'touring') {
             $this->max_participant = $product->max_participant ?? 10;
             $this->capacity_per_unit = null; // Not used for touring
+
+            // Load current default seats from latest availability
+            $latestAvailability = Availability::where('product_id', $product->id)
+                ->where('is_overridden', false)
+                ->where('date', '>=', Carbon::today())
+                ->first();
+            $this->default_seats = $latestAvailability->available_seat ?? 20;
         } else {
             $this->capacity_per_unit = $product->capacity_per_unit ?? 2;
             $this->max_participant = null; // Not used for accommodation/area_rental
+
+            // Load current default units from latest availability
+            $latestAvailability = Availability::where('product_id', $product->id)
+                ->where('is_overridden', false)
+                ->where('date', '>=', Carbon::today())
+                ->first();
+            $this->default_units = $latestAvailability->available_unit ?? 20;
         }
 
         $this->viewMode = 'edit';
@@ -272,10 +290,14 @@ class Products extends Component
             if ($this->type === 'touring') {
                 $productData['max_participant'] = $this->max_participant;
                 $productData['capacity_per_unit'] = null; // Not applicable
+                $productData['default_seats'] = $this->default_seats ?? 20;
+                $productData['default_units'] = 0;
             } else {
                 // accommodation or area_rental
                 $productData['capacity_per_unit'] = $this->capacity_per_unit;
                 $productData['max_participant'] = null; // Not applicable
+                $productData['default_units'] = $this->default_units ?? 10;
+                $productData['default_seats'] = 0;
             }
 
             // Create product
@@ -348,10 +370,14 @@ class Products extends Component
             if ($this->type === 'touring') {
                 $updateData['max_participant'] = $this->max_participant;
                 $updateData['capacity_per_unit'] = null;
+                $updateData['default_seats'] = $this->default_seats ?? 20;
+                $updateData['default_units'] = 0;
             } else {
                 // accommodation or area_rental
                 $updateData['capacity_per_unit'] = $this->capacity_per_unit;
                 $updateData['max_participant'] = null;
+                $updateData['default_units'] = $this->default_units ?? 10;
+                $updateData['default_seats'] = 0;
             }
 
             // Update product
@@ -540,6 +566,116 @@ class Products extends Component
         $this->facilities = array_values($this->facilities);
     }
 
+
+    // ============================================
+    // QUICK AVAILABILITY OVERRIDE
+    // ============================================
+
+    public function updateDefaultStock()
+    {
+        try {
+            DB::beginTransaction();
+
+            $product = Product::findOrFail($this->productId);
+
+            // Determine date range
+            $startDate = $this->stock_update_start_date
+                ? Carbon::parse($this->stock_update_start_date)
+                : Carbon::today();
+
+            $endDate = $this->stock_update_end_date
+                ? Carbon::parse($this->stock_update_end_date)
+                : Carbon::today()->addMonths(2);
+
+            // Validate dates
+            if ($startDate->lt(Carbon::today())) {
+                session()->flash('error', 'Start date tidak boleh kurang dari hari ini.');
+                return;
+            }
+
+            if ($endDate->lt($startDate)) {
+                session()->flash('error', 'End date harus setelah atau sama dengan start date.');
+                return;
+            }
+
+            $updatedCount = 0;
+
+            // ✅ Update product's default stock values
+            if ($product->type === 'touring') {
+                $product->update([
+                    'default_seats' => $this->default_seats ?? 20,
+                    'default_units' => 0,
+                ]);
+            } else {
+                $product->update([
+                    'default_units' => $this->default_units ?? 10,
+                    'default_seats' => 0,
+                ]);
+            }
+
+            // Update only non-overridden availability
+            $availabilities = Availability::where('product_id', $product->id)
+                ->where('is_overridden', false)
+                ->whereBetween('date', [$startDate->format('Y-m-d'), $endDate->format('Y-m-d')])
+                ->get();
+
+            foreach ($availabilities as $availability) {
+                if ($product->type === 'touring') {
+                    $availability->update([
+                        'available_seat' => $this->default_seats ?? 0,
+                    ]);
+                } else {
+                    $availability->update([
+                        'available_unit' => $this->default_units ?? 0,
+                    ]);
+                }
+                $updatedCount++;
+            }
+
+            // Create new availability for dates that don't exist yet
+            $current = $startDate->copy();
+            while ($current->lte($endDate)) {
+                $dateString = $current->format('Y-m-d') . ' 00:00:00';
+
+                $exists = Availability::where('product_id', $product->id)
+                    ->where('date', $dateString)
+                    ->exists();
+
+                if (!$exists) {
+                    Availability::create([
+                        'product_id' => $product->id,
+                        'date' => $dateString,
+                        'available_unit' => $product->type === 'touring' ? 0 : ($this->default_units ?? 0),
+                        'available_seat' => $product->type === 'touring' ? ($this->default_seats ?? 0) : 0,
+                        'is_overridden' => false,
+                    ]);
+                    $updatedCount++;
+                }
+
+                $current->addDay();
+            }
+
+            DB::commit();
+
+            Log::info("Default stock updated for product", [
+                'product_id' => $product->id,
+                'product_name' => $product->name,
+                'date_range' => $startDate->format('Y-m-d') . ' to ' . $endDate->format('Y-m-d'),
+                'default_units' => $this->default_units,
+                'default_seats' => $this->default_seats,
+                'updated_count' => $updatedCount,
+            ]);
+
+            session()->flash('success', "Default stock berhasil diupdate untuk {$updatedCount} tanggal!");
+
+            // Reset date range inputs
+            $this->reset(['stock_update_start_date', 'stock_update_end_date']);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error('Failed to update default stock: ' . $e->getMessage());
+            session()->flash('error', 'Gagal mengupdate default stock: ' . $e->getMessage());
+        }
+    }
 
     // ============================================
     // QUICK AVAILABILITY OVERRIDE

@@ -17,13 +17,17 @@ class RevenueReportExport implements FromCollection, WithHeadings, WithStyles, W
     protected $metrics;
     protected $startDate;
     protected $endDate;
+    protected $month;
+    protected $year;
 
-    public function __construct($topProducts, $metrics, $startDate, $endDate)
+    public function __construct($topProducts, $metrics, $startDate, $endDate, $month = null, $year = null)
     {
         $this->topProducts = $topProducts;
         $this->metrics = $metrics;
         $this->startDate = $startDate;
         $this->endDate = $endDate;
+        $this->month = $month;
+        $this->year = $year;
     }
 
     public function collection()
@@ -31,23 +35,26 @@ class RevenueReportExport implements FromCollection, WithHeadings, WithStyles, W
         $data = collect();
 
         // Add Summary Section
-        $data->push(['REVENUE REPORT SUMMARY']);
-        $data->push(['Period:', \Carbon\Carbon::parse($this->startDate)->format('d M Y') . ' - ' . \Carbon\Carbon::parse($this->endDate)->format('d M Y')]);
-        $data->push(['Generated:', now()->format('d M Y H:i:s')]);
+        $data->push(['LAPORAN PENDAPATAN']);
+        if ($this->month && $this->year) {
+            $data->push(['Periode:', $this->month . ' ' . $this->year]);
+        }
+        $data->push(['Tanggal:', \Carbon\Carbon::parse($this->startDate)->format('d M Y') . ' - ' . \Carbon\Carbon::parse($this->endDate)->format('d M Y')]);
+        $data->push(['Dibuat:', now()->format('d M Y H:i:s')]);
         $data->push(['']);
 
         // Metrics
-        $data->push(['METRICS']);
-        $data->push(['Total Revenue', 'Rp ' . number_format($this->metrics['totalRevenue'])]);
-        $data->push(['Total Transactions', number_format($this->metrics['totalTransactions'])]);
-        $data->push(['Average Transaction Value', 'Rp ' . number_format($this->metrics['averageTransactionValue'])]);
-        $data->push(['Total Refunded', 'Rp ' . number_format($this->metrics['totalRefunded'])]);
-        $data->push(['Net Revenue', 'Rp ' . number_format($this->metrics['netRevenue'])]);
+        $data->push(['RINGKASAN']);
+        $data->push(['Total Pendapatan', 'Rp ' . number_format($this->metrics['totalRevenue'])]);
+        $data->push(['Total Transaksi', number_format($this->metrics['totalTransactions'])]);
+        $data->push(['Rata-rata Nilai Transaksi', 'Rp ' . number_format($this->metrics['averageTransactionValue'])]);
+        $data->push(['Total Refund', 'Rp ' . number_format($this->metrics['totalRefunded'])]);
+        $data->push(['Pendapatan Bersih', 'Rp ' . number_format($this->metrics['netRevenue'])]);
         $data->push(['']);
 
         // Top Products Header
-        $data->push(['TOP PRODUCTS BY REVENUE']);
-        $data->push(['#', 'Product Name', 'Type', 'Bookings', 'Qty Sold', 'Total Revenue']);
+        $data->push(['PRODUK TERATAS BERDASARKAN PENDAPATAN']);
+        $data->push(['#', 'Nama Produk', 'Tipe', 'Jumlah Booking', 'Qty Terjual', 'Total Pendapatan']);
 
         // Top Products Data
         foreach ($this->topProducts as $index => $product) {
@@ -91,7 +98,10 @@ class RevenueReportExport implements FromCollection, WithHeadings, WithStyles, W
 
     public function title(): string
     {
-        return 'Revenue Report';
+        if ($this->month && $this->year) {
+            return 'Laporan ' . $this->month . ' ' . $this->year;
+        }
+        return 'Laporan Pendapatan';
     }
 
     public function columnWidths(): array

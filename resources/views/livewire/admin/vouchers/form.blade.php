@@ -34,8 +34,8 @@
                         Voucher Code <span class="text-red-500">*</span>
                     </label>
                     <div class="flex gap-2">
-                        <input type="text" wire:model="code"
-                            class="flex-1 px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary uppercase"
+                        <input type="text" wire:model.blur="code" required
+                            class="flex-1 px-4 py-2 border @error('code') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-primary uppercase"
                             placeholder="e.g., PROMO20, WELCOME50" {{ $viewMode === 'edit' ? 'readonly' : '' }}>
                         @if ($viewMode === 'create')
                             <button type="button" wire:click="generateCode"
@@ -45,7 +45,7 @@
                         @endif
                     </div>
                     @error('code')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                     @enderror
                     <p class="text-xs text-gray-500 mt-1">Unique code that customers will use at checkout</p>
                 </div>
@@ -55,11 +55,11 @@
                     <label class="block text-sm font-medium text-gray-700 mb-1">
                         Voucher Name <span class="text-red-500">*</span>
                     </label>
-                    <input type="text" wire:model="name"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
+                    <input type="text" wire:model.blur="name" required
+                        class="w-full px-4 py-2 border @error('name') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-primary"
                         placeholder="e.g., Summer Sale 2024, Welcome Discount">
                     @error('name')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                     @enderror
                 </div>
 
@@ -288,26 +288,26 @@
                 {{-- Start Date --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
-                        Start Date
+                        Start Date <span class="text-red-500">*</span>
                     </label>
-                    <input type="datetime-local" wire:model="start_date"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary">
-                    <p class="text-xs text-gray-500 mt-1">Leave empty for immediate activation</p>
+                    <input type="datetime-local" wire:model.blur="start_date" required
+                        class="w-full px-4 py-2 border @error('start_date') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-primary">
+                    <p class="text-xs text-gray-500 mt-1">When the voucher becomes active</p>
                     @error('start_date')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                     @enderror
                 </div>
 
                 {{-- End Date --}}
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">
-                        End Date
+                        End Date <span class="text-red-500">*</span>
                     </label>
-                    <input type="datetime-local" wire:model="end_date"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary">
-                    <p class="text-xs text-gray-500 mt-1">Leave empty for no expiration</p>
+                    <input type="datetime-local" wire:model.blur="end_date" required
+                        class="w-full px-4 py-2 border @error('end_date') border-red-500 @else border-gray-300 @enderror rounded-lg focus:ring-2 focus:ring-primary">
+                    <p class="text-xs text-gray-500 mt-1">When the voucher expires</p>
                     @error('end_date')
-                        <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                        <span class="text-red-500 text-xs mt-1 block">{{ $message }}</span>
                     @enderror
                 </div>
             </div>

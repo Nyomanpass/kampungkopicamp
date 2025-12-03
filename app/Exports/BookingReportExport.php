@@ -18,14 +18,18 @@ class BookingReportExport implements FromCollection, WithHeadings, WithStyles, W
       protected $metrics;
       protected $startDate;
       protected $endDate;
+      protected $month;
+      protected $year;
 
-      public function __construct($topProducts, $statusBreakdown, $metrics, $startDate, $endDate)
+      public function __construct($topProducts, $statusBreakdown, $metrics, $startDate, $endDate, $month = null, $year = null)
       {
             $this->topProducts = $topProducts;
             $this->statusBreakdown = $statusBreakdown;
             $this->metrics = $metrics;
             $this->startDate = $startDate;
             $this->endDate = $endDate;
+            $this->month = $month;
+            $this->year = $year;
       }
 
       public function collection()
@@ -33,24 +37,28 @@ class BookingReportExport implements FromCollection, WithHeadings, WithStyles, W
             $data = collect();
 
             // Summary
-            $data->push(['BOOKING REPORT SUMMARY']);
-            $data->push(['Period:', \Carbon\Carbon::parse($this->startDate)->format('d M Y') . ' - ' . \Carbon\Carbon::parse($this->endDate)->format('d M Y')]);
-            $data->push(['Generated:', now()->format('d M Y H:i:s')]);
+            $data->push(['LAPORAN BOOKING']);
+            if ($this->month && $this->year) {
+                  $data->push(['Periode:', $this->month . ' ' . $this->year]);
+            } else {
+                  $data->push(['Periode:', \Carbon\Carbon::parse($this->startDate)->format('d M Y') . ' - ' . \Carbon\Carbon::parse($this->endDate)->format('d M Y')]);
+            }
+            $data->push(['Dibuat:', now()->format('d M Y H:i:s')]);
             $data->push(['']);
 
             // Metrics
-            $data->push(['METRICS']);
-            $data->push(['Total Bookings', number_format($this->metrics['totalBookings'])]);
-            $data->push(['Completed Bookings', number_format($this->metrics['completedBookings'])]);
-            $data->push(['Cancelled Bookings', number_format($this->metrics['cancelledBookings'])]);
-            $data->push(['Conversion Rate', number_format($this->metrics['conversionRate'], 1) . '%']);
-            $data->push(['Average Booking Value', 'Rp ' . number_format($this->metrics['averageBookingValue'])]);
+            $data->push(['METRIK']);
+            $data->push(['Total Booking', number_format($this->metrics['totalBookings'])]);
+            $data->push(['Booking Selesai', number_format($this->metrics['completedBookings'])]);
+            $data->push(['Booking Dibatalkan', number_format($this->metrics['cancelledBookings'])]);
+            $data->push(['Tingkat Konversi', number_format($this->metrics['conversionRate'], 1) . '%']);
+            $data->push(['Nilai Rata-Rata Booking', 'Rp ' . number_format($this->metrics['averageBookingValue'])]);
             $data->push(['No-Show Rate', number_format($this->metrics['noShowRate'], 1) . '%']);
             $data->push(['']);
 
             // Top Products
-            $data->push(['TOP PRODUCTS BY BOOKINGS']);
-            $data->push(['#', 'Product Name', 'Type', 'Bookings', 'Qty Sold']);
+            $data->push(['PRODUK TERPOPULER BERDASARKAN BOOKING']);
+            $data->push(['#', 'Nama Produk', 'Tipe', 'Jumlah Booking', 'Qty Terjual']);
 
             foreach ($this->topProducts as $index => $product) {
                   $data->push([
@@ -65,12 +73,23 @@ class BookingReportExport implements FromCollection, WithHeadings, WithStyles, W
             $data->push(['']);
 
             // Status Breakdown
-            $data->push(['BOOKING STATUS BREAKDOWN']);
-            $data->push(['Status', 'Count', 'Total Value']);
+            $data->push(['RINCIAN STATUS BOOKING']);
+            $data->push(['Status', 'Jumlah', 'Total Nilai']);
 
             foreach ($this->statusBreakdown as $status) {
+                  $statusLabels = [
+                        'draft' => 'Draft',
+                        'pending_payment' => 'Menunggu Pembayaran',
+                        'paid' => 'Dibayar',
+                        'checked_in' => 'Check In',
+                        'completed' => 'Selesai',
+                        'cancelled' => 'Dibatalkan',
+                        'refunded' => 'Dikembalikan',
+                        'no_show' => 'Tidak Hadir',
+                        'expired' => 'Kedaluwarsa',
+                  ];
                   $data->push([
-                        ucfirst(str_replace('_', ' ', $status->status)),
+                        $statusLabels[$status->status] ?? ucfirst(str_replace('_', ' ', $status->status)),
                         $status->count,
                         'Rp ' . number_format($status->total_value),
                   ]);
@@ -101,7 +120,10 @@ class BookingReportExport implements FromCollection, WithHeadings, WithStyles, W
 
       public function title(): string
       {
-            return 'Booking Report';
+            if ($this->month && $this->year) {
+                  return 'Laporan ' . $this->month . ' ' . $this->year;
+            }
+            return 'Laporan Booking';
       }
 
       public function columnWidths(): array

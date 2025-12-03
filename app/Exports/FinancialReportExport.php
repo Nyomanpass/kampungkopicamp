@@ -20,20 +20,24 @@ class FinancialReportExport implements WithMultipleSheets
       protected $metrics;
       protected $startDate;
       protected $endDate;
+      protected $month;
+      protected $year;
 
-      public function __construct($recentInvoices, $recentPayments, $metrics, $startDate, $endDate)
+      public function __construct($recentInvoices, $recentPayments, $metrics, $startDate, $endDate, $month = null, $year = null)
       {
             $this->recentInvoices = $recentInvoices;
             $this->recentPayments = $recentPayments;
             $this->metrics = $metrics;
             $this->startDate = $startDate;
             $this->endDate = $endDate;
+            $this->month = $month;
+            $this->year = $year;
       }
 
       public function sheets(): array
       {
             return [
-                  new FinancialSummarySheet($this->metrics, $this->startDate, $this->endDate),
+                  new FinancialSummarySheet($this->metrics, $this->startDate, $this->endDate, $this->month, $this->year),
                   new FinancialInvoicesSheet($this->recentInvoices),
                   new FinancialPaymentsSheet($this->recentPayments),
             ];
@@ -46,30 +50,34 @@ class FinancialSummarySheet implements FromCollection, WithHeadings, WithStyles,
       protected $metrics;
       protected $startDate;
       protected $endDate;
+      protected $month;
+      protected $year;
 
-      public function __construct($metrics, $startDate, $endDate)
+      public function __construct($metrics, $startDate, $endDate, $month = null, $year = null)
       {
             $this->metrics = $metrics;
             $this->startDate = $startDate;
             $this->endDate = $endDate;
+            $this->month = $month;
+            $this->year = $year;
       }
 
       public function collection()
       {
             return collect([
-                  ['FINANCIAL REPORT SUMMARY'],
-                  ['Period', \Carbon\Carbon::parse($this->startDate)->format('d M Y') . ' - ' . \Carbon\Carbon::parse($this->endDate)->format('d M Y')],
-                  ['Generated', now()->format('d M Y H:i:s')],
+                  ['LAPORAN KEUANGAN'],
+                  ['Periode', $this->month && $this->year ? $this->month . ' ' . $this->year : \Carbon\Carbon::parse($this->startDate)->format('d M Y') . ' - ' . \Carbon\Carbon::parse($this->endDate)->format('d M Y')],
+                  ['Dibuat', now()->format('d M Y H:i:s')],
                   [''],
-                  ['METRICS', ''],
-                  ['Total Invoices', number_format($this->metrics['totalInvoices'])],
-                  ['Total Revenue', 'Rp ' . number_format($this->metrics['totalRevenue'], 0, ',', '.')],
-                  ['Total Paid', 'Rp ' . number_format($this->metrics['totalPaid'], 0, ',', '.')],
-                  ['Total Pending', 'Rp ' . number_format($this->metrics['totalPending'], 0, ',', '.')],
-                  ['Total Refunded', 'Rp ' . number_format($this->metrics['totalRefunded'], 0, ',', '.')],
-                  ['Total Tax', 'Rp ' . number_format($this->metrics['totalTax'], 0, ',', '.')],
+                  ['METRIK', ''],
+                  ['Total Invoice', number_format($this->metrics['totalInvoices'])],
+                  ['Total Pendapatan', 'Rp ' . number_format($this->metrics['totalRevenue'], 0, ',', '.')],
+                  ['Total Dibayar', 'Rp ' . number_format($this->metrics['totalPaid'], 0, ',', '.')],
+                  ['Total Menunggu', 'Rp ' . number_format($this->metrics['totalPending'], 0, ',', '.')],
+                  ['Total Dikembalikan', 'Rp ' . number_format($this->metrics['totalRefunded'], 0, ',', '.')],
+                  ['Total Pajak', 'Rp ' . number_format($this->metrics['totalTax'], 0, ',', '.')],
                   [''],
-                  ['NET REVENUE', 'Rp ' . number_format($this->metrics['totalRevenue'] - $this->metrics['totalRefunded'], 0, ',', '.')],
+                  ['PENDAPATAN BERSIH', 'Rp ' . number_format($this->metrics['totalRevenue'] - $this->metrics['totalRefunded'], 0, ',', '.')],
             ]);
       }
 
@@ -102,7 +110,10 @@ class FinancialSummarySheet implements FromCollection, WithHeadings, WithStyles,
 
       public function title(): string
       {
-            return 'Summary';
+            if ($this->month && $this->year) {
+                  return 'Ringkasan ' . $this->month . ' ' . $this->year;
+            }
+            return 'Ringkasan';
       }
 
       public function columnWidths(): array
@@ -146,13 +157,13 @@ class FinancialInvoicesSheet implements FromCollection, WithHeadings, WithStyles
       public function headings(): array
       {
             return [
-                  'Invoice Number',
-                  'Customer',
+                  'Nomor Invoice',
+                  'Pelanggan',
                   'Email',
-                  'Amount',
+                  'Jumlah',
                   'Status',
-                  'Type',
-                  'Date',
+                  'Tipe',
+                  'Tanggal',
             ];
       }
 
@@ -169,7 +180,7 @@ class FinancialInvoicesSheet implements FromCollection, WithHeadings, WithStyles
 
       public function title(): string
       {
-            return 'Recent Invoices';
+            return 'Invoice Terkini';
       }
 
       public function columnWidths(): array
@@ -219,12 +230,12 @@ class FinancialPaymentsSheet implements FromCollection, WithHeadings, WithStyles
       {
             return [
                   'Order ID',
-                  'Customer',
+                  'Pelanggan',
                   'Email',
-                  'Amount',
+                  'Jumlah',
                   'Provider',
                   'Status',
-                  'Paid At',
+                  'Dibayar Pada',
             ];
       }
 
@@ -241,7 +252,7 @@ class FinancialPaymentsSheet implements FromCollection, WithHeadings, WithStyles
 
       public function title(): string
       {
-            return 'Recent Payments';
+            return 'Pembayaran Terkini';
       }
 
       public function columnWidths(): array

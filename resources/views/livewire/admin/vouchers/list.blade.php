@@ -226,7 +226,7 @@
                             <p class="text-gray-900 font-medium">{{ $voucher->end_date->format('d M Y') }}</p>
                             @php $days = $voucher->getDaysUntilExpiration(); @endphp
                             @if ($days !== null && $days <= 7 && $days > 0)
-                                <p class="text-danger">{{ $days }}d left</p>
+                                <p class="text-danger">Sisa {{ $days }} hari lagi</p>
                             @endif
                         @else
                             <p class="text-gray-500 italic">No expiry</p>

@@ -248,7 +248,7 @@
                     x-transition:enter-start="-translate-x-full" x-transition:enter-end="translate-x-0"
                     x-transition:leave="transition ease-in duration-300" x-transition:leave-start="-translate-x-0"
                     x-transition:leave-end="-translate-x-full"
-                    class="fixed top-0 left-0 h-full w-80 z-50 bg-gradient-to-b from-primary to-[#485934] shadow-lg flex flex-col transition-all duration-300">
+                    class="fixed top-0 left-0 h-full w-80 z-50 bg-gradient-to-b from-secondary to-light-primary shadow-lg flex flex-col transition-all duration-300">
 
                     <div class="flex justify-between items-center sticky">
                         <h1 class="text-white text-xl font-semibold p-4">Kampung Kopi

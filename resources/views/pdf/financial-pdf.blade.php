@@ -163,38 +163,41 @@
     {{-- Header --}}
     <div class="header">
         <h1>{{ $title }}</h1>
-        <p>Period: {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+        @if (isset($month) && isset($year))
+            <p>Periode: {{ $month }} {{ $year }}</p>
+        @endif
+        <p>{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
             {{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</p>
-        <p>Generated: {{ $generatedAt }}</p>
+        <p>Dibuat: {{ $generatedAt }}</p>
     </div>
 
     {{-- Metrics Grid --}}
     <div class="metrics-grid">
         <div class="metric-card">
-            <div class="metric-label">Total Invoices</div>
+            <div class="metric-label">Total Invoice</div>
             <div class="metric-value">{{ number_format($metrics['totalInvoices']) }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Total Revenue</div>
+            <div class="metric-label">Total Pendapatan</div>
             <div class="metric-value">Rp {{ number_format($metrics['totalRevenue'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Total Paid</div>
+            <div class="metric-label">Total Dibayar</div>
             <div class="metric-value">Rp {{ number_format($metrics['totalPaid'], 0, ',', '.') }}</div>
         </div>
     </div>
 
     <div class="metrics-grid" style="margin-top: 10px;">
         <div class="metric-card">
-            <div class="metric-label">Total Pending</div>
+            <div class="metric-label">Total Menunggu</div>
             <div class="metric-value">Rp {{ number_format($metrics['totalPending'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Total Refunded</div>
+            <div class="metric-label">Total Dikembalikan</div>
             <div class="metric-value">Rp {{ number_format($metrics['totalRefunded'], 0, ',', '.') }}</div>
         </div>
         <div class="metric-card">
-            <div class="metric-label">Net Revenue</div>
+            <div class="metric-label">Pendapatan Bersih</div>
             <div class="metric-value">Rp
                 {{ number_format($metrics['totalRevenue'] - $metrics['totalRefunded'], 0, ',', '.') }}</div>
         </div>
@@ -202,15 +205,15 @@
 
     {{-- Recent Invoices --}}
     <div class="section">
-        <div class="section-title">Recent Invoices</div>
+        <div class="section-title">Invoice Terkini</div>
         <table>
             <thead>
                 <tr>
                     <th style="width: 15%">Invoice #</th>
-                    <th style="width: 25%">Customer</th>
-                    <th style="width: 20%" class="text-right">Amount</th>
+                    <th style="width: 25%">Pelanggan</th>
+                    <th style="width: 20%" class="text-right">Jumlah</th>
                     <th style="width: 15%" class="text-center">Status</th>
-                    <th style="width: 25%">Date</th>
+                    <th style="width: 25%">Tanggal</th>
                 </tr>
             </thead>
             <tbody>
@@ -227,7 +230,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center" style="color: #999;">No invoices available</td>
+                        <td colspan="5" class="text-center" style="color: #999;">Tidak ada invoice</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -236,16 +239,16 @@
 
     {{-- Recent Payments --}}
     <div class="section">
-        <div class="section-title">Recent Payments</div>
+        <div class="section-title">Pembayaran Terkini</div>
         <table>
             <thead>
                 <tr>
                     <th style="width: 15%">Order ID</th>
-                    <th style="width: 25%">Customer</th>
-                    <th style="width: 18%" class="text-right">Amount</th>
+                    <th style="width: 25%">Pelanggan</th>
+                    <th style="width: 18%" class="text-right">Jumlah</th>
                     <th style="width: 12%" class="text-center">Provider</th>
                     <th style="width: 15%" class="text-center">Status</th>
-                    <th style="width: 15%">Paid At</th>
+                    <th style="width: 15%">Dibayar Pada</th>
                 </tr>
             </thead>
             <tbody>
@@ -266,7 +269,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="6" class="text-center" style="color: #999;">No payments available</td>
+                        <td colspan="6" class="text-center" style="color: #999;">Tidak ada pembayaran</td>
                     </tr>
                 @endforelse
             </tbody>
@@ -275,8 +278,8 @@
 
     {{-- Footer --}}
     <div class="footer">
-        <p><strong>Kampung Kopi Camp</strong> | Financial Report</p>
-        <p>{{ now()->format('d M Y H:i:s') }} | Confidential Document</p>
+        <p><strong>Kampung Kopi Camp</strong> | Laporan Keuangan</p>
+        <p>{{ now()->format('d M Y H:i:s') }} | Dokumen Rahasia</p>
     </div>
 </body>
 

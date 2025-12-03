@@ -303,6 +303,16 @@
 
     {{-- Pagination --}}
     <div class="px-6 py-4 border-t border-gray-200">
-        {{ $bookings->links() }}
+        <div class="flex items-center justify-between">
+            <div class="text-sm text-gray-700">
+                Showing <span class="font-medium">{{ $bookings->firstItem() ?? 0 }}</span> to
+                <span class="font-medium">{{ $bookings->lastItem() ?? 0 }}</span> of
+                <span class="font-medium">{{ $bookings->total() }}</span> results
+            </div>
+
+            <div>
+                {{ $bookings->links('vendor.livewire.compact') }}
+            </div>
+        </div>
     </div>
 </div>

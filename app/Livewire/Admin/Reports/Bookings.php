@@ -16,11 +16,10 @@ use Barryvdh\DomPDF\Facade\Pdf;
 
 class Bookings extends Component
 {
-    public $dateRange = 'month';
+    public $selectedMonth;
+    public $selectedYear;
     public $startDate;
     public $endDate;
-    public $customStartDate;
-    public $customEndDate;
     public $statusFilter = '';
     public $productFilter = '';
 
@@ -45,27 +44,21 @@ class Bookings extends Component
 
     public function mount()
     {
+        $this->selectedMonth = now()->month;
+        $this->selectedYear = now()->year;
         $this->setDateRange();
         $this->loadData();
     }
 
-    public function updatedDateRange()
+    public function updatedSelectedMonth()
     {
-        if ($this->dateRange !== 'custom') {
-            $this->setDateRange();
-            $this->loadData();
-        }
+        $this->setDateRange();
+        $this->loadData();
     }
 
-    public function applyCustomDateRange()
+    public function updatedSelectedYear()
     {
-        $this->validate([
-            'customStartDate' => 'required|date',
-            'customEndDate' => 'required|date|after_or_equal:customStartDate',
-        ]);
-
-        $this->startDate = $this->customStartDate;
-        $this->endDate = $this->customEndDate;
+        $this->setDateRange();
         $this->loadData();
     }
 
@@ -81,16 +74,44 @@ class Bookings extends Component
 
     private function setDateRange()
     {
-        $this->endDate = now()->endOfDay();
+        if ($this->selectedMonth == 0) {
+            // All Time - from earliest booking to now
+            $earliestBooking = Booking::orderBy('created_at', 'asc')->first();
+            $this->startDate = $earliestBooking
+                ? Carbon::parse($earliestBooking->created_at)->startOfDay()->format('Y-m-d H:i:s')
+                : Carbon::now()->subYears(5)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::now()->endOfDay()->format('Y-m-d H:i:s');
+        } elseif ($this->selectedMonth == 13) {
+            // Full Year - January 1 to December 31 of selected year
+            $this->startDate = Carbon::create($this->selectedYear, 1, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, 12, 31)->endOfDay()->format('Y-m-d H:i:s');
+        } else {
+            // Regular monthly filter
+            $this->startDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->startOfDay()->format('Y-m-d H:i:s');
+            $this->endDate = Carbon::create($this->selectedYear, $this->selectedMonth, 1)->endOfMonth()->endOfDay()->format('Y-m-d H:i:s');
+        }
+    }
 
-        $this->startDate = match ($this->dateRange) {
-            'today' => now()->startOfDay(),
-            'week' => now()->subWeek()->startOfDay(),
-            'month' => now()->subMonth()->startOfDay(),
-            'quarter' => now()->subMonths(3)->startOfDay(),
-            'year' => now()->subYear()->startOfDay(),
-            default => now()->subMonth()->startOfDay(),
-        };
+    public function getMonthNameProperty()
+    {
+        $months = [
+            0 => 'Keseluruhan',
+            1 => 'Januari',
+            2 => 'Februari',
+            3 => 'Maret',
+            4 => 'April',
+            5 => 'Mei',
+            6 => 'Juni',
+            7 => 'Juli',
+            8 => 'Agustus',
+            9 => 'September',
+            10 => 'Oktober',
+            11 => 'November',
+            12 => 'Desember',
+            13 => 'Tahun Penuh'
+        ];
+
+        return $months[$this->selectedMonth] ?? 'Unknown';
     }
 
     private function loadData()
@@ -98,6 +119,9 @@ class Bookings extends Component
         $this->loadMetrics();
         $this->loadCharts();
         $this->loadTables();
+
+        // Dispatch event to update charts in JavaScript
+        $this->dispatch('chartDataUpdated');
     }
 
     private function loadMetrics()
@@ -309,10 +333,17 @@ class Bookings extends Component
             'noShowRate' => $this->noShowRate,
         ];
 
-        $fileName = 'booking-report-' . date('Y-m-d_H-i-s') . '.xlsx';
+        // Generate filename based on period type
+        if ($this->selectedMonth == 0) {
+            $fileName = 'laporan-booking-keseluruhan.xlsx';
+        } elseif ($this->selectedMonth == 13) {
+            $fileName = 'laporan-booking-tahun-' . $this->selectedYear . '.xlsx';
+        } else {
+            $fileName = 'laporan-booking-' . strtolower($this->monthName) . '-' . $this->selectedYear . '.xlsx';
+        }
 
         return Excel::download(
-            new BookingReportExport($this->topProducts, $this->statusBreakdown, $metrics, $this->startDate, $this->endDate),
+            new BookingReportExport($this->topProducts, $this->statusBreakdown, $metrics, $this->startDate, $this->endDate, $this->monthName, $this->selectedYear),
             $fileName
         );
     }
@@ -322,7 +353,9 @@ class Bookings extends Component
         $this->loadTables();
 
         $data = [
-            'title' => 'booking Report',
+            'title' => 'Laporan Booking',
+            'month' => $this->monthName,
+            'year' => $this->selectedYear,
             'startDate' => $this->startDate,
             'endDate' => $this->endDate,
             'metrics' => [
@@ -341,9 +374,18 @@ class Bookings extends Component
         $pdf = Pdf::loadView('pdf.booking-pdf', $data)
             ->setPaper('a4', 'portrait');
 
+        // Generate filename based on period type
+        if ($this->selectedMonth == 0) {
+            $fileName = 'laporan-booking-keseluruhan.pdf';
+        } elseif ($this->selectedMonth == 13) {
+            $fileName = 'laporan-booking-tahun-' . $this->selectedYear . '.pdf';
+        } else {
+            $fileName = 'laporan-booking-' . strtolower($this->monthName) . '-' . $this->selectedYear . '.pdf';
+        }
+
         return response()->streamDownload(function () use ($pdf) {
             echo $pdf->stream();
-        }, 'booking-report-' . date('Y-m-d-His') . '.pdf');
+        }, $fileName);
     }
 
 

@@ -327,11 +327,22 @@
 
                     {{-- Complete --}}
                     @if ($selectedBooking->status === 'checked_in')
-                        <button wire:click="complete"
-                            class="w-full bg-primary hover:bg-light-primary text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2">
-                            <i class="fas fa-flag-checkered"></i>
-                            Complete
-                        </button>
+                        <div>
+                            <button wire:click="complete" wire:loading.attr="disabled" wire:target="complete"
+                                class="w-full bg-primary hover:bg-light-primary text-white px-4 py-2 rounded-lg font-semibold transition-all flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed">
+                                {{-- Normal label --}}
+                                <span wire:loading.remove wire:target="complete" class="flex items-center gap-2">
+                                    <i class="fas fa-flag-checkered"></i>
+                                    Complete
+                                </span>
+
+                                {{-- Loading state --}}
+                                <span wire:loading wire:target="complete" class="flex items-center gap-2">
+
+                                    Processing...
+                                </span>
+                            </button>
+                        </div>
                     @endif
 
                     {{-- No-Show --}}
@@ -685,7 +696,7 @@
 
     {{-- Status Change Modal --}}
     @if ($showStatusModal)
-        <div class="fixed inset-0 bg-gray-500/70 z-50 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="fixed inset-0 bg-gray-500/70 z-50 flex items-center justify-center p-4">
             <div class="bg-white rounded-lg max-w-md w-full p-6">
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Change Booking Status</h3>
 

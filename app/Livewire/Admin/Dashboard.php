@@ -132,6 +132,8 @@ class Dashboard extends Component
             'data' => $revenueTrend->pluck('total')->toArray(), // ✅ Already correct
         ];
 
+        // dd($this->revenueTrendData);
+
         $statusCounts = Booking::selectRaw('status, COUNT(*) as count')
             ->groupBy('status')
             ->get();
@@ -163,8 +165,10 @@ class Dashboard extends Component
 
         $this->paymentMethodsData = [
             'labels' => $paymentMethods->pluck('provider')->map(fn($p) => ucfirst($p))->toArray(),
-            'series' => $paymentMethods->pluck('total')->toArray(),
+            'data' => $paymentMethods->pluck('total')->toArray(),
         ];
+
+        // dd($this->paymentMethodsData, $this->bookingStatusData);
     }
 
     private function loadLists()

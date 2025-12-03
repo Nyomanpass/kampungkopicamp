@@ -22,8 +22,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
 
             userSeeder::class,
-            AddonSeeder::class,
-            VoucherSeeder::class,
+
             SiteSettingSeeder::class,
         ]);
     }

@@ -136,7 +136,8 @@
 <body>
     <div class="header">
         <h1>{{ $title }}</h1>
-        <p>Period: {{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+        <p>Periode: {{ $month }} {{ $year }}</p>
+        <p>{{ \Carbon\Carbon::parse($startDate)->format('d M Y') }} -
             {{ \Carbon\Carbon::parse($endDate)->format('d M Y') }}</p>
         <p>Generated: {{ $generatedAt }}</p>
     </div>

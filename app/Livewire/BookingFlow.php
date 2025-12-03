@@ -14,6 +14,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Carbon\CarbonPeriod;
 use App\Models\Addon;
+use App\Models\Notification;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -701,8 +702,21 @@ class BookingFlow extends Component
             return;
         }
 
-        // check if user already use this voucher in another booking using voucher_redemptions
+        // Validate voucher code input
+        if (empty($this->voucherCode)) {
+            $this->voucherError = 'Masukkan kode voucher.';
+            return;
+        }
+
+        // Check if voucher exists in database
         $selectedVoucher = Voucher::where('code', $this->voucherCode)->first();
+
+        if (!$selectedVoucher) {
+            $this->voucherError = 'Kode voucher tidak ditemukan.';
+            return;
+        }
+
+        // Check if user already use this voucher in another booking using voucher_redemptions
         $existingRedemption = DB::table('voucher_redemptions')
             ->where('voucher_id', $selectedVoucher->id)
             ->where('user_id', Auth::id())
@@ -710,13 +724,6 @@ class BookingFlow extends Component
 
         if ($existingRedemption) {
             $this->voucherError = 'Anda sudah pernah menggunakan voucher ini.';
-            return;
-        }
-
-
-        // Validate voucher code input
-        if (empty($this->voucherCode)) {
-            $this->voucherError = 'Masukkan kode voucher.';
             return;
         }
 
@@ -875,7 +882,6 @@ class BookingFlow extends Component
                 'bonus_meta' => $this->voucherBonusMeta,
                 'addons' => [],
             ];
-
             // Add selected add-ons
             foreach ($this->selectedAddons as $addonId => $data) {
                 $addon = Addon::find($addonId);
@@ -931,6 +937,9 @@ class BookingFlow extends Component
 
             DB::commit();
 
+            // ✅ Create notification for new booking
+            $this->createBookingNotification($booking);
+
             Log::info('Booking and payment created successfully', [
                 'booking_token' => $booking->booking_token,
                 'voucher_applied' => $this->appliedVoucher !== null,
@@ -966,6 +975,60 @@ class BookingFlow extends Component
     }
 
 
+
+    // ============================================
+    // NOTIFICATION HELPER
+    // ============================================
+
+    protected function createBookingNotification($booking)
+    {
+        try {
+            $notificationData = [
+                'booking_id' => $booking->id,
+                'booking_token' => $booking->booking_token,
+                'customer_name' => $booking->customer_name,
+                'customer_email' => $booking->customer_email,
+                'customer_phone' => $booking->customer_phone,
+                'product_name' => $booking->product_name,
+                'product_type' => $booking->product_type,
+                'start_date' => $booking->start_date,
+                'end_date' => $booking->end_date,
+                'people_count' => $booking->people_count,
+                'total_price' => $booking->total_price,
+                'status' => $booking->status,
+                'has_voucher' => $booking->voucher_id !== null,
+            ];
+
+            // Format dates for display
+            $startDate = Carbon::parse($booking->start_date)->translatedFormat('d M Y');
+            $endDate = Carbon::parse($booking->end_date)->translatedFormat('d M Y');
+
+            // Create notification message
+            $message = "Booking baru untuk {$booking->product_name} dari {$booking->customer_name}. ";
+            $message .= "Check-in: {$startDate}, Check-out: {$endDate}. ";
+            $message .= "Total: Rp " . number_format($booking->total_price, 0, ',', '.');
+
+            Notification::create([
+                'type' => 'new_booking',
+                'title' => "Booking Baru #{$booking->booking_token}",
+                'message' => $message,
+                'data' => $notificationData,
+                'action_url' => route('admin.bookings') . '?token=' . $booking->booking_token,
+                'is_read' => false,
+            ]);
+
+            Log::info('Booking notification created', [
+                'booking_id' => $booking->id,
+                'booking_token' => $booking->booking_token,
+            ]);
+        } catch (\Exception $e) {
+            // Don't fail the booking if notification creation fails
+            Log::error('Failed to create booking notification: ' . $e->getMessage(), [
+                'booking_id' => $booking->id ?? null,
+                'trace' => $e->getTraceAsString(),
+            ]);
+        }
+    }
 
     // ============================================
     // STEP NAVIGATION

@@ -112,49 +112,47 @@
     <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
         <h3 class="text-lg font-bold text-gray-900 mb-4">Filter</h3>
 
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            {{-- Date Range --}}
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            {{-- Month Filter --}}
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Rentang Tanggal</label>
-                <select wire:model.live="dateRange"
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Periode</label>
+                <select wire:model.live="selectedMonth"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                    <option value="today">Today</option>
-                    <option value="week">Last 7 Days</option>
-                    <option value="month">Last 30 Days</option>
-                    <option value="quarter">Last 3 Months</option>
-                    <option value="year">Last Year</option>
-                    <option value="custom">Custom Range</option>
+                    <option value="0">Keseluruhan</option>
+                    <option value="13">1 Tahun Penuh</option>
+                    <option disabled>──────────</option>
+                    <option value="1">Januari</option>
+                    <option value="2">Februari</option>
+                    <option value="3">Maret</option>
+                    <option value="4">April</option>
+                    <option value="5">Mei</option>
+                    <option value="6">Juni</option>
+                    <option value="7">Juli</option>
+                    <option value="8">Agustus</option>
+                    <option value="9">September</option>
+                    <option value="10">Oktober</option>
+                    <option value="11">November</option>
+                    <option value="12">Desember</option>
                 </select>
             </div>
 
-            {{-- Custom Start Date --}}
-            @if ($dateRange === 'custom')
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">Start Date</label>
-                    <input type="date" wire:model="customStartDate"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                </div>
-
-                <div>
-                    <label class="block text-sm font-semibold text-gray-700 mb-2">End Date</label>
-                    <input type="date" wire:model="customEndDate"
-                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                </div>
-
-                <div class="flex items-end">
-                    <button wire:click="applyCustomDateRange"
-                        class="w-full px-4 py-2 bg-primary hover:bg-light-primary text-white rounded-lg font-semibold transition-all text-sm">
-                        Apply
-                    </button>
-                </div>
-            @endif
+            {{-- Year Filter --}}
+            <div>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Tahun</label>
+                <select wire:model.live="selectedYear"
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
+                    @for ($year = now()->year; $year >= 2020; $year--)
+                        <option value="{{ $year }}">{{ $year }}</option>
+                    @endfor
+                </select>
+            </div>
 
             {{-- Product Filter --}}
             <div>
-                <label class="block text-sm font-semibold text-gray-700 mb-2">Product</label>
+                <label class="block text-sm font-semibold text-gray-700 mb-2">Produk</label>
                 <select wire:model.live="productFilter"
                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary text-sm">
-                    <option value="">All Products</option>
+                    <option value="">Semua Produk</option>
                     @foreach ($products as $product)
                         <option value="{{ $product->id }}">{{ $product->name }}</option>
                     @endforeach
@@ -166,10 +164,16 @@
         <div class="mt-4 pt-4 border-t border-gray-200">
             <p class="text-sm text-gray-600">
                 <i class="fas fa-calendar-alt mr-2"></i>
-                Menampilkan data dari
-                <strong>{{ Carbon\Carbon::parse($startDate)->format('d M Y') }}</strong>
-                hingga
-                <strong>{{ Carbon\Carbon::parse($endDate)->format('d M Y') }}</strong>
+                Menampilkan data untuk
+                @if ($selectedMonth == 0)
+                    <strong>{{ $this->monthName }}</strong>
+                @elseif($selectedMonth == 13)
+                    <strong>{{ $this->monthName }} {{ $selectedYear }}</strong>
+                @else
+                    <strong>{{ $this->monthName }} {{ $selectedYear }}</strong>
+                @endif
+                ({{ Carbon\Carbon::parse($startDate)->format('d M Y') }} -
+                {{ Carbon\Carbon::parse($endDate)->format('d M Y') }})
             </p>
         </div>
     </div>
@@ -234,17 +238,16 @@
     </div>
 
     {{-- Charts --}}
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6" x-data="revenueCharts()" x-init="init()"
+        wire:key="revenue-charts-{{ $selectedMonth }}-{{ $selectedYear }}">
         {{-- Daily Revenue Trend --}}
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6 lg:col-span-2">
             <h3 class="text-lg font-bold text-gray-900 mb-4 flex items-center gap-2">
                 <i class="fas fa-chart-area text-primary"></i>
                 Tren Pendapatan Harian
             </h3>
-            <div id="dailyRevenueChart" wire:ignore></div>
+            <div id="dailyRevenueChart" x-ref="dailyChart"></div>
         </div>
-
-
 
         {{-- Revenue by Product Type --}}
         <div class="bg-white rounded-lg shadow border border-gray-200 p-6">
@@ -252,7 +255,7 @@
                 <i class="fas fa-chart-bar text-success"></i>
                 Pendapatan Berdasarkan Tipe Produk
             </h3>
-            <div id="revenueByProductTypeChart" wire:ignore></div>
+            <div id="revenueByProductTypeChart" x-ref="typeChart"></div>
         </div>
 
         {{-- Payment Methods --}}
@@ -261,7 +264,7 @@
                 <i class="fas fa-credit-card text-info"></i>
                 Rincian Metode Pembayaran
             </h3>
-            <div id="paymentMethodChart" wire:ignore></div>
+            <div id="paymentMethodChart" x-ref="paymentChart"></div>
         </div>
 
         {{-- Revenue by Product --}}
@@ -270,7 +273,7 @@
                 <i class="fas fa-chart-bar text-primary"></i>
                 Top 10 Product berdasarkan Pendapatan
             </h3>
-            <div id="revenueByProductChart" wire:ignore></div>
+            <div id="revenueByProductChart" x-ref="productChart"></div>
         </div>
     </div>
 
@@ -390,232 +393,253 @@
 
 <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
 <script>
-    let revenueCharts = {
-        daily: null,
-        product: null,
-        type: null,
-        payment: null
-    };
+    function revenueCharts() {
+        return {
+            charts: {
+                daily: null,
+                product: null,
+                type: null,
+                payment: null
+            },
 
-    function initRevenueCharts() {
-        // Destroy existing charts
-        Object.values(revenueCharts).forEach(chart => {
-            if (chart) {
-                chart.destroy();
-            }
-        });
+            init() {
+                console.log('Alpine Revenue Charts: Initializing...');
+                this.renderCharts();
 
-        // Daily Revenue Chart (Area)
-        const dailyEl = document.querySelector('#dailyRevenueChart');
-        if (dailyEl) {
-            const dailyData = @json($dailyRevenueData);
+                // Listen to Livewire event
+                this.$wire.on('chartDataUpdated', () => {
+                    console.log('Alpine Revenue: Chart data updated, re-rendering...');
+                    this.renderCharts();
+                });
 
-            if (dailyData.categories && dailyData.categories.length > 0) {
-                revenueCharts.daily = new ApexCharts(dailyEl, {
-                    series: [{
-                        name: 'Revenue',
-                        data: dailyData.data
-                    }],
-                    chart: {
-                        type: 'area',
-                        height: 350,
-                        toolbar: {
-                            show: true
-                        }
-                    },
-                    colors: ['#10b981'],
-                    dataLabels: {
-                        enabled: false
-                    },
-                    stroke: {
-                        curve: 'smooth',
-                        width: 3
-                    },
-                    fill: {
-                        type: 'gradient',
-                        gradient: {
-                            opacityFrom: 0.6,
-                            opacityTo: 0.1
-                        }
-                    },
-                    xaxis: {
-                        categories: dailyData.categories
-                    },
-                    yaxis: {
-                        labels: {
-                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                // Watch for filter changes
+                this.$watch('$wire.selectedMonth', () => {
+                    console.log('Alpine Revenue: Month changed, re-rendering...');
+                    setTimeout(() => this.renderCharts(), 100);
+                });
+
+                this.$watch('$wire.selectedYear', () => {
+                    console.log('Alpine Revenue: Year changed, re-rendering...');
+                    setTimeout(() => this.renderCharts(), 100);
+                });
+            },
+
+            destroyCharts() {
+                Object.values(this.charts).forEach(chart => {
+                    if (chart) {
+                        try {
+                            chart.destroy();
+                        } catch (e) {
+                            console.log('Error destroying chart:', e);
                         }
                     }
                 });
-                revenueCharts.daily.render();
-            } else {
-                dailyEl.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-area text-4xl mr-3"></i><span>Tidak ada data</span></div>';
-            }
-        }
+            },
 
-        // Revenue by Product Chart (Horizontal Bar)
-        const productEl = document.querySelector('#revenueByProductChart');
-        if (productEl) {
-            const productData = @json($revenueByProductData);
+            async renderCharts() {
+                console.log('Alpine Revenue: Rendering charts...');
+                this.destroyCharts();
 
-            if (productData.categories && productData.categories.length > 0) {
-                revenueCharts.product = new ApexCharts(productEl, {
-                    series: [{
-                        name: 'Revenue',
-                        data: productData.data
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: 350,
-                        toolbar: {
-                            show: false
-                        }
-                    },
-                    colors: ['#5f91a7'],
-                    plotOptions: {
-                        bar: {
-                            horizontal: true,
-                            borderRadius: 6
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    xaxis: {
-                        categories: productData.categories,
-                        labels: {
-                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
-                        }
-                    }
+                // Get data from Livewire component using $wire
+                const dailyRevenueData = this.$wire.dailyRevenueData;
+                const revenueByProductData = this.$wire.revenueByProductData;
+                const revenueByProductTypeData = this.$wire.revenueByProductTypeData;
+                const paymentMethodData = this.$wire.paymentMethodData;
+
+                console.log('Alpine Revenue: Chart data:', {
+                    daily: dailyRevenueData,
+                    product: revenueByProductData,
+                    type: revenueByProductTypeData,
+                    payment: paymentMethodData
                 });
-                revenueCharts.product.render();
-            } else {
-                productEl.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-bar text-4xl mr-3"></i><span>Tidak ada data</span></div>';
-            }
-        }
 
-        // Revenue by Product Type Chart (Vertical Bar)
-        const typeEl = document.querySelector('#revenueByProductTypeChart');
-        if (typeEl) {
-            const typeData = @json($revenueByProductTypeData);
+                // Daily Revenue Chart (Area)
+                if (this.$refs.dailyChart && dailyRevenueData?.categories?.length > 0) {
+                    this.charts.daily = new ApexCharts(this.$refs.dailyChart, {
+                        series: [{
+                            name: 'Revenue',
+                            data: dailyRevenueData.data || []
+                        }],
+                        chart: {
+                            type: 'area',
+                            height: 350,
+                            toolbar: {
+                                show: true
+                            }
+                        },
+                        colors: ['#10b981'],
+                        dataLabels: {
+                            enabled: false
+                        },
+                        stroke: {
+                            curve: 'smooth',
+                            width: 3
+                        },
+                        fill: {
+                            type: 'gradient',
+                            gradient: {
+                                opacityFrom: 0.6,
+                                opacityTo: 0.1
+                            }
+                        },
+                        xaxis: {
+                            categories: dailyRevenueData.categories || []
+                        },
+                        yaxis: {
+                            labels: {
+                                formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                            }
+                        }
+                    });
+                    this.charts.daily.render();
+                } else if (this.$refs.dailyChart) {
+                    this.$refs.dailyChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400">' +
+                        '<i class="fas fa-chart-area text-4xl mr-3"></i>' +
+                        '<span>Tidak ada data pendapatan</span></div>';
+                }
 
-            if (typeData.categories && typeData.categories.length > 0) {
-                revenueCharts.type = new ApexCharts(typeEl, {
-                    series: [{
-                        name: 'Revenue',
-                        data: typeData.data
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: 350,
-                        toolbar: {
-                            show: false
+                // Revenue by Product Chart (Horizontal Bar)
+                if (this.$refs.productChart && revenueByProductData?.categories?.length > 0) {
+                    this.charts.product = new ApexCharts(this.$refs.productChart, {
+                        series: [{
+                            name: 'Revenue',
+                            data: revenueByProductData.data || []
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#5f91a7'],
+                        plotOptions: {
+                            bar: {
+                                horizontal: true,
+                                borderRadius: 6
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: revenueByProductData.categories || [],
+                            labels: {
+                                formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                            }
                         }
-                    },
-                    colors: ['#6d9e72'],
-                    plotOptions: {
-                        bar: {
-                            borderRadius: 8,
-                            columnWidth: '50%'
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    xaxis: {
-                        categories: typeData.categories
-                    },
-                    yaxis: {
-                        labels: {
-                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
-                        }
-                    }
-                });
-                revenueCharts.type.render();
-            } else {
-                typeEl.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-chart-bar text-4xl mr-3"></i><span>Tidak ada data</span></div>';
-            }
-        }
+                    });
+                    this.charts.product.render();
+                } else if (this.$refs.productChart) {
+                    this.$refs.productChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400">' +
+                        '<i class="fas fa-chart-bar text-4xl mr-3"></i>' +
+                        '<span>Tidak ada data produk</span></div>';
+                }
 
-        // Payment Methods Chart (Vertical Bar)
-        const paymentEl = document.querySelector('#paymentMethodChart');
-        if (paymentEl) {
-            const paymentData = @json($paymentMethodData);
+                // Revenue by Product Type Chart (Vertical Bar)
+                if (this.$refs.typeChart && revenueByProductTypeData?.categories?.length > 0) {
+                    this.charts.type = new ApexCharts(this.$refs.typeChart, {
+                        series: [{
+                            name: 'Revenue',
+                            data: revenueByProductTypeData.data || []
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#6d9e72'],
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 8,
+                                columnWidth: '50%'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: revenueByProductTypeData.categories || []
+                        },
+                        yaxis: {
+                            labels: {
+                                formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                            }
+                        }
+                    });
+                    this.charts.type.render();
+                } else if (this.$refs.typeChart) {
+                    this.$refs.typeChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400">' +
+                        '<i class="fas fa-chart-bar text-4xl mr-3"></i>' +
+                        '<span>Tidak ada data tipe produk</span></div>';
+                }
 
-            if (paymentData.categories && paymentData.categories.length > 0) {
-                revenueCharts.payment = new ApexCharts(paymentEl, {
-                    series: [{
-                        name: 'Amount',
-                        data: paymentData.data
-                    }],
-                    chart: {
-                        type: 'bar',
-                        height: 350,
-                        toolbar: {
-                            show: false
+                // Payment Methods Chart (Vertical Bar)
+                if (this.$refs.paymentChart && paymentMethodData?.categories?.length > 0) {
+                    this.charts.payment = new ApexCharts(this.$refs.paymentChart, {
+                        series: [{
+                            name: 'Amount',
+                            data: paymentMethodData.data || []
+                        }],
+                        chart: {
+                            type: 'bar',
+                            height: 350,
+                            toolbar: {
+                                show: false
+                            }
+                        },
+                        colors: ['#60b2a1'],
+                        plotOptions: {
+                            bar: {
+                                borderRadius: 8,
+                                columnWidth: '50%'
+                            }
+                        },
+                        dataLabels: {
+                            enabled: false
+                        },
+                        xaxis: {
+                            categories: paymentMethodData.categories || []
+                        },
+                        yaxis: {
+                            labels: {
+                                formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
+                            }
+                        },
+                        tooltip: {
+                            y: {
+                                formatter: val => 'Rp ' + val.toLocaleString('id-ID')
+                            }
                         }
-                    },
-                    colors: ['#60b2a1'],
-                    plotOptions: {
-                        bar: {
-                            borderRadius: 8,
-                            columnWidth: '50%'
-                        }
-                    },
-                    dataLabels: {
-                        enabled: false
-                    },
-                    xaxis: {
-                        categories: paymentData.categories
-                    },
-                    yaxis: {
-                        labels: {
-                            formatter: val => 'Rp ' + (val / 1000).toFixed(0) + 'K'
-                        }
-                    },
-                    tooltip: {
-                        y: {
-                            formatter: val => 'Rp ' + val.toLocaleString('id-ID')
-                        }
-                    }
-                });
-                revenueCharts.payment.render();
-            } else {
-                paymentEl.innerHTML =
-                    '<div class="flex items-center justify-center h-[350px] text-gray-400"><i class="fas fa-credit-card text-4xl mr-3"></i><span>Tidak ada data</span></div>';
+                    });
+                    this.charts.payment.render();
+                } else if (this.$refs.paymentChart) {
+                    this.$refs.paymentChart.innerHTML =
+                        '<div class="flex items-center justify-center h-[350px] text-gray-400">' +
+                        '<i class="fas fa-credit-card text-4xl mr-3"></i>' +
+                        '<span>Tidak ada data metode pembayaran</span></div>';
+                }
             }
         }
     }
-
-    // Initialize on page load
-    document.addEventListener('DOMContentLoaded', initRevenueCharts);
-
-    // Reinitialize after Livewire navigation
-    document.addEventListener('livewire:navigated', () => {
-        setTimeout(initRevenueCharts, 100);
-    });
-
-    // Listen for Livewire updates - using window.Livewire
-    window.addEventListener('charts-updated', () => {
-        console.log('Charts update triggered'); // Debug log
-        setTimeout(initRevenueCharts, 150);
-    });
 </script>

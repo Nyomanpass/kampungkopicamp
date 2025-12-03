@@ -183,11 +183,9 @@
 
 
     <!-- Galeri Foto -->
-<<<<<<< HEAD
+
     <section class="py-16 bg-white pb-32" x-data="{ imageModal: false, imageSrc: '', imageAlt: '' }" @keydown.escape.window="imageModal = false">
-=======
     <section class="py-10 bg-white pb-10">
->>>>>>> cd30aed5a07a00f9bd7b7bb4539b810bdb8d1c2c
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 text-center mb-8">
             <h2 class="text-2xl text-center md:text-4xl font-extrabold text-primary leading-snug mb-6"
                 data-aos="fade-down" data-aos-duration="1000">

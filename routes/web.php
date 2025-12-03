@@ -9,6 +9,8 @@ use App\Livewire\PaketDetail;
 use App\Livewire\Article;
 use App\Livewire\ExplorePupuan;
 use App\Livewire\ExplorePupuan\Detail;
+use App\Livewire\PrivacyPolicy;
+use App\Livewire\TermsOfService;
 
 use App\Livewire\ArticleDetail;
 use App\Livewire\Admin\PaketWisataCrud;
@@ -42,6 +44,8 @@ use App\Http\Controllers\PaymentController;
 Route::get('/', Home::class)->name('home');
 Route::get('/about', About::class)->name('about');
 Route::get('/contact', Contact::class)->name('contact');
+Route::get('/privacy-policy', PrivacyPolicy::class)->name('privacy-policy');
+Route::get('/terms-of-service', TermsOfService::class)->name('terms-of-service');
 Route::get('/explore-pupuan', ExplorePupuan::class)->name('explore-pupuan');
 Route::get('/explore-pupuan/{slug}', Detail::class)->name('explore-pupuan.detail');
 
@@ -114,3 +118,20 @@ Route::middleware(['auth'])->group(function () {
       // Logout route
       Route::get('/logout', [Login::class, 'logout'])->name('logout');
 });
+
+// ✅ Email Preview Route (Development Only - Remove in Production)
+Route::get('/preview-email/booking-completed/{bookingId}', function ($bookingId) {
+      $booking = \App\Models\Booking::with(['items.product', 'items.addon'])->findOrFail($bookingId);
+      return new \App\Mail\BookingCompleted($booking);
+})->middleware('auth')->name('preview.email.booking-completed');
+
+Route::get('/preview-email/booking-refunded/{bookingId}', function ($bookingId) {
+      $booking = \App\Models\Booking::with(['items', 'invoices'])->findOrFail($bookingId);
+      $creditNote = $booking->invoices()->where('type', 'credit_note')->first();
+
+      if (!$creditNote) {
+            return 'No credit note found for this booking. Please process a refund first.';
+      }
+
+      return new \App\Mail\BookingRefunded($booking, $creditNote, 'partial', 500000, 'Customer request - demonstration purposes');
+})->middleware('auth')->name('preview.email.booking-refunded');

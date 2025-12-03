@@ -112,13 +112,16 @@
             </button>
         </div>
         <div class="pb-4 mb-4 border-b border-gray-200 w-full flex flex-col">
-            <p class="font-semibold mb-2">Help</p>
+            <p class="font-semibold mb-2">Bantuan</p>
             <a href="https://wa.me/{{ $contactInfo['whatsapp'] }}" target="_blank" class="py-2 hover:bg-gray-100"><i
                     class="fas fa-headset mr-3"></i>Customer Service</a>
             <button @click="showFAQ = true" class="py-2 hover:bg-gray-100 text-left">
                 <i class="fas fa-question-circle mr-3"></i>FAQ
             </button>
-
+            <a href="https://search.google.com/local/writereview?placeid=ChIJR5W57KIp0i0RW6i0Ez-DGoo" target="_blank"
+                class="py-2 hover:bg-gray-100 text-left">
+                <i class="fas fa-star mr-3"></i>Feedback
+            </a>
         </div>
         <a href="{{ route('logout') }}" class="py-2 text-danger lg:hidden"><i class="fas fa-sign-out-alt mr-3"></i>Log
             Out</a>
