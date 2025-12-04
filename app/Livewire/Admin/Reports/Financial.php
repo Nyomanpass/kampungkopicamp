@@ -194,6 +194,8 @@ class Financial extends Component
             'refunds' => $refundData,
         ];
 
+        
+
 
         // Invoice Status Distribution
         $statusCounts = Invoice::where('type', 'primary')

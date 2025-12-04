@@ -136,7 +136,7 @@
                                 <p class="font-medium text-sm mb-1">
                                     {{ $booking->product_type }}
                                 </p>
-                                <p class="text-xs">{{ \Carbon\Carbon::parse($booking->checkin_date)->format('d M Y') }}
+                                <p class="text-xs">{{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }}
                                 </p>
                             </div>
                         </div>
@@ -264,7 +264,7 @@
                                     class="px-4 py-3 border border-gray-300 rounded-lg flex justify-between items-center">
                                     <div class="flex items-center justify-center gap-3">
                                         <div
-                                            class="size-10 bg-light-primary/70 flex items-center justify-center text-secondary rounded-lg">
+                                            class="size-10 bg-light-primary/70 flex items-center justify-center text-white rounded-lg">
                                             <i
                                                 class="fas {{ $booking ? $this->getProductIcon($booking->product_type) : 'fa-box' }} text-lg"></i>
                                         </div>
@@ -333,13 +333,13 @@
                                         <div class="flex justify-between">
                                             <p class="font-medium">Check-in</p>
                                             <p class="font-medium">
-                                                {{ \Carbon\Carbon::parse($booking->checkin_date)->format('d M Y') }}
+                                                {{ \Carbon\Carbon::parse($booking->start_date)->format('d M Y') }}
                                             </p>
                                         </div>
                                         <div class="flex justify-between">
                                             <p class="font-medium">Check-out</p>
                                             <p class="font-medium">
-                                                {{ \Carbon\Carbon::parse($booking->checkout_date)->format('d M Y') }}
+                                                {{ \Carbon\Carbon::parse($booking->end_date)->format('d M Y') }}
                                             </p>
                                         </div>
 

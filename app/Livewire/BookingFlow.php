@@ -814,7 +814,6 @@ class BookingFlow extends Component
         $this->validate();
 
         try {
-            // ✅ Check jika guest user sudah punya pending booking
             if (!Auth::check()) {
                 // ✅ FIX: Gunakan where dengan closure untuk grouping OR condition
                 $existingPendingBooking = Booking::where(function ($query) {
