@@ -23,8 +23,8 @@ class Package extends Component
         $this->lang = Session::get('locale', 'id');
         $this->setTexts();
     }
-    
-        private function setTexts()
+
+    private function setTexts()
     {
         $this->texts = [
             'subheading' => __('messages.paket_hero_subheading'),
@@ -59,7 +59,7 @@ class Package extends Component
             'custom_package_heading' => __('messages.custom_package_heading'),
             'custom_package_description' => __('messages.custom_package_description'),
             'custom_package_button' => __('messages.custom_package_button'),
-            
+
             'tombol_booking'   => __('messages.tombol_booking'),
             'tombol_detail'   => __('messages.tombol_detail'),
             'mak_person'       => __('messages.mak_person'),
@@ -75,7 +75,7 @@ class Package extends Component
         $this->lang = $lang;
         $this->setTexts();
     }
-    
+
 
     public function loadProducts()
     {
@@ -93,7 +93,7 @@ class Package extends Component
 
         // Load Area Products (Rekreasi)
         $this->areaProducts = Product::where('is_active', true)
-            ->where('type', 'area')
+            ->where('type', 'area_rental')
             ->orderBy('created_at', 'desc')
             ->get();
     }
