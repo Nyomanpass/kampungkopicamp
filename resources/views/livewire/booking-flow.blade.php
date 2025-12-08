@@ -833,8 +833,7 @@
     <x-email-confirm-modal :show="$showEmailConfirmModal" :email="$existingUserEmail" />
 
     <!-- Midtrans Snap Script -->
-    <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}">
-    </script>
+    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
 
     @script
         <script>
