@@ -464,7 +464,7 @@
                                 class="snap-start rounded-lg overflow-hidden border border-gray-200 shadow-md w-max">
 
                                 @if ($product->images && count($product->images) > 0)
-                                    <img src="{{ $product->images[0]) }}"
+                                    <img src="{{ $product->images[0] }}"
                                         alt="{{ $product->name }}" class="aspect-[5/3] h-32 object-cover">
                                 @else
                                     <div class="bg-gray-300 aspect-[5/3] h-32"></div>
