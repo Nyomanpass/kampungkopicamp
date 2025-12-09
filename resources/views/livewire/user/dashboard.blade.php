@@ -462,12 +462,14 @@
                             {{-- card --}}
                             <a href="{{ route('package.detail', $product->slug) }}"
                                 class="snap-start rounded-lg overflow-hidden border border-gray-200 shadow-md w-max">
-                                @if ($product->images && count(json_decode($product->images)) > 0)
-                                    <img src="{{ asset('storage/' . json_decode($product->images)[0]) }}"
+
+                                @if ($product->images && count($product->images) > 0)
+                                    <img src="{{ asset('storage/' . $product->images[0]) }}"
                                         alt="{{ $product->name }}" class="aspect-[5/3] h-32 object-cover">
                                 @else
                                     <div class="bg-gray-300 aspect-[5/3] h-32"></div>
                                 @endif
+
                                 <div class="px-2.5 py-2.5">
                                     <p class="truncate w-40">{{ $product->name }}</p>
                                     <p class="text-xs mt-1 text-gray-600">{{ ucfirst($product->type) }}</p>
