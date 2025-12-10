@@ -47,7 +47,7 @@
                         {{ count($accommodationProducts) }} Paket
                     </div>
                 </div>
-                <swiper-container class="mySwiper" pagination="true" pagination-clickable="true">
+                <swiper-container class="mySwiper" navigation="true" pagination="true" pagination-clickable="true">
                     @foreach ($accommodationProducts as $product)
                         <swiper-slide
                             class="group rounded-lg bg-white shadow-lg overflow-hidden border border-gray-100">
@@ -129,7 +129,7 @@
                                         <div class="flex gap-2 text-xs">
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-users"></i>
-                                                {{ $product->capacity_per_unit ?? 1 }} orang
+                                                {{ $product->max_participant ?? 1 }} orang
                                             </span>
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-clock"></i>
@@ -171,7 +171,7 @@
                 <div class="flex items-center justify-between mb-6">
                     <div>
                         <h2 class="text-3xl font-bold text-primary flex items-center gap-3">
-                            Area Rekreasi
+                            Area & Rekreasi
                         </h2>
                         <p class="text-gray-600 mt-2">Fasilitas dan area rekreasi spesial untuk liburan Anda</p>
                     </div>

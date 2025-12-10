@@ -580,8 +580,8 @@
                         {{ $texts['whatsapp_heading'] }}
                     </h4>
                     <p class="text-sm text-gray-600 mb-4">{{ $texts['whatsapp_description'] }}</p>
-                    <a href="https://wa.me/628123456789" target="_blank"
-                        class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition">
+                    <a href="https://wa.me/{{ $contactInfo['whatsapp'] }}" target="_blank"
+                        class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition justify-center">
                         <i class="fa-brands fa-whatsapp text-xl mr-2"></i> {{ $texts['whatsapp_number'] }}
                     </a>
                 </div>
@@ -626,10 +626,8 @@
 
                 {{-- Tambahkan wrapper dengan rasio aspek tetap untuk Mobile --}}
                 <div class="relative h-[400px] w-full" style="padding-top: 56.25%;">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7895.1750634993!2d115.03386611055907!3d-8.343715401760706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1759163429473!5m2!1sid!2sid"
-                        class="absolute top-0 left-0 w-full h-full rounded-lg" style="border:0;" allowfullscreen=""
-                        loading="lazy">
+                    <iframe src="{{ $gmaps['embed_url'] }}" class="absolute top-0 left-0 w-full h-full rounded-lg"
+                        style="border:0;" allowfullscreen="" loading="lazy">
                     </iframe>
                 </div>
 

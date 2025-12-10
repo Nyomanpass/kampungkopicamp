@@ -34,6 +34,16 @@ class NotificationService
        */
       public static function checkInReminder(Booking $booking)
       {
+            // Check if notification already exists for this booking today
+            $existingNotification = Notification::where('type', 'check_in_reminder')
+                  ->where('data->booking_id', $booking->id)
+                  ->whereDate('created_at', today())
+                  ->first();
+
+            if ($existingNotification) {
+                  return $existingNotification; // Already exists, don't create duplicate
+            }
+
             return Notification::create([
                   'type' => 'check_in_reminder',
                   'title' => 'Reminder Check-In Hari Ini',
@@ -52,6 +62,16 @@ class NotificationService
 
       public static function checkOutReminder(Booking $booking)
       {
+            // Check if notification already exists for this booking today
+            $existingNotification = Notification::where('type', 'check_out_reminder')
+                  ->where('data->booking_id', $booking->id)
+                  ->whereDate('created_at', today())
+                  ->first();
+
+            if ($existingNotification) {
+                  return $existingNotification; // Already exists, don't create duplicate
+            }
+
             return Notification::create([
                   'type' => 'check_out_reminder',
                   'title' => 'Reminder Check-Out Hari Ini',

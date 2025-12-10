@@ -43,6 +43,7 @@ class Home extends Component
             'instagram' => '',
         ]);
 
+
         $this->gmaps = SiteSetting::get('google_maps', [
             'embed_url' => '',
         ]);
@@ -111,13 +112,13 @@ class Home extends Component
 
             'whatsapp_heading' => __('messages.whatsapp_heading'),
             'whatsapp_description' => __('messages.whatsapp_description'),
-            'whatsapp_number' => __('messages.whatsapp_number'),
+            'whatsapp_number' => $this->contactInfo['phone'] ?: __('messages.whatsapp_number'),
             'phone_heading' => __('messages.phone_heading'),
-            'phone_number' => __('messages.phone_number'),
+            'phone_number' => $this->contactInfo['phone'] ?: __('messages.phone_number'),
             'email_heading' => __('messages.email_heading'),
-            'email_address' => __('messages.email_address'),
+            'email_address' => $this->contactInfo['email'] ?: __('messages.email_address'),
             'address_heading' => __('messages.address_heading'),
-            'address_details' => __('messages.address_details'),
+            'address_details' => $this->contactInfo['address'] ?: __('messages.address_details'),
             'address_map_cta' => __('messages.address_map_cta'),
             'location_heading' => __('messages.location_heading'),
 
