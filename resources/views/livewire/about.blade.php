@@ -179,35 +179,36 @@
         </div>
     </section>
 
-    <!-- Perjalanan Kami -->
+
     <section class="bg-white">
-        <div class="max-w-6xl mx-auto px-6 lg:px-16 py-16">
+    <div class="max-w-6xl mx-auto px-6 lg:px-16 py-16">
 
-            <!-- Heading -->
-            <div data-aos="fade-up" data-aos-duration="1000">
-                <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6 text-center">
-                    {{ $texts['journey_heading'] }}</h2>
-                <p class="text-gray-600 text-sm md:text-lg text-center mb-12">{{ $texts['journey_description'] }}</p>
-            </div>
-
-            <!-- Timeline -->
-            <div class="relative border-l-2 border-amber-200" data-aos="fade-up" data-aos-duration="1200">
-                @foreach ($texts['journey'] as $item)
-                    <div class="mb-10 ml-6" data-aos="fade-right" data-aos-delay="{{ $loop->iteration * 100 }}">
-                        <span
-                            class="absolute -left-9 flex items-center justify-center w-12 h-12 md:w-14 md:h-14 rounded-full bg-secondary text-white text-sm md:text-md font-bold">
-                            {{ $item['year'] }}
-                        </span>
-                        <div class="bg-[#f9f7f4] p-6 rounded-xl shadow hover:shadow-lg transition">
-                            <h3 class="font-semibold">{{ $item['title'] }}</h3>
-                            <p class="text-gray-600 text-sm">{{ $item['desc'] }}</p>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
+        <div class="max-w-4xl mx-auto text-center" data-aos="fade-up" data-aos-duration="1000">
+            <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-4 text-center">
+                {{-- Menggunakan {!! !!} karena mengandung tag <span> --}}
+                {!! $texts['uniqueness_heading'] !!}
+            </h2>
+            <p class="text-gray-600 text-sm md:text-lg text-center mb-12">
+                {{ $texts['uniqueness_description'] }}
+            </p>
         </div>
-    </section>
 
+        <div class="p-8 md:p-12 bg-[#f9f7f4] rounded-2xl shadow-xl border-l-8 border-secondary" data-aos="fade-up" data-aos-duration="1200">
+            
+            <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                {{ $texts['uniqueness_p1'] }}
+            </p>
+
+            <p class="text-gray-700 text-lg leading-relaxed mb-6">
+                {{ $texts['uniqueness_p2'] }}
+            </p>
+
+            <p class="text-gray-700 text-lg leading-relaxed">
+                {{ $texts['uniqueness_p3'] }}
+            </p>
+        </div>
+    </div>
+</section>
 
 
     <section class="bg-white" x-data="{ imageModal: false, imageSrc: '', imageAlt: '' }" @keydown.escape.window="imageModal = false">
@@ -299,41 +300,6 @@
     </section>
 
 
-    <section class="bg-white">
-        <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16">
-            <!-- Heading -->
-            <h2 class="text-2xl md:text-4xl font-extrabold text-primary leading-snug mb-6 text-center"
-                data-aos="fade-down" data-aos-duration="1000">
-                {{ $texts['testimonial_heading'] }}
-            </h2>
-            <p class="text-gray-600 text-sm md:text-lg text-center mb-12" data-aos="fade-up" data-aos-duration="1000"
-                data-aos-delay="200">
-                {{ $texts['testimonial_description'] }}
-            </p>
-
-            <!-- Grid Testimonial -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                @foreach ($texts['testimonials'] as $index => $testimonial)
-                    <div class="bg-white p-8 rounded-xl shadow-lg border-t-4 border-secondary" data-aos="fade-up"
-                        data-aos-delay="{{ 300 + $index * 100 }}">
-                        <i class="fa-solid fa-quote-left text-2xl text-secondary mb-4"></i>
-                        <p class="text-gray-700 text-sm italic mb-6">{!! $testimonial['quote'] !!}</p>
-                        <div class="flex items-center">
-                            <img class="w-12 h-12 rounded-full object-cover mr-4"
-                                src="https://placehold.co/100x100/A0A0A0/FFFFFF?text={{ substr($testimonial['name'], 0, 1) }}"
-                                alt="Avatar {{ $testimonial['name'] }}">
-                            <div>
-                                <p class="font-semibold text-gray-800">{{ $testimonial['name'] }}</p>
-                                <p class="text-sm text-gray-500">{{ $testimonial['role'] }}</p>
-                            </div>
-                        </div>
-                    </div>
-                @endforeach
-            </div>
-        </div>
-    </section>
-
-
 
     <section class="bg-[#f9f7f4] text-gray-800" id="contact">
         <div class="max-w-7xl mx-auto px-6 lg:px-14 py-16 grid grid-cols-1 lg:grid-cols-2 gap-12">
@@ -350,8 +316,8 @@
                         {{ $texts['whatsapp_heading'] }}
                     </h4>
                     <p class="text-sm text-gray-600 mb-4">{{ $texts['whatsapp_description'] }}</p>
-                    <a href="https://wa.me/628123456789" target="_blank"
-                        class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition">
+                    <a href="https://wa.me/{{ $contactInfo['whatsapp'] }}" target="_blank"
+                        class="flex items-center bg-secondary hover:bg-secondary/90 text-white font-medium px-4 py-3 rounded-lg transition justify-center">
                         <i class="fa-brands fa-whatsapp text-xl mr-2"></i> {{ $texts['whatsapp_number'] }}
                     </a>
                 </div>
@@ -396,10 +362,8 @@
 
                 {{-- Tambahkan wrapper dengan rasio aspek tetap untuk Mobile --}}
                 <div class="relative h-[400px] w-full" style="padding-top: 56.25%;">
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d7895.1750634993!2d115.03386611055907!3d-8.343715401760706!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd229a2ecb99547%3A0x8a1a833f13b4a85b!2sKampung%20Kopi%20Camp!5e0!3m2!1sid!2sid!4v1759163429473!5m2!1sid!2sid"
-                        class="absolute top-0 left-0 w-full h-full rounded-lg" style="border:0;" allowfullscreen=""
-                        loading="lazy">
+                    <iframe src="{{ $gmaps['embed_url'] }}" class="absolute top-0 left-0 w-full h-full rounded-lg"
+                        style="border:0;" allowfullscreen="" loading="lazy">
                     </iframe>
                 </div>
 
@@ -407,7 +371,5 @@
 
         </div>
     </section>
-
-
 
 </div>

@@ -1,5 +1,5 @@
 <footer class="bg-dark-primary text-white pt-16 pb-8">
-    <div class="max-w-7xl mx-auto px-6 lg:px-14 grid grid-cols-1 md:grid-cols-4 gap-8">
+    <div class="max-w-7xl mx-auto px-6 lg:px-14 grid grid-cols-1 lg:grid-cols-4 gap-8">
 
         <!-- Logo & Deskripsi -->
         <div>
@@ -39,6 +39,43 @@
             </ul>
         </div>
 
+            <div>
+    <h3 class="font-semibold text-lg mb-4">{{ $texts['open_hours'] }}</h3>
+    <ul class="space-y-2 text-sm">
+        
+        {{-- Baris 1: Jam Operasional Utama --}}
+        <li class="flex items-start">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
+                <i class="fa-solid fa-clock"></i>
+            </span>
+            <div>
+                <strong>{{ $texts['hours_operational'] }}</strong> 
+                <span class="text-gray-300"> ({{ $texts['hours_schedule'] }})</span>
+            </div>
+        </li>
+        
+        {{-- Baris 2: Check-in --}}
+        <li class="flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
+                <i class="fa-solid fa-sign-in-alt"></i>
+            </span>
+            {{ $texts['check_in'] }}
+        </li>
+        
+        {{-- Baris 3: Check-out --}}
+        <li class="flex items-center">
+            <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
+                <i class="fa-solid fa-sign-out-alt"></i>
+            </span>
+            {{ $texts['check_out'] }}
+        </li>
+        <li class="flex items-center">
+            {{ $texts['note'] }}
+        </li>
+    </ul>
+</div>
+
+
         <!-- Kontak -->
         <div>
             <h3 class="font-semibold text-lg mb-4">{{ $texts['contact'] }}</h3>
@@ -68,30 +105,7 @@
         </div>
 
         <!-- Jam Buka -->
-        <div>
-            <h3 class="font-semibold text-lg mb-4">{{ $texts['open_hours'] }}</h3>
-            <ul class="space-y-2 text-sm">
-                <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
-                        <i class="fa-solid fa-clock"></i>
-                    </span>
-                    {{ $texts['hours_weekdays'] }}
-                </li>
-                <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
-                        <i class="fa-solid fa-clock"></i>
-                    </span>
-                    {{ $texts['hours_weekend'] }}
-                </li>
-                <li class="flex items-center">
-                    <span class="flex items-center justify-center w-8 h-8 rounded-full text-white mr-3">
-                        <i class="fa-solid fa-mug-hot"></i>
-                    </span>
-                    {{ $texts['hours_holiday'] }}
-                </li>
-            </ul>
-        </div>
-
+    
     </div>
 
     <!-- Bottom -->

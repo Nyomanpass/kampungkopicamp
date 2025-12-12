@@ -8,8 +8,12 @@ use Illuminate\Support\Facades\Session;
 use App\Models\SiteSetting;
 
 class Contact extends Component
-
 {
+    public $nama;
+    public $email;
+    public $telepon;
+    public $subjek;
+    public $pesan;
 
     public $lang;
     public $texts = [];
@@ -26,7 +30,7 @@ class Contact extends Component
 
     private function loadSettings()
     {
-        // Load Contact Info
+        // Data ini otomatis terambil dari SiteSetting
         $this->contactInfo = SiteSetting::get('contact_info', [
             'whatsapp' => '',
             'email' => '',
@@ -34,7 +38,6 @@ class Contact extends Component
             'address' => '',
         ]);
 
-        // Load Social Media
         $this->socialMedia = SiteSetting::get('social_media', [
             'tiktok' => '',
             'youtube' => '',
@@ -57,6 +60,29 @@ class Contact extends Component
         Session::put('locale', $lang);
         $this->lang = $lang;
         $this->setTexts();
+    }
+
+   public function sendWhatsApp()
+    {
+        
+        $number = $this->contactInfo['whatsapp'];  
+
+        if (!$number) {
+            dd('Nomor WhatsApp tidak ditemukan di database');
+        }
+        $number = preg_replace('/\D/', '', $number);
+
+        $text =
+            "Nama: {$this->nama}\n" .
+            "Email: {$this->email}\n" .
+            "Telepon: {$this->telepon}\n" .
+            "Subjek: {$this->subjek}\n" .
+            "Pesan: {$this->pesan}";
+
+
+        $url = "https://wa.me/{$number}?text=" . urlencode($text);
+
+        $this->dispatch('open-wa', url: $url);
     }
 
 

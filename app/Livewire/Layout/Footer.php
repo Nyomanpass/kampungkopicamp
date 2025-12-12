@@ -57,6 +57,12 @@ class Footer extends Component
             'copyright' => __('messages.footer_copyright'),
             'privacy' => __('messages.footer_privacy'),
             'terms' => __('messages.footer_terms'),
+            'open_hours' => __('messages.footer_open_hours'), // Tambahkan kunci untuk judul
+            'hours_operational' => __('messages.footer_hours_operational'),
+            'hours_schedule' => __('messages.footer_hours_schedule'),
+            'check_in' => __('messages.footer_check_in'),
+            'check_out' => __('messages.footer_check_out'),
+            'note' => __('messages.footer_note'),
         ];
     }
 
