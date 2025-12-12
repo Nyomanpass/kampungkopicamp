@@ -142,7 +142,7 @@
                 <!-- Image Content -->
                 <div class="flex-1 w-full relative" data-aos="fade-up" data-aos-delay="400">
                     <div class="relative rounded-2xl overflow-hidden shadow-2xl">
-                        <img src="images/headerpaket.webp" alt="Kopi Bali"
+                        <img src="images/headerabout.webp" alt="Kopi Bali"
                             class="w-full h-64 sm:h-80 lg:h-96 object-cover">
                     </div>
                 </div>
