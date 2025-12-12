@@ -141,61 +141,59 @@
             <div class="lg:col-span-2 bg-white rounded-xl p-6 md:p-10 shadow-lg" data-aos="fade-up"
                 data-aos-delay="100">
                 <h3 class="text-2xl font-bold text-gray-800 mb-6">{{ $texts['contact_form_title'] }}</h3>
-                <form class="space-y-6">
-                    <!-- Baris 1: Nama Lengkap & Email -->
+                <form wire:submit.prevent="sendWhatsApp" class="space-y-6">
+
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="nama"
-                                class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_fullname'] }}
-                                *</label>
-                            <input type="text" id="nama" name="nama" placeholder="Masukkan nama lengkap"
-                                required
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {{ $texts['contact_fullname'] }} *
+                            </label>
+                            <input wire:model="nama" type="text" required
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600" />
                         </div>
+
                         <div>
-                            <label for="email"
-                                class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_email'] }}
-                                *</label>
-                            <input type="email" id="email" name="email" placeholder="nama@email.com" required
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {{ $texts['contact_email'] }} *
+                            </label>
+                            <input wire:model="email" type="email" required
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600" />
                         </div>
                     </div>
 
-                    <!-- Baris 2: No. Telepon & Subjek -->
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div>
-                            <label for="telepon"
-                                class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_phone'] }}
-                                *</label>
-                            <input type="tel" id="telepon" name="telepon" placeholder="+62 812-3456-7890"
-                                required
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {{ $texts['contact_phone'] }} *
+                            </label>
+                            <input wire:model="telepon" type="tel" required
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600" />
                         </div>
+
                         <div>
-                            <label for="subjek"
-                                class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_subject'] }}
-                                *</label>
-                            <input type="text" id="subjek" name="subjek"
-                                placeholder="Booking / Informasi / Lainnya" required
-                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition" />
+                            <label class="block text-sm font-semibold text-gray-700 mb-2">
+                                {{ $texts['contact_subject'] }} *
+                            </label>
+                            <input wire:model="subjek" type="text" required
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600" />
                         </div>
                     </div>
 
-                    <!-- Baris 3: Pesan -->
                     <div>
-                        <label for="pesan"
-                            class="block text-sm font-semibold text-gray-700 mb-2">{{ $texts['contact_message'] }}
-                            *</label>
-                        <textarea id="pesan" name="pesan" rows="4" placeholder="Tulis pesan Anda di sini..." required
-                            class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600 focus:border-green-600 transition"></textarea>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ $texts['contact_message'] }} *
+                        </label>
+                        <textarea wire:model="pesan" rows="4" required
+                                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-600"></textarea>
                     </div>
 
-                    <!-- Tombol Kirim -->
                     <button type="submit"
-                        class="w-full bg-secondary md:w-auto inline-flex items-center justify-center px-8 py-3  text-white font-semibold rounded-xl hover:bg-gray-700 transition">
-                        <i class="fa-solid fa-paper-plane mr-3"></i> {{ $texts['contact_send_btn'] }}
+                            class="w-full bg-secondary md:w-auto inline-flex items-center justify-center px-8 py-3 text-white font-semibold rounded-xl hover:bg-gray-700">
+                        <i class="fa-solid fa-paper-plane mr-3"></i>
+                        {{ $texts['contact_send_btn'] }}
                     </button>
                 </form>
+
             </div>
 
             <!-- Kolom Kanan: Lokasi & Media Sosial -->
@@ -293,5 +291,14 @@
     </section>
 
 
-
 </div>
+
+<script>
+    document.addEventListener('livewire:navigated', () => {
+        window.Livewire.on('open-wa', (data) => {
+            window.open(data.url, "_blank");
+        });
+    });
+</script>
+
+

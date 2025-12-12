@@ -5,17 +5,46 @@ namespace App\Livewire;
 use Livewire\Component;
 use Livewire\Attributes\Layout;
 use Illuminate\Support\Facades\Session;
+use App\Models\SiteSetting;
 
 class About extends Component
 {
 
     public $lang;
     public $texts = [];
+    public $contactInfo = [];
+    public $socialMedia = [];
+    public $gmaps = [];
 
     public function mount()
     {
         $this->lang = Session::get('locale', 'id');
+         $this->loadSettings();
         $this->setTexts();
+    }
+
+     private function loadSettings()
+    {
+        // Load Contact Info
+        $this->contactInfo = SiteSetting::get('contact_info', [
+            'whatsapp' => '',
+            'email' => '',
+            'phone' => '',
+            'address' => '',
+        ]);
+
+        // Load Social Media
+        $this->socialMedia = SiteSetting::get('social_media', [
+            'tiktok' => '',
+            'youtube' => '',
+            'facebook' => '',
+            'instagram' => '',
+        ]);
+
+
+        $this->gmaps = SiteSetting::get('google_maps', [
+            'embed_url' => '',
+        ]);
     }
 
      private function setTexts()
@@ -42,70 +71,25 @@ class About extends Component
             'value_card3_desc' => __('messages.value_card3_desc'),
             'value_card4_title' => __('messages.value_card4_title'),
             'value_card4_desc' => __('messages.value_card4_desc'),
-            'journey_heading' => __('messages.journey_heading'),
-            'journey_description' => __('messages.journey_description'),
-            'journey' => [
-                [
-                    'year' => '2018',
-                    'title' => __('messages.journey_2018_title'),
-                    'desc' => __('messages.journey_2018_desc'),
-                ],
-                [
-                    'year' => '2019',
-                    'title' => __('messages.journey_2019_title'),
-                    'desc' => __('messages.journey_2019_desc'),
-                ],
-                [
-                    'year' => '2020',
-                    'title' => __('messages.journey_2020_title'),
-                    'desc' => __('messages.journey_2020_desc'),
-                ],
-                [
-                    'year' => '2021',
-                    'title' => __('messages.journey_2021_title'),
-                    'desc' => __('messages.journey_2021_desc'),
-                ],
-                [
-                    'year' => '2022',
-                    'title' => __('messages.journey_2022_title'),
-                    'desc' => __('messages.journey_2022_desc'),
-                ],
-            ],
+            
             'gallery_heading' => __('messages.gallery_heading'),
             'gallery_description' => __('messages.gallery_description'),
 
-            'testimonial_heading' => __('messages.testimonial_heading'),
-            'testimonial_description' => __('messages.testimonial_description'),
-
-            'testimonials' => [
-                [
-                    'quote' => __('messages.testimonial1_quote'),
-                    'name' => __('messages.testimonial1_name'),
-                    'role' => __('messages.testimonial1_role'),
-                ],
-                [
-                    'quote' => __('messages.testimonial2_quote'),
-                    'name' => __('messages.testimonial2_name'),
-                    'role' => __('messages.testimonial2_role'),
-                ],
-                [
-                    'quote' => __('messages.testimonial3_quote'),
-                    'name' => __('messages.testimonial3_name'),
-                    'role' => __('messages.testimonial3_role'),
-                ],
-            ],
-
-
-
+            'uniqueness_heading' => __('messages.uniqueness_heading'),
+            'uniqueness_description' => __('messages.uniqueness_desc'),
+            'uniqueness_p1' => __('messages.uniqueness_p1'),
+            'uniqueness_p2' => __('messages.uniqueness_p2'),
+            'uniqueness_p3' => __('messages.uniqueness_p3'),
+            
             'whatsapp_heading' => __('messages.whatsapp_heading'),
             'whatsapp_description' => __('messages.whatsapp_description'),
-            'whatsapp_number' => __('messages.whatsapp_number'),
+            'whatsapp_number' => $this->contactInfo['phone'] ?: __('messages.whatsapp_number'),
             'phone_heading' => __('messages.phone_heading'),
-            'phone_number' => __('messages.phone_number'),
+            'phone_number' => $this->contactInfo['phone'] ?: __('messages.phone_number'),
             'email_heading' => __('messages.email_heading'),
-            'email_address' => __('messages.email_address'),
+            'email_address' => $this->contactInfo['email'] ?: __('messages.email_address'),
             'address_heading' => __('messages.address_heading'),
-            'address_details' => __('messages.address_details'),
+            'address_details' => $this->contactInfo['address'] ?: __('messages.address_details'),
             'address_map_cta' => __('messages.address_map_cta'),
             'location_heading' => __('messages.location_heading'),
 
