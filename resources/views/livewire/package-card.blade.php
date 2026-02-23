@@ -9,19 +9,33 @@
             <div>
                 <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
                 <div class="flex gap-2 text-xs">
-                    <span class="flex items-center gap-1">
-                        <i class="fas fa-users"></i>
-                        {{ $product->capacity_per_unit ?? 1 }} orang
-                    </span>
-                    <span class="flex items-center gap-1">
-                        <i class="fas fa-clock"></i>
-                        per sesi
-                    </span>
+                    <div class="flex gap-2 text-xs">
+                        {{-- Kapasitas --}}
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-users"></i>
+                            {{ $product->capacity_per_unit ?? 1 }} 
+                            @if($lang === 'en')
+                                {{ ($product->capacity_per_unit ?? 1) > 1 ? 'people' : 'person' }}
+                            @else
+                                orang
+                            @endif
+                        </span>
+
+                        {{-- Sesi/Durasi --}}
+                        <span class="flex items-center gap-1">
+                            <i class="fas fa-clock"></i>
+                            @if($lang === 'en')
+                                {{ $product->duration_type === 'daily' ? 'per day' : 'per session' }}
+                            @else
+                                {{ $product->duration_type === 'daily' ? 'per hari' : 'per sesi' }}
+                            @endif
+                        </span>
+                    </div>
                 </div>
             </div>
 
             <div class="flex flex-col items-end mb-2 mt-7">
-                <p class="text-sm">Mulai dari</p>
+                <p class="text-sm">{{ $lang === 'en' ? 'starting from' : 'mulai dari' }}</p>
                 <p class="text-primary text-xl font-bold">
                     Rp {{ number_format($product->price, 0, ',', '.') }}
                 </p>

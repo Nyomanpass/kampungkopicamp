@@ -23,6 +23,7 @@ class Product extends Model
         'slug',
         'type',
         'description',
+        'description_en',
         'price',
         'capacity_per_unit',
         'max_participant',

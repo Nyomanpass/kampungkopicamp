@@ -8,6 +8,7 @@ use Livewire\Attributes\Layout;
 
 use App\Models\Article;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\App;
 
 class Blog extends Component
 {
@@ -17,14 +18,19 @@ class Blog extends Component
     public $texts = [];
     public $blogs = [];
 
-    public function mount()
-    {
-        $this->lang = Session::get('locale', 'id');
-        $this->setTexts();
-        $this->blogs = Article::where('status', 'published')
-            ->orderBy('published_at', 'desc')
-            ->get();
-    }
+   public function mount()
+{
+    $this->lang = Session::get('locale', 'id');
+
+    // WAJIB supaya Laravel tahu bahasa aktif
+    App::setLocale($this->lang);
+
+    $this->setTexts();
+
+    $this->blogs = Article::where('status', 'published')
+        ->orderBy('published_at', 'desc')
+        ->get();
+}
 
     private function setTexts()
     {

@@ -19,10 +19,15 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class BookingFlow extends Component
 {
     #[\Livewire\Attributes\Layout('components.layouts.detailProduct')]
+
+    public $lang;
+    public $texts = [];
+
     // Product
     public $product;
     public $productSlug;
@@ -110,6 +115,11 @@ class BookingFlow extends Component
 
     public function mount($slug)
     {
+
+        $this->lang = Session::get('locale', 'id');
+    
+        app()->setLocale($this->lang);
+        
         $this->productSlug = $slug;
         $this->product = Product::where('slug', $slug)->firstOrFail();
 
@@ -131,6 +141,16 @@ class BookingFlow extends Component
         $this->loadAvailability();
     }
 
+
+      public function setLang($lang)
+    {
+        Session::put('locale', $lang);
+        $this->lang = $lang;
+        
+        // Update locale Laravel secara runtime
+        app()->setLocale($lang);
+    }
+    
     // ============================================
     // SESSION MANAGEMENT FOR BOOKING PROGRESS
     // ============================================

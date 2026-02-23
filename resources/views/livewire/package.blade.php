@@ -37,14 +37,20 @@
         <section class="w-full">
             @if (count($accommodationProducts) > 0)
                 <div class="flex items-center justify-between mb-6">
-                    <div>
+                   <div>
                         <h2 class="text-xl md:text-3xl font-bold text-primary flex items-center gap-3">
-                            Camping & Penginapan
+                            {{ $lang === 'id' ? 'Camping & Penginapan' : 'Camping & Accommodation' }}
                         </h2>
-                        <p class="text-gray-600 mt-2">Nikmati pengalaman camping di alam terbuka</p>
+                        <p class="text-gray-600 mt-2">
+                            {{ $lang === 'id' ? 'Nikmati pengalaman camping di alam terbuka' : 'Enjoy the experience of camping in the open nature' }}
+                        </p>
                     </div>
                     <div class="text-primary font-semibold">
-                        {{ count($accommodationProducts) }} Paket
+                        @if($lang === 'id')
+                            {{ count($accommodationProducts) }} Paket
+                        @else
+                            {{ count($accommodationProducts) }} {{ count($accommodationProducts) > 1 ? 'Packages' : 'Package' }}
+                        @endif
                     </div>
                 </div>
                 <swiper-container class="mySwiper" navigation="true" pagination="true" pagination-clickable="true">
@@ -60,19 +66,33 @@
                                     <div>
                                         <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
                                         <div class="flex gap-2 text-xs">
+                                            {{-- Kapasitas --}}
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-users"></i>
-                                                {{ $product->capacity_per_unit ?? 1 }} orang
+                                                {{ $product->capacity_per_unit ?? 1 }} 
+                                                @if($lang === 'id')
+                                                    orang
+                                                @else
+                                                    {{ ($product->capacity_per_unit ?? 1) > 1 ? 'people' : 'person' }}
+                                                @endif
                                             </span>
+
+                                            {{-- Durasi / Tipe --}}
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-clock"></i>
-                                                {{ $product->duration_type === 'daily' ? 'Per Hari' : 'Per Orang' }}
+                                                @if($lang === 'id')
+                                                    {{ $product->duration_type === 'daily' ? 'Per Hari' : 'Per Orang' }}
+                                                @else
+                                                    {{ $product->duration_type === 'daily' ? 'Per Day' : 'Per Person' }}
+                                                @endif
                                             </span>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col items-start mb-2 mt-7">
-                                        <p class="text-sm">Mulai dari</p>
+                                       <p class="text-sm">
+                                            {{ $lang === 'id' ? 'Mulai dari' : 'Starting from' }}
+                                        </p>
                                         <p class="text-primary text-xl font-bold">
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                         </p>
@@ -102,15 +122,21 @@
         <section class="w-full">
             @if (count($touringProducts) > 0)
                 <div class="flex items-center justify-between mb-6">
-                    <div>
+                   <div>
                         <h2 class="text-xl md:text-3xl font-bold text-primary flex items-center gap-3">
-
-                            Paket Touring
+                            {{ $lang === 'id' ? 'Paket Touring' : 'Touring Packages' }}
                         </h2>
-                        <p class="text-gray-600 mt-2">Jelajahi keindahan alam dengan paket touring pilihan</p>
+                        <p class="text-gray-600 mt-2">
+                            {{ $lang === 'id' ? 'Jelajahi keindahan alam dengan paket touring pilihan' : 'Explore natural beauty with our selected touring packages' }}
+                        </p>
                     </div>
+                  
                     <div class="text-primary font-semibold">
-                        {{ count($touringProducts) }} Paket
+                        @if($lang === 'id')
+                            {{ count($touringProducts) }} Paket
+                        @else
+                            {{ count($touringProducts) }} {{ count($touringProducts) > 1 ? 'Packages' : 'Package' }}
+                        @endif
                     </div>
                 </div>
                 <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
@@ -127,19 +153,33 @@
                                     <div>
                                         <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
                                         <div class="flex gap-2 text-xs">
+                                            {{-- Kapasitas --}}
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-users"></i>
-                                                {{ $product->max_participant ?? 1 }} orang
+                                                {{ $product->capacity_per_unit ?? 1 }} 
+                                                @if($lang === 'id')
+                                                    orang
+                                                @else
+                                                    {{ ($product->capacity_per_unit ?? 1) > 1 ? 'people' : 'person' }}
+                                                @endif
                                             </span>
+
+                                            {{-- Durasi / Tipe --}}
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-clock"></i>
-                                                per sesi
+                                                @if($lang === 'id')
+                                                    {{ $product->duration_type === 'daily' ? 'Per Hari' : 'Per Orang' }}
+                                                @else
+                                                    {{ $product->duration_type === 'daily' ? 'Per Day' : 'Per Person' }}
+                                                @endif
                                             </span>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col items-start mb-2 mt-7">
-                                        <p class="text-sm">Mulai dari</p>
+                                        <p class="text-sm">
+                                            {{ $lang === 'id' ? 'Mulai dari' : 'Starting from' }}
+                                        </p>
                                         <p class="text-primary text-xl font-bold">
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                         </p>
@@ -169,14 +209,21 @@
         <section class="w-full">
             @if (count($areaProducts) > 0)
                 <div class="flex items-center justify-between mb-6">
-                    <div>
-                        <h2 class="text-3xl font-bold text-primary flex items-center gap-3">
-                            Area & Rekreasi
-                        </h2>
-                        <p class="text-gray-600 mt-2">Fasilitas dan area rekreasi spesial untuk liburan Anda</p>
-                    </div>
-                    <div class="text-primary font-semibold">
-                        {{ count($areaProducts) }} Paket
+                   <div>
+                    <h2 class="text-3xl font-bold text-primary flex items-center gap-3">
+                        {{ $lang === 'id' ? 'Area & Rekreasi' : 'Area & Recreation' }}
+                    </h2>
+                    <p class="text-gray-600 mt-2">
+                        {{ $lang === 'id' ? 'Fasilitas dan area rekreasi spesial untuk liburan Anda' : 'Special facilities and recreation areas for your holiday' }}
+                    </p>
+                </div>
+                 
+                       <div class="text-primary font-semibold">
+                        @if($lang === 'id')
+                            {{ count($areaProducts) }} Paket
+                        @else
+                            {{ count($areaProducts) }} {{ count($areaProducts) > 1 ? 'Packages' : 'Package' }}
+                        @endif
                     </div>
                 </div>
                 <swiper-container class="mySwiper" pagination="true" pagination-clickable="true" space-between="30"
@@ -193,19 +240,33 @@
                                     <div>
                                         <h3 class="text-lg font-semibold">{{ $product->name }}</h3>
                                         <div class="flex gap-2 text-xs">
+                                            {{-- Kapasitas --}}
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-users"></i>
-                                                {{ $product->capacity_per_unit ?? 1 }} orang
+                                                {{ $product->capacity_per_unit ?? 1 }} 
+                                                @if($lang === 'id')
+                                                    orang
+                                                @else
+                                                    {{ ($product->capacity_per_unit ?? 1) > 1 ? 'people' : 'person' }}
+                                                @endif
                                             </span>
+
+                                            {{-- Durasi / Tipe --}}
                                             <span class="flex items-center gap-1">
                                                 <i class="fas fa-clock"></i>
-                                                per sesi
+                                                @if($lang === 'id')
+                                                    {{ $product->duration_type === 'daily' ? 'Per Hari' : 'Per Orang' }}
+                                                @else
+                                                    {{ $product->duration_type === 'daily' ? 'Per Day' : 'Per Person' }}
+                                                @endif
                                             </span>
                                         </div>
                                     </div>
 
                                     <div class="flex flex-col items-start mb-2 mt-7">
-                                        <p class="text-sm">Mulai dari</p>
+                                         <p class="text-sm">
+                                            {{ $lang === 'id' ? 'Mulai dari' : 'Starting from' }}
+                                        </p>
                                         <p class="text-primary text-xl font-bold">
                                             Rp {{ number_format($product->price, 0, ',', '.') }}
                                         </p>

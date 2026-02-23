@@ -90,6 +90,18 @@
                                 <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
                             @enderror
                         </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">
+                                Description (EN) <span class="text-gray-400 font-normal">(Optional)</span>
+                            </label>
+                            <textarea wire:model="description_en" rows="4"
+                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Enter description in English..."></textarea>
+                            @error('description_en')
+                                <span class="text-red-500 text-xs mt-1">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                 </div>
 

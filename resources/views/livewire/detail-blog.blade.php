@@ -32,7 +32,7 @@
 
             <!-- Title -->
             <h1 class="text-3xl md:text-5xl font-extrabold mb-4 leading-tight" data-aos="fade-up" data-aos-delay="600">
-                {{ $blog->title }}
+                {{ $lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title }}
             </h1>
 
             <!-- Meta Info -->
@@ -66,7 +66,7 @@
             <div class="bg-white rounded-2xl shadow-lg overflow-hidden mb-8" data-aos="fade-up">
                 @if ($blog->featured_image)
                     <div class="relative h-96 overflow-hidden">
-                        <img src="{{ asset('storage/' . $blog->featured_image) }}" alt="{{ $blog->title }}"
+                        <img src="{{ asset('storage/' . $blog->featured_image) }}" alt="{{ $lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title }}"
                             class="w-full h-full object-cover">
                         <div class="absolute inset-0 bg-gradient-to-t from-dark-primary/30 to-transparent"></div>
                     </div>
@@ -75,14 +75,14 @@
                 <div class="p-5 lg:p-8">
                     <!-- Title -->
                     <h1 class="text-2xl md:text-4xl font-bold text-primary mb-6 leading-tight">
-                        {{ $blog->title }}
+                       {{ $lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title }}
                     </h1>
 
                     <!-- Excerpt -->
                     @if ($blog->excerpt)
                         <div class="prose prose-lg max-w-none mb-8">
                             <p class="text-gray-700 leading-relaxed text-lg font-medium">
-                                {{ $blog->excerpt }}
+                                {{ $lang === 'en' ? ($blog->excerpt_en ?: $blog->excerpt) : $blog->excerpt }}
                             </p>
                         </div>
                         <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-accent to-transparent my-8">
@@ -92,7 +92,7 @@
                     <!-- Main Content -->
                     <div class="prose prose-lg max-w-none">
                         <div class="text-gray-700 leading-relaxed">
-                            {!! $blog->content !!}
+                            {!! $lang === 'en' ? ($blog->content_en ?: $blog->content) : $blog->content !!}
 
                         </div>
                     </div>
@@ -112,19 +112,19 @@
                         <i class="fab fa-facebook-f"></i>
                         <span>Facebook</span>
                     </a>
-                    <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($blog->title) }}"
+                    <a href="https://twitter.com/intent/tweet?url={{ urlencode(url()->current()) }}&text={{ urlencode($lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title) }}"
                         target="_blank"
                         class="flex items-center gap-2 px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg transition">
                         <i class="fab fa-x-twitter"></i>
                         <span>Twitter</span>
                     </a>
-                    <a href="https://wa.me/?text={{ urlencode($blog->title . ' - ' . url()->current()) }}"
+                    <a href="https://wa.me/?text={{ urlencode($lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title) . ' - ' . url()->current() }}"
                         target="_blank"
                         class="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition">
                         <i class="fab fa-whatsapp"></i>
                         <span>WhatsApp</span>
                     </a>
-                    <a href="mailto:?subject={{ urlencode($blog->title) }}&body={{ urlencode(url()->current()) }}"
+                    <a href="mailto:?subject={{ urlencode($lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title) }}&body={{ urlencode(url()->current()) }}"
                         class="flex items-center gap-2 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition">
                         <i class="far fa-envelope"></i>
                         <span>Email</span>
@@ -150,7 +150,7 @@
                             <div class="relative flex-shrink-0 w-24 h-20 rounded-lg overflow-hidden">
                                 <img src="{{ $related->featured_image ? asset('storage/' . $related->featured_image) : 'https://picsum.photos/100/80?random=' . $related->id }}"
                                     class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                    alt="{{ $related->title }}">
+                                    alt="{{ $lang === 'en' ? ($related->title_en ?: $related->title) : $related->title }}">
                                 <div
                                     class="absolute inset-0 bg-dark-primary/0 group-hover:bg-dark-primary/20 transition-colors">
                                 </div>
@@ -159,10 +159,15 @@
                             <div class="flex-1 min-w-0">
                                 <h3
                                     class="font-bold text-secondary group-hover:text-primary transition-colors mb-1 line-clamp-2">
-                                    {{ $related->title }}
+                                    {{ $lang === 'en' ? ($related->title_en ?: $related->title) : $related->title }}
                                 </h3>
                                 <p class="text-xs text-gray-500 mb-2 line-clamp-2">
-                                    {{ Str::limit($related->excerpt, 60) }}
+                                   {{ Str::limit(
+                                        $lang === 'en'
+                                            ? ($related->excerpt_en ?: $related->excerpt)
+                                            : $related->excerpt,
+                                        60
+                                    ) }}
                                 </p>
                                 <span
                                     class="inline-flex items-center gap-1 text-xs text-primary font-semibold group-hover:gap-2 transition-all">

@@ -19,6 +19,16 @@ class DetailBlog extends Component
 
     public function mount($slug)
     {
+
+            // ✅ Ambil bahasa dari session
+    $this->lang = Session::get('locale', 'id');
+
+    // ✅ Set locale Laravel aktif
+    app()->setLocale($this->lang);
+
+    // ✅ Set teks translation
+    $this->setTexts();
+
         $this->blog = Article::where('status', 'published')
             ->where('slug', $slug)
             ->with('author')
