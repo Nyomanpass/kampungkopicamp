@@ -7,11 +7,14 @@ use Livewire\Attributes\Layout;
 
 use App\Models\Product;
 use App\Models\SiteSetting;
+use Illuminate\Support\Facades\Session;
 
 class PackageDetail extends Component
 {
     #[Layout('components.layouts.detailProduct')]
 
+    public $lang;
+    public $texts = [];
 
     public $product;
     public $selectedImage = null;
@@ -25,6 +28,11 @@ class PackageDetail extends Component
 
     public function mount($slug)
     {
+        $this->lang = Session::get('locale', 'id');
+    
+        app()->setLocale($this->lang);
+        
+        
         $this->product = Product::with('availability')->where('slug', $slug)->firstOrFail();
 
         // Set default selected image (main image atau first dari gallery)
@@ -34,6 +42,15 @@ class PackageDetail extends Component
 
         // Load settings
         $this->loadSettings();
+    }
+
+    public function setLang($lang)
+    {
+        Session::put('locale', $lang);
+        $this->lang = $lang;
+        
+        // Update locale Laravel secara runtime
+        app()->setLocale($lang);
     }
 
     private function loadSettings()

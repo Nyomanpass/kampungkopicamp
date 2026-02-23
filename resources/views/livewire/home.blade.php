@@ -258,17 +258,7 @@
                     </div>
                 @endforeach
             </div>
-
-
-            <!-- View All Button -->
-            @if ($pakets->count() >= 6)
-                <div class="text-center mt-10" data-aos="fade-up">
-                    <a href="{{ route('paketwisata') }}"
-                        class="inline-block px-6 sm:px-8 py-3 bg-white border-2 border-primary text-primary font-semibold rounded-lg hover:bg-primary hover:text-white transition-all duration-300">
-                        Lihat Semua Paket <i class="fa-solid fa-arrow-right ml-2"></i>
-                    </a>
-                </div>
-            @endif
+    
         </div>
     </section>
 

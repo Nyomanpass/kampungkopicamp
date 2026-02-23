@@ -10,13 +10,21 @@ class Blog extends Model
     use HasFactory;
 
     // Kolom yang boleh diisi massal
-    protected $fillable = [
+   protected $fillable = [
         'title',
-        'description',
-        'main_image',
-        'published_at'
+        'title_en',
+        'slug',
+        'excerpt',
+        'excerpt_en',
+        'content',
+        'content_en',
+        'category',
+        'status',
+        'is_featured',
+        'published_at',
+        'meta_description',
+        'meta_description_en',
     ];
-
     
 
 

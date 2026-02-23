@@ -7,20 +7,23 @@ use Illuminate\Support\Str;
 
 class Article extends Model
 {
-    protected $fillable = [
-        'title',
-        'slug',
-        'excerpt',
-        'content',
-        'featured_image',
-        'author_id',
-        'category',
-        'status',
-        'is_featured',
-        'published_at',
-        'views',
-        'meta_description',
-    ];
+   protected $fillable = [
+    'title',
+    'title_en',
+    'slug',
+    'excerpt',
+    'excerpt_en',
+    'content',
+    'content_en',
+    'category',
+    'status',
+    'is_featured',
+    'published_at',
+    'meta_description',
+    'meta_description_en',
+    'author_id',       // <--- Tambahkan ini
+    'featured_image',  // <--- Tambahkan ini
+];
 
     protected $casts = [
         'is_featured' => 'boolean',

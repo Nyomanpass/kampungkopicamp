@@ -39,6 +39,7 @@ class Products extends Component
     public $name = '';
     public $type = 'accommodation';
     public $description;
+    public $description_en; 
     public $price;
     public $capacity_per_unit = 2;
     public $max_participant = 10;
@@ -105,6 +106,7 @@ class Products extends Component
             'name' => 'required|string|max:255',
             'type' => 'required|in:accommodation,touring,area_rental',
             'description' => 'nullable|string',
+            'description_en' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'duration_type' => 'required|in:daily,hourly,multi_day',
             'images.*' => 'nullable|image|max:2048',
@@ -189,6 +191,7 @@ class Products extends Component
         $this->name = $product->name;
         $this->type = $product->type;
         $this->description = $product->description;
+        $this->description_en = $product->description_en;
         $this->price = $product->price;
         $this->duration_type = $product->duration_type;
         $this->facilities = $product->facilities ?? [];
@@ -229,6 +232,7 @@ class Products extends Component
             'name',
             'type',
             'description',
+            'description_en',
             'price',
             'capacity_per_unit',
             'max_participant',
@@ -280,6 +284,7 @@ class Products extends Component
                 'slug' => Str::slug($this->name),
                 'type' => $this->type,
                 'description' => $this->description,
+                'description_en' => $this->description_en,
                 'price' => $this->price,
                 'duration_type' => $this->duration_type,
                 'facilities' => $this->facilities,
@@ -359,6 +364,7 @@ class Products extends Component
                 'slug' => Str::slug($this->name),
                 'type' => $this->type,
                 'description' => $this->description,
+                'description_en' => $this->description_en,
                 'price' => $this->price,
                 'duration_type' => $this->duration_type,
                 'facilities' => $this->facilities,

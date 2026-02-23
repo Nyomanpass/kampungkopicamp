@@ -21,26 +21,11 @@
     </div>
 
     {{-- Form --}}
-    <form wire:submit.prevent="{{ $viewMode === 'create' ? 'createArticle' : 'updateArticle' }}" x-data="{
-        submitForm(event) {
-            console.log('Form submit triggered, mode:', '{{ $viewMode }}');
-            console.log('Will call method:', '{{ $viewMode === 'create' ? 'createArticle' : 'updateArticle' }}');
-    
-            // Ensure Trix content is synced before submit
-            const trixEditor = document.querySelector('trix-editor');
-            const hiddenInput = trixEditor ? document.querySelector('#' + trixEditor.getAttribute('input')) : null;
-    
-            if (trixEditor && hiddenInput) {
-                const content = hiddenInput.value;
-                console.log('Form submitting with content length:', content.length);
-                @this.set('content', content, false);
-            }
-    
-            console.log('Form data ready to submit');
-        }
-    }"
-        @submit="submitForm($event)" class="space-y-6">
-        @csrf
+<form 
+    wire:submit.prevent="{{ $viewMode === 'create' ? 'createArticle' : 'updateArticle' }}"
+    class="space-y-6"
+>
+    @csrf
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {{-- Main Content --}}
             <div class="lg:col-span-2 space-y-6">
@@ -54,6 +39,19 @@
                         @error('title') border-red-500 @enderror"
                         placeholder="Masukkan judul artikel">
                     @error('title')
+                        <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
+                    @enderror
+
+                    <hr class="my-6">
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Judul Artikel (English) <span class="text-red-500">*</span>
+                    </label>
+                    <input type="text" wire:model.blur="title_en"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent
+                        @error('title_en') border-red-500 @enderror"
+                        placeholder="Enter article title in English">
+                    @error('title_en')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
 
@@ -77,45 +75,55 @@
                     @error('excerpt')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
-                </div>
 
-                {{-- Content with Trix Editor --}}
-                <div class="bg-white rounded-lg shadow-sm p-6"
-                    wire:key="trix-editor-{{ $viewMode }}-{{ $articleId }}">
+                    <hr class="my-6">
+
                     <label class="block text-sm font-medium text-gray-700 mb-2">
-                        Konten Artikel <span class="text-red-500">*</span>
+                        Ringkasan (English)
                     </label>
-                    <div wire:ignore.self x-data="{
-                        content: @js($content ?? ''),
-                        initTrix() {
-                            const editor = this.$el.querySelector('trix-editor');
-                            const input = this.$el.querySelector('input[type=hidden]');
-                    
-                            if (editor && input) {
-                                const loadContent = () => {
-                                    if (editor.editor && this.content) {
-                                        input.value = this.content;
-                                        editor.editor.loadHTML(this.content);
-                                        console.log('Alpine loaded content:', this.content.substring(0, 100));
-                                    }
-                                };
-                    
-                                if (editor.editor) {
-                                    loadContent();
-                                } else {
-                                    editor.addEventListener('trix-initialize', loadContent, { once: true });
-                                }
-                            }
-                        }
-                    }" x-init="$nextTick(() => initTrix())">
-                        <input id="content-{{ $viewMode }}" type="hidden" name="content">
-                        <trix-editor input="content-{{ $viewMode }}"
-                            class="trix-content @error('content') border-red-500 @enderror"></trix-editor>
-                    </div>
-                    @error('content')
+                    <textarea wire:model="excerpt_en" rows="3"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent
+                        @error('excerpt_en') border-red-500 @enderror"
+                        placeholder="Write English summary..."></textarea>
+                    @error('excerpt_en')
                         <p class="mt-1 text-sm text-red-600">{{ $message }}</p>
                     @enderror
                 </div>
+
+                {{-- Content with Trix Editor --}}
+<div class="bg-white rounded-lg shadow-sm p-6 space-y-8">
+    {{-- Editor Indonesia --}}
+    <div wire:ignore wire:key="trix-indo-{{ $articleId ?? 'new' }}">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Konten Artikel (ID)</label>
+        <div 
+            x-data="{ value: @bypass_entangle }" {{-- Kita gunakan cara manual --}}
+            x-init="
+                $refs.editorIndo.editor.loadHTML($wire.get('content'));
+            "
+            @trix-change.stop="$wire.set('content', $event.target.value)"
+        >
+            <input id="input_indo_{{ $articleId ?? 'new' }}" type="hidden">
+            <trix-editor input="input_indo_{{ $articleId ?? 'new' }}" x-ref="editorIndo" class="prose max-w-none border-gray-300 rounded-lg min-h-[300px]"></trix-editor>
+        </div>
+    </div>
+
+    <hr>
+
+    {{-- Editor English --}}
+    <div wire:ignore wire:key="trix-eng-{{ $articleId ?? 'new' }}">
+        <label class="block text-sm font-medium text-gray-700 mb-2">Konten Artikel (EN)</label>
+        <div 
+            x-data="{ valueEn: @bypass_entangle }"
+            x-init="
+                $refs.editorEng.editor.loadHTML($wire.get('content_en'));
+            "
+            @trix-change.stop="$wire.set('content_en', $event.target.value)"
+        >
+            <input id="input_eng_{{ $articleId ?? 'new' }}" type="hidden">
+            <trix-editor input="input_eng_{{ $articleId ?? 'new' }}" x-ref="editorEng" class="prose max-w-none border-gray-300 rounded-lg min-h-[300px]"></trix-editor>
+        </div>
+    </div>
+</div>
 
                 {{-- Meta Description --}}
                 <div class="bg-white rounded-lg shadow-sm p-6">
@@ -126,7 +134,20 @@
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
                         placeholder="Deskripsi untuk SEO (maksimal 160 karakter)" maxlength="160"></textarea>
                     <p class="mt-1 text-xs text-gray-500">{{ strlen($meta_description ?? '') }}/160 karakter</p>
+
+                    <hr class="my-6">
+
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Meta Description (English)
+                    </label>
+                    <textarea wire:model="meta_description_en" rows="2"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
+                        placeholder="SEO description in English" maxlength="160"></textarea>
+                    <p class="mt-1 text-xs text-gray-500">
+                        {{ strlen($meta_description_en ?? '') }}/160 karakter
+                    </p>
                 </div>
+                
             </div>
 
             {{-- Sidebar --}}
@@ -243,104 +264,4 @@
     </form>
 </div>
 
-@push('scripts')
-    <script>
-        // Use viewMode as key to track when to reinit
-        let lastViewMode = '{{ $viewMode }}';
-        let currentArticleId = '{{ $articleId ?? '' }}';
 
-        document.addEventListener('DOMContentLoaded', function() {
-            setTimeout(() => initializeTrix(), 200);
-        });
-
-        // Re-initialize when switching between create/edit
-        document.addEventListener('livewire:init', () => {
-            Livewire.hook('morph.updated', ({
-                component
-            }) => {
-                const newViewMode = component.$wire.viewMode;
-                const newArticleId = component.$wire.articleId || '';
-
-                // Reinit if viewMode changed OR articleId changed (switching articles)
-                if (newViewMode !== lastViewMode || newArticleId !== currentArticleId) {
-                    lastViewMode = newViewMode;
-                    currentArticleId = newArticleId;
-
-                    console.log('ViewMode changed to:', newViewMode, 'Article:', newArticleId);
-                    setTimeout(() => initializeTrix(), 200);
-                }
-            });
-        });
-
-        function initializeTrix() {
-            const trixEditor = document.querySelector('trix-editor');
-            const hiddenInput = trixEditor ? document.querySelector('#' + trixEditor.getAttribute(
-                'input')) : null;
-
-            if (!trixEditor || !hiddenInput) {
-                console.log('Trix editor not found, retrying...');
-                return;
-            }
-
-            // Wait for trix editor to be ready
-            if (!trixEditor.editor) {
-                console.log('Trix editor not ready, waiting for initialization...');
-                trixEditor.addEventListener('trix-initialize', function() {
-                    loadTrixContent(trixEditor, hiddenInput);
-                }, {
-                    once: true
-                });
-            } else {
-                loadTrixContent(trixEditor, hiddenInput);
-            }
-
-            // Sync to Livewire property directly (no re-render)
-            let syncing = false;
-            const syncToLivewire = function(e) {
-                if (syncing) return;
-                syncing = true;
-
-                const component = window.Livewire?.find('{{ $this->getId() }}');
-                if (component) {
-                    component.$wire.content = hiddenInput.value;
-                }
-
-                setTimeout(() => syncing = false, 50);
-            };
-
-            // Remove old listener and add new one
-            trixEditor.removeEventListener('trix-change', syncToLivewire);
-            trixEditor.addEventListener('trix-change', syncToLivewire);
-
-            // Prevent file uploads in Trix
-            trixEditor.addEventListener('trix-file-accept', function(e) {
-                e.preventDefault();
-            });
-        }
-
-        function loadTrixContent(trixEditor, hiddenInput) {
-            // Get content from Livewire component
-            const component = window.Livewire?.find('{{ $this->getId() }}');
-            let contentToLoad = '';
-
-            if (component && component.$wire.content) {
-                contentToLoad = component.$wire.content;
-                console.log('Loading content from Livewire:', contentToLoad.substring(0, 100) + '...');
-            } else {
-                // Fallback to server-side rendered value
-                contentToLoad = {!! json_encode($content ?? '') !!};
-                if (contentToLoad) {
-                    console.log('Loading content from server:', contentToLoad.substring(0, 100) + '...');
-                }
-            }
-
-            if (contentToLoad && trixEditor.editor) {
-                hiddenInput.value = contentToLoad;
-                trixEditor.editor.loadHTML(contentToLoad);
-                console.log('✅ Trix content loaded successfully');
-            } else {
-                console.log('⚠️ No content to load or editor not ready');
-            }
-        }
-    </script>
-@endpush

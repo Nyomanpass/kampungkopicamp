@@ -101,11 +101,15 @@
                 <div class="lg:col-span-2 space-y-9">
                     <!-- Description -->
                     <div>
-                        <h2 class="text-2xl font-bold mb-4 flex items-center">
-                            Tentang Paket Ini
+                       <h2 class="text-2xl font-bold mb-4 flex items-center">
+                            {{ $lang === 'en' ? 'About This Package' : 'Tentang Paket Ini' }}
                         </h2>
                         <div class="prose prose-gray max-w-none text-gray-600 leading-relaxed">
-                            {{ $product->description ?? 'No description available.' }}
+                            @if($lang === 'en')
+                                {{ $product->description_en ??  'No description available.' }}
+                            @else
+                                {{ $product->description ?? 'Deskripsi tidak tersedia.' }}
+                            @endif
                         </div>
                     </div>
 
@@ -113,7 +117,7 @@
                     @if ($product->facilities && count($product->facilities) > 0)
                         <div>
                             <h3 class="text-xl font-bold mb-4 flex items-center">
-                                Fasilitas Unggulan
+                                {{ $lang === 'en' ? 'Featured Facilities' : 'Fasilitas Unggulan' }}
                             </h3>
                             <div class="grid grid-cols-2 gap-1">
                                 @foreach ($product->facilities as $facility)
@@ -129,7 +133,7 @@
                     <!--lokasi-->
                     <div>
                         <h2 class="text-xl font-bold mb-4 flex items-center">
-                            Lokasi Kampung Kopi Camp
+                            {{ $lang === 'en' ? 'Location of Kampung Kopi Camp' : 'Lokasi Kampung Kopi Camp' }}
                         </h2>
                         {{-- google maps --}}
                         <div>
@@ -144,116 +148,112 @@
                     {{-- kebijakan --}}
                     <div>
                         <h2 class="text-xl font-bold mb-5 flex items-center">
-                            Peraturan & Kebijakan
+                            {{ $lang === 'en' ? 'Rules & Policies' : 'Peraturan & Kebijakan' }}
                         </h2>
-                        @if (count($houseRules) > 0)
-                            <div class="space-y-5">
-                                @foreach ($houseRules as $rule)
-                                    <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                        <h3 class="text-lg font-medium lg:w-[30%]">{{ $rule['title'] }}</h3>
-                                        <p class="text-gray-600 lg:w-[70%] whitespace-pre-line">{{ $rule['content'] }}
-                                        </p>
-                                    </div>
-                                @endforeach
+                      
+                        <div class="space-y-8">
+                            {{-- Prosedur Check-in --}}
+                            <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+                                <h3 class="text-lg font-medium lg:w-[30%]">
+                                    {{ $lang === 'en' ? 'Check-in Procedure' : 'Prosedur Check-in' }}
+                                </h3>
+                                <p class="text-gray-600 lg:w-[70%]">
+                                    @if($lang === 'en')
+                                        Check-in starts from 14:00 WITA. Guests are required to show an ID Card and booking confirmation. Final payment can be made at the front desk if not yet settled.
+                                    @else
+                                        Check-in dimulai dari pukul 14:00 WITA. Tamu wajib menunjukkan ID Card dan booking confirmation. Pembayaran pelunasan dapat dilakukan di front desk jika belum lunas.
+                                    @endif
+                                </p>
                             </div>
-                        @else
-                            <div class="space-y-8">
-                                <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                    <h3 class="text-lg font-medium lg:w-[30%]">Prosedur Check-in</h3>
-                                    <p class="text-gray-600 lg:w-[70%]">Check-in mulai pukul 14.00 dan check-out sebelum
-                                        pukul 12.00.
-                                        Harap informasikan perkiraan waktu kedatangan Anda sebelumnya.</p>
-                                </div>
-                                <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
-                                    <h3 class="text-lg font-medium lg:w-[30%]">Kebijakan Lainnya</h3>
-                                    <p class="text-gray-600 lg:w-[70%]">
-                                        Dilarang merokok di area dalam ruangan. Harap jaga ketenangan dan hormati tamu
-                                        lain.
-                                        Hewan peliharaan tidak diperbolehkan kecuali telah mendapatkan izin sebelumnya.
-                                        Harap ikuti semua peraturan yang ditetapkan oleh pengelola properti.
-                                    </p>
-                                </div>
+
+                            {{-- Kebijakan Pembatalan --}}
+                            <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+                                <h3 class="text-lg font-medium lg:w-[30%]">
+                                    {{ $lang === 'en' ? 'Cancellation Policy' : 'Kebijakan Pembatalan' }}
+                                </h3>
+                                <p class="text-gray-600 lg:w-[70%]">
+                                    @if($lang === 'en')
+                                        Cancellations can be made up to 7 days before check-in to receive a 90% refund. Cancellations made less than 7 days prior will incur a 50% cancellation fee.
+                                    @else
+                                        Pembatalan dapat dilakukan maksimal 7 hari sebelum check-in untuk mendapatkan refund 90%. Pembatalan kurang dari 7 hari akan dikenakan biaya pembatalan 50%.
+                                    @endif
+                                </p>
                             </div>
-                        @endif
+
+                            {{-- Aturan Berkemah --}}
+                            <div class="w-full flex flex-col lg:flex-row gap-2 lg:gap-8">
+                                <h3 class="text-lg font-medium lg:w-[30%]">
+                                    {{ $lang === 'en' ? 'Camping Rules' : 'Aturan Berkemah' }}
+                                </h3>
+                                <p class="text-gray-600 lg:w-[70%]">
+                                    @if($lang === 'en')
+                                        Making campfires outside of designated areas is prohibited. Please maintain the cleanliness of the camping area and dispose of trash in the provided bins. Quiet time begins at 22:00 WITA.
+                                    @else
+                                        Dilarang membuat api unggun di luar area yang telah ditentukan. Harap menjaga kebersihan area camping dan membuang sampah pada tempatnya. Waktu tenang dimulai pukul 22:00 WITA.
+                                    @endif
+                                </p>
+                            </div>
+                        </div>
+                 
                     </div>
 
                     {{-- Faq --}}
                     <div>
-                        <h2 class="text-xl font-bold mb-4 flex items-center">
-                            Pertanyaan yang sering ditanyakan
+                       <h2 class="text-xl font-bold mb-4 flex items-center">
+                            {{ $lang === 'en' ? 'Frequently Asked Questions' : 'Pertanyaan yang sering ditanyakan' }}
                         </h2>
-                        @if (count($faqs) > 0)
-                            <div class="space-y-3">
-                                @foreach ($faqs as $index => $faq)
-                                    <!-- FAQ Item {{ $index + 1 }} -->
-                                    <div x-data="{ open: false }"
-                                        class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                        <button @click="open = !open"
-                                            class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                            <span class="font-semibold text-gray-800">{{ $faq['question'] }}</span>
-                                            <i class="fas fa-chevron-down transition-transform duration-200"
-                                                :class="{ 'rotate-180': open }"></i>
-                                        </button>
-                                        <div x-show="open" x-collapse class="px-4 pb-4">
-                                            <p class="text-gray-600 whitespace-pre-line">{{ $faq['answer'] }}</p>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        @else
-                            <div class="space-y-3">
-                                <!-- FAQ Item 1 -->
-                                <div x-data="{ open: false }"
-                                    class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                    <button @click="open = !open"
-                                        class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                        <span class="font-semibold text-gray-800">Bagaimana cara melakukan
-                                            pembayaran?</span>
-                                        <i class="fas fa-chevron-down transition-transform duration-200"
-                                            :class="{ 'rotate-180': open }"></i>
-                                    </button>
-                                    <div x-show="open" x-collapse class="px-4 pb-4">
-                                        <p class="text-gray-600">Kami menerima berbagai metode pembayaran, termasuk
-                                            transfer
-                                            bank, kartu kredit, dan dompet digital.</p>
-                                    </div>
-                                </div>
-
-                                <!-- FAQ Item 2 -->
-                                <div x-data="{ open: false }"
-                                    class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                    <button @click="open = !open"
-                                        class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                        <span class="font-semibold text-gray-800">Apakah saya bisa membatalkan
-                                            reservasi?</span>
-                                        <i class="fas fa-chevron-down transition-transform duration-200"
-                                            :class="{ 'rotate-180': open }"></i>
-                                    </button>
-                                    <div x-show="open" x-collapse class="px-4 pb-4">
-                                        <p class="text-gray-600">Ya, Anda dapat membatalkan reservasi dengan gratis
-                                            hingga
-                                            24 jam sebelum waktu check-in.</p>
-                                    </div>
-                                </div>
-
-                                <!-- FAQ Item 3 -->
-                                <div x-data="{ open: false }"
-                                    class="border border-gray-200 rounded-lg overflow-hidden bg-white">
-                                    <button @click="open = !open"
-                                        class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
-                                        <span class="font-semibold text-gray-800">Apakah hewan peliharaan
-                                            diperbolehkan?</span>
-                                        <i class="fas fa-chevron-down transition-transform duration-200"
-                                            :class="{ 'rotate-180': open }"></i>
-                                    </button>
-                                    <div x-show="open" x-collapse class="px-4 pb-4">
-                                        <p class="text-gray-600">Mohon maaf, untuk saat ini kami belum menerima tamu
-                                            yang
-                                            membawa hewan peliharaan.</p>
-                                    </div>
+                        <div class="space-y-3">
+                            <div x-data="{ open: false }" class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                <button @click="open = !open" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                    <span class="font-semibold text-gray-800">
+                                        {{ $lang === 'en' ? 'Can I get a refund?' : 'Apakah bisa refund?' }}
+                                    </span>
+                                    <i class="fas fa-chevron-down transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                </button>
+                                <div x-show="open" x-collapse class="px-4 pb-4">
+                                    <p class="text-gray-600">
+                                        {{ $lang === 'en' 
+                                            ? 'Yes, refunds can be processed at least 7 days before the check-in date with a 10% administrative fee deduction.' 
+                                            : 'Ya, refund dapat dilakukan maksimal 7 hari sebelum tanggal check-in dengan potongan biaya administrasi 10%.' 
+                                        }}
+                                    </p>
                                 </div>
                             </div>
-                        @endif
+
+                            <div x-data="{ open: false }" class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                <button @click="open = !open" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                    <span class="font-semibold text-gray-800">
+                                        {{ $lang === 'en' ? 'What is the minimum booking?' : 'Berapa minimal booking?' }}
+                                    </span>
+                                    <i class="fas fa-chevron-down transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                </button>
+                                <div x-show="open" x-collapse class="px-4 pb-4">
+                                    <p class="text-gray-600">
+                                        {{ $lang === 'en' 
+                                            ? 'The minimum booking is 1 day for camping packages and 2 people for touring packages.' 
+                                            : 'Minimal booking adalah 1 hari untuk paket camping dan 2 orang untuk paket touring.' 
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div x-data="{ open: false }" class="border border-gray-200 rounded-lg overflow-hidden bg-white">
+                                <button @click="open = !open" class="w-full p-4 flex items-center justify-between text-left hover:bg-gray-50 transition-colors">
+                                    <span class="font-semibold text-gray-800">
+                                        {{ $lang === 'en' ? 'Is parking available?' : 'Apakah tersedia fasilitas parkir?' }}
+                                    </span>
+                                    <i class="fas fa-chevron-down transition-transform duration-200" :class="{ 'rotate-180': open }"></i>
+                                </button>
+                                <div x-show="open" x-collapse class="px-4 pb-4">
+                                    <p class="text-gray-600">
+                                        {{ $lang === 'en' 
+                                            ? 'Yes, we provide a free parking area for all staying guests.' 
+                                            : 'Ya, kami menyediakan area parkir gratis untuk semua tamu yang menginap.' 
+                                        }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -262,43 +262,48 @@
                 <div class="lg:sticky lg:top-6 h-fit hidden lg:block">
                     <div class="bg-white rounded-2xl shadow-lg border border-gray-200 p-6">
                         <div class="mb-6">
-                            <span class="text-gray-600 text-sm">Mulai dari</span>
+                            <span class="text-gray-600 text-sm">
+                                {{ $lang === 'en' ? 'Starting from' : 'Mulai dari' }}
+                            </span>
                             <div class="flex items-baseline gap-2 mb-1">
                                 <span class="text-3xl font-bold text-primary">
                                     Rp {{ number_format($product->price, 0, ',', '.') }}
                                 </span>
                             </div>
-                            <span class="text-gray-500 text-sm">
-                                / {{ $product->duration_type === 'daily' ? 'hari' : 'orang' }}
+                            <span class="text-gray-500 text-xs">
+                                /{{ $lang === 'en' 
+                                    ? ($product->duration_type === 'daily' ? 'day' : 'person') 
+                                    : ($product->duration_type === 'daily' ? 'hari' : 'orang') }}
                             </span>
                         </div>
 
                         <a href="{{ Route('booking.flow', $product->slug) }}"
                             class="flex items-center justify-center w-full bg-primary hover:bg-light-primary text-white font-semibold py-4 rounded-xl transition-all duration-200 active:scale-95 shadow-lg shadow-primary/25">
                             <i class="fas fa-calendar-check mr-2"></i>
-                            Pesan Sekarang
+                            {{ $lang === 'en' ? 'Book Now' : 'Pesan Sekarang' }}
                         </a>
 
                         <div class="mt-4 pt-4 border-t border-gray-200 space-y-2 text-sm text-gray-600">
                             <div class="flex items-center">
                                 <i class="fas fa-shield-alt text-accent mr-2"></i>
-                                <span>Pembayaran aman & terpercaya</span>
+                                <span>{{ $lang === 'en' ? 'Secure & Trusted Payment' : 'Pembayaran aman & terpercaya' }}</span>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-undo text-accent mr-2"></i>
-                                <span>Gratis pembatalan</span>
+                                <span>{{ $lang === 'en' ? 'Free Cancellation' : 'Gratis pembatalan' }}</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
     </section>
 
     <!-- Related Packages -->
     <section class="py-12 bg-gray-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-2xl font-bold mb-8">Paket Lainnya</h2>
+            <h2 class="text-2xl font-bold mb-8">
+                {{ $lang === 'en' ? 'Other Packages' : 'Paket Lainnya' }}
+            </h2>
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-20">
                 @foreach ($relatedPackages as $relatedProduct)
                     <livewire:package-card :product="$relatedProduct" :key="$relatedProduct->id" />
@@ -311,19 +316,21 @@
     <div class="fixed bottom-0 left-0 right-0 bg-white shadow-2xl p-4 lg:hidden z-50">
         <div class="flex items-center justify-between gap-4">
             <div>
-                <span class="text-gray-600 text-xs">Mulai dari</span>
+                 {{ $lang === 'en' ? 'Starting from' : 'Mulai dari' }}
                 <div class="flex items-baseline gap-1">
                     <span class="text-2xl font-bold text-primary">
                         Rp {{ number_format($product->price, 0, ',', '.') }}
                     </span>
-                    <span class="text-gray-500 text-xs">
-                        /{{ $product->duration_type === 'daily' ? 'hari' : 'orang' }}
-                    </span>
+                     <span class="text-gray-500 text-xs">
+                                /{{ $lang === 'en' 
+                                    ? ($product->duration_type === 'daily' ? 'day' : 'person') 
+                                    : ($product->duration_type === 'daily' ? 'hari' : 'orang') }}
+                        </span>
                 </div>
             </div>
             <a href="{{ Route('booking.flow', $product->slug) }}"
                 class="bg-primary hover:bg-light-primary text-white font-semibold py-3 px-8 rounded-xl transition-all duration-200 active:scale-95 shadow-lg">
-                Pesan
+                {{ $lang === 'en' ? 'Book Now' : 'Pesan Sekarang' }}
             </a>
         </div>
     </div>

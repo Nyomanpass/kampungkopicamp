@@ -4,7 +4,7 @@
         <!-- Progress Steps -->
         <div class="mb-8">
             <div class="flex items-center justify-center gap-2">
-                @foreach ([1 => 'Detail', 2 => 'Tanggal', 3 => 'Add-ons', 4 => 'Summary'] as $step => $label)
+               @foreach ([1 => 'Details', 2 => 'Dates', 3 => 'Add-ons', 4 => 'Summary'] as $step => $label)
                     <div class="flex items-center">
                         <!-- Step Circle -->
                         <div class="flex flex-col items-center">
@@ -48,16 +48,20 @@
             @if ($currentStep === 1)
                 <div>
                     @if ($product->type == 'touring')
-                        <h3 class="text-2xl font-bold mb-6">Jumlah Partisipan</h3>
+                        <h3 class="text-2xl font-bold mb-6">
+                            {{ $lang === 'en' ? 'Number of Participants' : 'Jumlah Partisipan' }}
+                        </h3>
                     @else
-                        <h3 class="text-2xl font-bold mb-6">Jumlah Pengunjung dan Malam</h3>
+                        <h3 class="text-2xl font-bold mb-6">
+                            {{ $lang === 'en' ? 'Number of Visitors and Nights' : 'Jumlah Pengunjung dan Malam' }}
+                        </h3>
                     @endif
 
                     <form wire:submit.prevent="nextToCalendar" class="space-y-6">
                         <!-- People Count -->
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-2">
-                                Jumlah Orang
+                                {{ $lang === 'en' ? 'Total Guests' : 'Jumlah Orang' }}
                             </label>
                             <input type="number" wire:model="peopleCount" min="1"
                                 class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
@@ -65,13 +69,19 @@
                                 <span class="text-red-500 text-sm">{{ $message }}</span>
                             @enderror
 
-                            @if ($product->capacity_per_unit)
+                           @if ($product->capacity_per_unit)
                                 <p class="text-xs md:text-sm text-gray-500 mt-1">
-                                    Kapasitas maksimal per unit: {{ $product->capacity_per_unit }} orang
+                                    {{ $lang === 'en'
+                                        ? 'Maximum capacity per unit: ' . $product->capacity_per_unit . ' people'
+                                        : 'Kapasitas maksimal per unit: ' . $product->capacity_per_unit . ' orang'
+                                    }}
                                 </p>
                             @elseif ($product->max_participant)
                                 <p class="text-xs md:text-sm text-gray-500 mt-1">
-                                    Kapasitas maksimal partisipan: {{ $product->max_participant }} orang
+                                    {{ $lang === 'en'
+                                        ? 'Maximum participant capacity: ' . $product->max_participant . ' people'
+                                        : 'Kapasitas maksimal partisipan: ' . $product->max_participant . ' orang'
+                                    }}
                                 </p>
                             @endif
                         </div>
@@ -80,7 +90,7 @@
                         @if (!($product->type == 'touring'))
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">
-                                    Jumlah Malam
+                                    {{ $lang === 'en' ? 'Number of Nights' : 'Jumlah Malam' }}
                                 </label>
                                 <input type="number" wire:model="nightCount" min="1" max="30"
                                     class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
@@ -95,14 +105,17 @@
                             <div class="bg-info-light border border-info rounded-lg p-4">
                                 <p class="text-sm text-info">
                                     <i class="fas fa-info-circle mr-2"></i>
-                                    Estimasi unit yang dibutuhkan:
+                                     {{ $lang === 'en' ? 'Estimated required units:' : 'Estimasi unit yang dibutuhkan:' }}
                                     <strong>
                                         {{ $peopleCount && $product->capacity_per_unit ? ceil($peopleCount / $product->capacity_per_unit) : 0 }}
                                         unit
                                     </strong>
                                 </p>
                                 <p class="text-xs text-info mt-1">
-                                    Pembagian tamu per unit dapat diatur saat check-in
+                                    {{ $lang === 'en'
+                                        ? 'Guest allocation per unit can be arranged at check-in'
+                                        : 'Pembagian tamu per unit dapat diatur saat check-in'
+                                    }}
                                 </p>
                             </div>
                         @endif
@@ -110,12 +123,12 @@
                         <div class="flex items-center justify-between mt-8 gap-4">
                             <a class="py-4 w-1/3 text-center hover:bg-gray-100 rounded-lg transition-all duration-200"
                                 href="{{ Route('package.detail', $product->slug) }}">
-                                Batal
+                                 {{ $lang === 'en' ? 'Cancel' : 'Batal' }}
                             </a>
 
                             <button type="submit" @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
                                 class="w-3/4 bg-primary hover:bg-light-primary text-white font-semibold py-4 rounded-lg transition-all duration-200 active:scale-95">
-                                Lanjut Pilih Tanggal
+                                {{ $lang === 'en' ? 'Continue to Select Date' : 'Lanjut Pilih Tanggal' }}
 
                             </button>
                         </div>
@@ -128,17 +141,19 @@
                 <div>
                     <div class="flex items-center justify-center mb-6">
 
-                        <h3 class="text-2xl font-bold">Pilih Tanggal Booking</h3>
+                        <h3 class="text-2xl font-bold">
+                            {{ $lang === 'en' ? 'Select Booking Date' : 'Pilih Tanggal Booking' }}
+                        </h3>
                     </div>
 
                     <!-- Selected Info -->
                     <div class="lg:w-[80%] mx-auto grid grid-cols-2 gap-4 mb-6">
                         <div class="bg-gray-50 rounded-lg p-4 flex flex-col items-center">
-                            <p class="text-sm text-gray-600">Jumlah Orang</p>
+                            <p class="text-sm text-gray-600">{{ $lang === 'en' ? 'Number of Guests' : 'Jumlah Orang' }}</p>
                             <p class="text-2xl font-bold text-primary">{{ $peopleCount }}</p>
                         </div>
                         <div class="bg-gray-50 rounded-lg p-4 flex flex-col items-center">
-                            <p class="text-sm text-gray-600">Jumlah Malam</p>
+                            <p class="text-sm text-gray-600">{{ $lang === 'en' ? 'Number of Nights' : 'Jumlah Malam' }}</p>
                             <p class="text-2xl font-bold text-primary">{{ $nightCount }}</p>
                         </div>
                     </div>
@@ -146,7 +161,8 @@
                     @if ($requiredUnits > 0)
                         <div class="bg-info-light border border-info rounded-lg p-4 mb-6">
                             <p class="text-sm text-info">
-                                Unit yang dibutuhkan: <strong>{{ $requiredUnits }} unit</strong>
+                                {{ $lang === 'en' ? 'Estimated required units:' : 'Estimasi unit yang dibutuhkan:' }}
+                                <strong>{{ $requiredUnits }} unit</strong>
                             </p>
                         </div>
                     @endif
@@ -236,19 +252,22 @@
                         <div class="flex items-center gap-4 mt-4 text-xs">
                             <div class="flex items-center gap-1">
                                 <div class="w-4 h-4 bg-primary rounded"></div>
-                                <span>Dipilih</span>
+                                <span>{{ $lang === 'en' ? 'Selected' : 'Dipilih' }}</span>
                             </div>
+
                             <div class="flex items-center gap-1">
                                 <div class="w-4 h-4 bg-white border-2 border-blue-500 rounded"></div>
-                                <span>Hari Ini</span>
+                                <span>{{ $lang === 'en' ? 'Today' : 'Hari Ini' }}</span>
                             </div>
+
                             <div class="flex items-center gap-1">
                                 <div class="w-4 h-4 bg-red-50 border border-red-200 rounded"></div>
-                                <span>Tidak tersedia</span>
+                                <span>{{ $lang === 'en' ? 'Not Available' : 'Tidak tersedia' }}</span>
                             </div>
+
                             <div class="flex items-center gap-1">
                                 <div class="w-4 h-4 bg-gray-100 rounded"></div>
-                                <span>Lewat</span>
+                                <span>{{ $lang === 'en' ? 'Past' : 'Lewat' }}</span>
                             </div>
                         </div>
                     </div>
@@ -256,7 +275,7 @@
                     <!-- Selected Date Info -->
                     @if ($selectedStartDate)
                         <div class="mt-6 bg-green-50 border border-green-200 rounded-lg p-4">
-                            <h4 class="font-semibold text-green-800 mb-2">Tanggal Terpilih:</h4>
+                            <h4 class="font-semibold text-green-800 mb-2">{{ $lang === 'en' ? 'Selected Date:' : 'Tanggal Terpilih:' }}</h4>
                             <p class="text-sm text-green-700">
                                 <i class="fas fa-calendar-check mr-2"></i>
                                 Check-in: {{ Carbon\Carbon::parse($selectedStartDate)->format('d M Y') }}
@@ -270,7 +289,7 @@
                             @if ($estimatedPrice > 0)
                                 <div class="mt-3 pt-3 border-t border-green-300">
                                     <p class="text-lg font-bold text-green-900">
-                                        Estimasi Harga: Rp {{ number_format($estimatedPrice, 0, ',', '.') }}
+                                      {{ $lang === 'en' ? 'Estimated Price:' : 'Estimasi Harga:' }} {{ number_format($estimatedPrice, 0, ',', '.') }}
                                     </p>
                                 </div>
                             @endif
@@ -280,13 +299,13 @@
                     <div class="flex items-center justify-between mt-8 gap-4">
                         <a class="py-4 w-1/3 text-center hover:bg-gray-100 roudned-lg transition-all duration-200"
                             wire:click="goToStep(1)">
-                            Kembali
+                             {{ $lang === 'en' ? 'Back' : 'Kembali' }}
                         </a>
 
                         <button wire:click="nextToAddons" @if (!$selectedStartDate) disabled @endif
                             @click="window.scrollTo({ top: 0, behavior: 'smooth' })"
                             class="w-3/4 bg-primary hover:bg-light-primary text-white font-semibold py-4 rounded-lg transition-all duration-200 active:scale-95 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300">
-                            Lanjut
+                             {{ $lang === 'en' ? 'Continue' : 'Lanjut' }}
                         </button>
                     </div>
 
@@ -306,12 +325,12 @@
             <!-- STEP 3: Add-ons -->
             @if ($currentStep === 3)
                 <div class="space-y-6">
-                    <h3 class="text-2xl font-bold">Pilih Add-ons (Opsional)</h3>
+                    <h3 class="text-2xl font-bold">{{ $lang === 'en' ? 'Select Add-ons (Optional)' : 'Pilih Add-ons (Opsional)' }}</h3>
 
                     @if ($addons->isEmpty())
                         <div class="text-center py-12 text-gray-500">
                             <i class="fas fa-box-open text-5xl mb-4"></i>
-                            <p>Tidak ada addon tersedia untuk produk ini.</p>
+                            <p>{{ $lang === 'en' ? 'No add-ons available for this product.' : 'Tidak ada addon tersedia untuk produk ini.' }}</p>
                         </div>
                     @else
                         <div class="grid grid-cols-1 gap-4">
@@ -441,7 +460,8 @@
                                                     <button type="button" wire:click="addAddon({{ $addon->id }})"
                                                         class="mt-3 w-full bg-primary hover:bg-light-primary text-white py-2 rounded-lg font-semibold transition-all"
                                                         @if ($addon->isOutOfStock()) disabled @endif>
-                                                        <i class="fas fa-plus"></i> Tambahkan
+                                                       <i class="fas fa-plus"></i>
+                                                        {{ $lang === 'en' ? 'Add' : 'Tambahkan' }}
                                                     </button>
                                                 @endif
                                             </div>
@@ -458,11 +478,11 @@
                     <div class="flex items-center justify-between mt-8 gap-4">
                         <button type="button" wire:click="goToStep(2)"
                             class="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 px-6 py-4 rounded-lg font-semibold">
-                            Kembali
+                            {{ $lang === 'en' ? 'Back' : 'Kembali' }}
                         </button>
                         <button type="button" wire:click="nextToSummary"
                             class="w-3/4 bg-primary hover:bg-light-primary text-white px-6 py-4 rounded-lg font-semibold">
-                            Lanjut ke Summary <i class="fas fa-arrow-right"></i>
+                            {{ $lang === 'en' ? 'Continue to Summary' : 'Lanjut ke Summary' }} <i class="fas fa-arrow-right"></i>
                         </button>
                     </div>
                 </div>
@@ -475,7 +495,7 @@
                         <button wire:click="goToStep(3)" class="text-primary hover:underline text-sm">
                             <i class="fas fa-angle-left mr-2"></i>
                         </button>
-                        <h3 class="text-xl font-bold">Ringkasan Booking</h3>
+                        {{ $lang === 'en' ? 'Booking Summary' : 'Ringkasan Booking' }}
                     </div>
 
                     @guest
@@ -488,9 +508,16 @@
                                         clip-rule="evenodd"></path>
                                 </svg>
                                 <div class="text-sm text-yellow-800">
-                                    <p class="font-semibold mb-1">Perhatian</p>
-                                    <p>Pastikan email dan nomor WhatsApp yang Anda masukkan benar. Anda tidak dapat membuat
-                                        booking baru hingga booking ini selesai atau expired (2 jam).</p>
+                                    <p class="font-semibold mb-1">
+                                        {{ $lang === 'en' ? 'Important' : 'Perhatian' }}
+                                    </p>
+
+                                    <p>
+                                        {{ $lang === 'en'
+                                            ? 'Please make sure your email and WhatsApp number are correct. You cannot create a new booking until this booking is completed or expired (2 hours).'
+                                            : 'Pastikan email dan nomor WhatsApp yang Anda masukkan benar. Anda tidak dapat membuat booking baru hingga booking ini selesai atau expired (2 jam).'
+                                        }}
+                                    </p>
                                 </div>
                             </div>
                         </div>
@@ -520,15 +547,15 @@
 
                             <!-- Booking Details -->
                             <div class="bg-white border border-gray-200 rounded-lg py-6 md:p-6">
-                                <h4 class="font-semibold text-lg mb-4">Detail Booking</h4>
+                                <h4 class="font-semibold text-lg mb-4"> {{ $lang === 'en' ? 'Booking Details' : 'Detail Booking' }}</h4>
 
                                 <div class="space-y-3">
                                     <div class="flex justify-between">
-                                        <span class="text-gray-600">Produk:</span>
+                                        <span class="text-gray-600">{{ $lang === 'en' ? 'Product:' : 'Produk:' }}</span>
                                         <span class="font-medium">{{ $product->name }}</span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-gray-600">Tipe:</span>
+                                        <span class="text-gray-600">{{ $lang === 'en' ? 'Type:' : 'Tipe:' }}</span>
                                         <span class="font-medium">{{ ucfirst($product->type) }}</span>
                                     </div>
                                     <div class="flex justify-between">
@@ -540,24 +567,24 @@
                                         </span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-gray-600">Durasi:</span>
+                                        <span class="text-gray-600">{{ $lang === 'en' ? 'Duration:' : 'Durasi:' }}</span>
                                         <span class="font-medium">
-                                            {{ $nightCount }} malam
+                                            {{ $nightCount }} {{ $lang === 'en' ? 'nights' : 'malam' }}
                                             <span wire:click="goToStep(1)"><i
                                                     class="text-accent fa-solid fa-pen-to-square active:scale-95 transition-all cursor-pointer"></i></span>
                                         </span>
                                     </div>
                                     <div class="flex justify-between">
-                                        <span class="text-gray-600">Jumlah Orang:</span>
+                                        <span class="text-gray-600">{{ $lang === 'en' ? 'Number of People:' : 'Jumlah Orang:' }}</span>
                                         <span class="font-medium">
-                                            {{ $peopleCount }} orang
+                                            {{ $peopleCount }} {{ $lang === 'en' ? 'people' : 'orang' }}
                                             <span wire:click="goToStep(1)"><i
                                                     class="text-accent fa-solid fa-pen-to-square active:scale-95 transition-all cursor-pointer"></i></span>
                                         </span>
                                     </div>
                                     @if ($requiredUnits > 0)
                                         <div class="flex justify-between">
-                                            <span class="text-gray-600">Unit Dibutuhkan:</span>
+                                            <span class="text-gray-600">{{ $lang === 'en' ? 'Required Units:' : 'Unit Dibutuhkan:' }}</span>
                                             <span class="font-medium">{{ $requiredUnits }} unit</span>
                                         </div>
                                     @endif
@@ -599,16 +626,16 @@
                             {{-- Price Summary with Discount --}}
 
                             <div class="bg-white border border-gray-200 rounded-lg py-6 md:p-6">
-                                <h4 class="font-semibold text-lg mb-4">Informasi Pemesan</h4>
+                                <h4 class="font-semibold text-lg mb-4"> {{ $lang === 'en' ? 'Customer Information' : 'Informasi Pemesan' }}</h4>
 
                                 <form class="space-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">
-                                            Nama Lengkap <span class="text-red-500">*</span>
+                                            {{ $lang === 'en' ? 'Full Name' : 'Nama Lengkap' }} <span class="text-red-500">*</span>
                                         </label>
                                         <input type="text" wire:model="customerName"
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                                            placeholder="Masukkan nama lengkap">
+                                            placeholder="{{ $lang === 'en' ? 'Enter full name' : 'Masukkan nama lengkap' }}">
                                         @error('customerName')
                                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                         @enderror
@@ -616,13 +643,13 @@
 
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">
-                                            Email <span class="text-red-500">*</span>
+                                            {{ $lang === 'en' ? 'Email' : 'Email' }} <span class="text-red-500">*</span>
                                         </label>
                                         <div class="relative">
                                             <input type="email" wire:model.live.debounce.500ms="customerEmail"
                                                 @auth disabled @endauth
                                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent disabled:bg-gray-100 disabled:cursor-not-allowed"
-                                                placeholder="email@example.com">
+                                                placeholder="{{ $lang === 'en' ? 'email@example.com' : 'email@example.com' }}">
 
                                             {{-- ✅ Loading indicator --}}
                                             <div wire:loading wire:target="customerEmail"
@@ -647,10 +674,16 @@
                                         @if ($emailExists && !auth()->check())
                                             <p class="text-xs text-yellow-600 mt-1 flex items-center gap-1">
                                                 <i class="fas fa-exclamation-triangle"></i>
-                                                Email ini sudah terdaftar.
+                                                {{ $lang === 'en'
+                                                    ? 'This email is already registered.'
+                                                    : 'Email ini sudah terdaftar.'
+                                                }}
                                                 <button wire:click="switchToLoginFromEmail"
                                                     class="text-primary font-semibold hover:underline">
-                                                    Login untuk gunakan voucher
+                                                    {{ $lang === 'en'
+                                                        ? 'Login to use voucher'
+                                                        : 'Login untuk gunakan voucher'
+                                                    }}
                                                 </button>
                                             </p>
                                         @endif
@@ -670,11 +703,15 @@
 
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700 mb-1">
-                                            Permintaan Khusus (Opsional)
+                                           {{ $lang === 'en'
+                                                ? 'Special Request (Optional)'
+                                                : 'Permintaan Khusus (Opsional)'
+                                            }}
+
                                         </label>
                                         <textarea wire:model="specialRequest" rows="3"
                                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent"
-                                            placeholder="Contoh: alergi makanan, permintaan lokasi, dll."></textarea>
+                                            placeholder="{{ $lang === 'en' ? 'location request, etc.' : 'Contoh: permintaan lokasi, dll.' }}"></textarea>
                                         @error('specialRequest')
                                             <span class="text-red-500 text-sm mt-1">{{ $message }}</span>
                                         @enderror
@@ -738,7 +775,7 @@
                                     </div>
                                     <button wire:click="applyVoucher" @guest disabled @endguest
                                         class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors whitespace-nowrap disabled:bg-gray-300 disabled:cursor-not-allowed disabled:hover:bg-gray-300 ">
-                                        Gunakan
+                                        {{ $lang === 'en' ? 'Apply' : 'Gunakan' }}
                                     </button>
                                 </div>
                                 @if (session()->has('success'))
@@ -750,14 +787,12 @@
                                     </div>
                                 @endif
                                 @guest
-                                    <div
-                                        class="flex items-center justify-between px-6 py-3 bg-light-primary/40  rounded-lg mt-6">
+                                    <div class="flex items-center justify-between px-6 py-3 bg-light-primary/40  rounded-lg mt-6">
                                         <div class="flex justify-center items-center gap-3">
-                                            <div
-                                                class="size-11 flex items-center justify-center rounded-full bg-light-primary">
+                                            <div class="size-11 flex items-center justify-center rounded-full bg-light-primary">
                                                 <i class="fa-solid fa-gift text-white text-lg"></i>
                                             </div>
-                                            <p class="font-medium">Ayo Log in biar bisa redeem promonya!</p>
+                                            <p class="font-medium">{{ $lang === 'en' ? 'Log in to redeem your promo!' : 'Ayo Log in biar bisa redeem promonya!' }}</p>
                                         </div>
                                         <button wire:click="openLoginModal"
                                             class="rounded-lg bg-light-primary text-white px-6 py-2 font-semibold hover:scale-105 active:scale-95 transition-all">Log
@@ -771,17 +806,17 @@
                         <!-- Right Column: Price Summary -->
                         <div class="col-span-1">
                             <div class="bg-primary/5 rounded-lg p-6 sticky top-24">
-                                <h3 class="text-lg font-semibold text-gray-900 mb-4">Rincian Harga</h3>
+                                <h3 class="text-lg font-semibold text-gray-900 mb-4">{{ $lang === 'en' ? 'Price Details' : 'Rincian Harga' }}</h3>
 
                                 <div class="space-y-3">
                                     <div class="flex justify-between text-gray-700">
-                                        <span>Subtotal Produk</span>
+                                        <span>{{ $lang === 'en' ? 'Product Subtotal' : 'Subtotal Produk' }}</span>
                                         <span>Rp {{ number_format($estimatedPrice, 0, ',', '.') }}</span>
                                     </div>
 
                                     @if ($addonsTotal > 0)
                                         <div class="flex justify-between text-gray-700">
-                                            <span>Add-ons</span>
+                                            <span>{{ $lang === 'en' ? 'Add-ons' : 'Add-ons' }}</span>
                                             <span>Rp {{ number_format($addonsTotal, 0, ',', '.') }}</span>
                                         </div>
                                     @endif
@@ -790,14 +825,14 @@
                                         <div class="flex justify-between text-green-600">
                                             <span>
                                                 <i class="fas fa-tag mr-1"></i>
-                                                Diskon Voucher
+                                                {{ $lang === 'en' ? 'Voucher Discount' : 'Diskon Voucher' }}
                                             </span>
                                             <span>- Rp {{ number_format($voucherDiscount, 0, ',', '.') }}</span>
                                         </div>
                                     @endif
 
                                     <div class="border-t pt-3 flex justify-between text-xl font-bold text-primary">
-                                        <span>Total</span>
+                                        <span>{{ $lang === 'en' ? 'Total Amount' : 'Total' }}</span>
                                         <span>Rp {{ number_format($totalPrice, 0, ',', '.') }}</span>
                                     </div>
                                 </div>
@@ -807,18 +842,32 @@
                                     @if (session()->has('error')) @click="window.scrollTo({ top: 0, behavior: 'smooth' })" @endif
                                     class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-dark active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed mt-10">
                                     <span wire:loading.remove wire:target="proceedToPayment">
-                                        Lanjutkan Pembayaran
+                                        {{ $lang === 'en' ? 'Proceed to Payment' : 'Lanjutkan Pembayaran' }}
                                     </span>
                                     <span wire:loading wire:target="proceedToPayment">
                                         <i class="fas fa-spinner fa-spin mr-2"></i>
-                                        Memproses...
+                                        {{ $lang === 'en' ? 'Processing...' : 'Memproses...' }}
                                     </span>
                                 </button>
 
-                                <p class="text-xs text-gray-600 text-center mt-4">
-                                    Dengan melanjutkan, Anda menyetujui <a href="{{ route('terms-of-service') }}"
-                                        class="text-primary hover:underline">Syarat & Ketentuan</a> kami
-                                </p>
+                                    <p class="text-xs text-gray-600 text-center mt-4">
+                                        {{ $lang === 'en'
+                                            ? 'By continuing, you agree to our'
+                                            : 'Dengan melanjutkan, Anda menyetujui'
+                                        }}
+
+                                        <a href="{{ route('terms-of-service') }}"
+                                            class="text-primary hover:underline">
+                                            
+                                            {{ $lang === 'en'
+                                                ? 'Terms & Conditions'
+                                                : 'Syarat & Ketentuan'
+                                            }}
+
+                                        </a>
+
+                                        {{ $lang === 'en' ? '' : 'kami' }}
+                                    </p>
                             </div>
                         </div>
                     </div>

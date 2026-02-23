@@ -27,9 +27,12 @@ class Articles extends Component
     // ===== FORM FIELDS =====
     public $articleId;
     public $title;
+    public $title_en; // ✅ tambah ini
     public $slug;
     public $excerpt;
+    public $excerpt_en; // ✅ tambah ini
     public $content;
+    public $content_en; // ✅ tambah ini
     public $featured_image;
     public $new_featured_image;
     public $category = 'tips';
@@ -37,6 +40,7 @@ class Articles extends Component
     public $is_featured = false;
     public $published_at;
     public $meta_description;
+    public $meta_description_en; // ✅ tambah ini
 
     // ===== FILTERS & SEARCH =====
     public $search = '';
@@ -49,15 +53,19 @@ class Articles extends Component
     {
         return [
             'title' => 'required|string|max:255',
+            'title_en' => 'required|string|max:255',
             'slug' => 'required|string|max:255|unique:articles,slug,' . $this->articleId,
             'excerpt' => 'nullable|string|max:500',
+            'excerpt_en' => 'nullable|string|max:500',
             'content' => 'required|string',
+            'content_en' => 'required|string',
             'new_featured_image' => 'nullable|image|max:2048',
             'category' => 'required|in:tips,destinasi,kuliner,budaya',
             'status' => 'required|in:draft,published',
             'is_featured' => 'boolean',
             'published_at' => 'nullable|date',
             'meta_description' => 'nullable|string|max:160',
+            'meta_description_en' => 'nullable|string|max:160',
         ];
     }
 
@@ -98,19 +106,24 @@ class Articles extends Component
     public function switchToEdit($id)
     {
         $this->resetForm();
+        $this->resetErrorBag(); // Tambahkan ini
         $article = Article::findOrFail($id);
 
         $this->articleId = $article->id;
         $this->title = $article->title;
+        $this->title_en = $article->title_en;
         $this->slug = $article->slug;
         $this->excerpt = $article->excerpt;
+        $this->excerpt_en = $article->excerpt_en;
         $this->content = $article->content;
+        $this->content_en = $article->content_en;
         $this->featured_image = $article->featured_image;
         $this->category = $article->category;
         $this->status = $article->status;
         $this->is_featured = $article->is_featured;
         $this->published_at = $article->published_at ? $article->published_at->format('Y-m-d\TH:i') : null;
         $this->meta_description = $article->meta_description;
+        $this->meta_description_en = $article->meta_description_en;
 
         $this->viewMode = 'edit';
     }
@@ -120,9 +133,12 @@ class Articles extends Component
         $this->reset([
             'articleId',
             'title',
+            'title_en',
             'slug',
             'excerpt',
+            'excerpt_en',
             'content',
+            'content_en',
             'featured_image',
             'new_featured_image',
             'category',
@@ -130,6 +146,7 @@ class Articles extends Component
             'is_featured',
             'published_at',
             'meta_description',
+            'meta_description_en',
         ]);
         $this->category = 'tips';
         $this->status = 'draft';
@@ -179,13 +196,17 @@ class Articles extends Component
 
             $data = [
                 'title' => $this->title,
+                'title_en' => $this->title_en,
                 'slug' => $this->slug,
                 'excerpt' => $this->excerpt,
+                'excerpt_en' => $this->excerpt_en,
                 'content' => $this->content,
+                'content_en' => $this->content_en,
                 'category' => $this->category,
                 'status' => $this->status,
                 'is_featured' => $this->is_featured,
                 'meta_description' => $this->meta_description,
+                'meta_description_en' => $this->meta_description_en,
                 'author_id' => auth()->id(),
             ];
 
@@ -239,13 +260,17 @@ class Articles extends Component
             // Prepare data array
             $data = [
                 'title' => $this->title,
+                'title_en' => $this->title_en,
                 'slug' => $this->slug,
                 'excerpt' => $this->excerpt,
+                'excerpt_en' => $this->excerpt_en,
                 'content' => $this->content,
+                'content_en' => $this->content_en,
                 'category' => $this->category,
                 'status' => $this->status,
                 'is_featured' => $this->is_featured,
                 'meta_description' => $this->meta_description,
+                'meta_description_en' => $this->meta_description_en,
             ];
 
             // Handle published_at
