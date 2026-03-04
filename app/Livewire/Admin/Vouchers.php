@@ -119,7 +119,7 @@ class Vouchers extends Component
         $this->min_order = $voucher->min_order;
         $this->max_discount = $voucher->max_discount;
         $this->usage_limit = $voucher->usage_limit;
-        $this->user_usage_limit = $voucher->user_usage_limit;
+        $this->user_usage_limit = $voucher->used_count;
         $this->start_date = $voucher->start_date ? $voucher->start_date->format('Y-m-d\TH:i') : null;
         $this->end_date = $voucher->end_date ? $voucher->end_date->format('Y-m-d\TH:i') : null;
         $this->is_active = $voucher->is_active;
@@ -180,7 +180,7 @@ class Vouchers extends Component
                 'min_order' => $this->min_order ?: 0,
                 'max_discount' => $this->max_discount,
                 'usage_limit' => $this->usage_limit,
-                'user_usage_limit' => $this->user_usage_limit,
+                'used_count' => $this->user_usage_limit,
                 'start_date' => Carbon::parse($this->start_date),
                 'end_date' => Carbon::parse($this->end_date),
                 'is_active' => $this->is_active,
@@ -223,7 +223,7 @@ class Vouchers extends Component
                 'min_order' => $this->min_order ?: 0,
                 'max_discount' => $this->max_discount,
                 'usage_limit' => $this->usage_limit,
-                'user_usage_limit' => $this->user_usage_limit,
+                'used_count' => $this->user_usage_limit,
                 'start_date' => Carbon::parse($this->start_date),
                 'end_date' => Carbon::parse($this->end_date),
                 'is_active' => $this->is_active,
@@ -249,7 +249,7 @@ class Vouchers extends Component
 
             // Check if voucher has redemptions
             if ($voucher->redemptions()->count() > 0) {
-                session()->flash('error', 'Cannot delete voucher with existing redemptions. Deactivate instead.');
+                session()->flash('error', 'Voucher yang sudah pernah digunakan pengguna hanya dapat dinonaktifkan');
                 return;
             }
 

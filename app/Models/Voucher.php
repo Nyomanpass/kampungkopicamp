@@ -111,7 +111,7 @@ class Voucher extends Model
             return false;
         }
 
-        if (is_null($this->user_usage_limit)) {
+        if (is_null($this->used_count)) {
             return true; // No per-user limit
         }
 
@@ -119,7 +119,7 @@ class Voucher extends Model
             ->where('user_id', $userId)
             ->count();
 
-        return $userUsageCount < $this->user_usage_limit;
+        return $userUsageCount < $this->used_count;
     }
 
     public function calculateDiscount($subtotal)

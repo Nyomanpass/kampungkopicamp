@@ -43,11 +43,21 @@ class PaymentService
                                     'id' => $item->id,
                                     'price' => (int) $item->unit_price,
                                     'quantity' => (int) $item->qty,
-                                    'name' => $item->name_snapshot,
+                                    'name' => mb_strimwidth($item->name_snapshot, 0, 50, "..."),
                               ];
                         }
                   } else {
                         throw new \Exception('Booking items not found');
+                  }
+
+                  // ✅ Tambahkan item Diskon (bernilai negatif) jika ada discount_amount
+                  if ($booking->discount_amount > 0) {
+                        $items[] = [
+                              'id' => 'DISCOUNT',
+                              'price' => -(int) $booking->discount_amount,
+                              'quantity' => 1,
+                              'name' => 'Diskon Voucher',
+                        ];
                   }
 
                   $params = [

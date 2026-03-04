@@ -6,7 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pembayaran - {{ config('app.name') }}</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
-    <script src="https://app.midtrans.com/snap/snap.js" data-client-key="{{ config('midtrans.client_key') }}"></script>
+    @php
+        $snapUrl = config('midtrans.is_production') 
+            ? 'https://app.midtrans.com/snap/snap.js' 
+            : 'https://app.sandbox.midtrans.com/snap/snap.js';
+    @endphp
+    <script src="{{ $snapUrl }}" data-client-key="{{ config('midtrans.client_key') }}"></script>
 </head>
 
 <body class="bg-gray-50">
