@@ -521,12 +521,12 @@
                             <!-- Title -->
                             <h3
                                 class="text-xl font-bold text-slate-800 mb-3 line-clamp-2 transition-colors duration-300">
-                                {{ $blog->title ?? '' }}
+                                 {{ $lang === 'en' ? ($blog->title_en ?: $blog->title) : $blog->title }}
                             </h3>
 
                             <!-- Description -->
                             <p class="text-gray-600 text-sm mb-4 line-clamp-3 leading-relaxed">
-                                {{ Str::limit($blog->excerpt ?? '', 120) }}
+                                  {{ Str::limit($lang === 'en' ? ($blog->excerpt_en ?: $blog->excerpt) : $blog->excerpt, 120) }}
                             </p>
 
                             <!-- Read More Link -->
