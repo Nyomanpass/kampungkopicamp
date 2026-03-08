@@ -546,7 +546,8 @@
                 <div class="text-center mt-10 sm:mt-12" data-aos="fade-up" data-aos-delay="400">
                     <a href="{{ route('article') }}"
                         class="inline-block px-6 sm:px-8 py-3 bg-primary hover:bg-light-primary text-white font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300">
-                        Lihat Semua Artikel <i class="fa-solid fa-arrow-right ml-2"></i>
+                        {{ $lang === 'id' ? 'Lihat Semua Artikel' : 'View All Articles' }}
+                        <i class="fa-solid fa-arrow-right ml-2"></i>
                     </a>
                 </div>
             @endif
