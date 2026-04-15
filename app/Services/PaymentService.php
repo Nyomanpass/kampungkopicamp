@@ -24,6 +24,13 @@ class PaymentService
             Config::$isProduction = config('midtrans.is_production');
             Config::$isSanitized = config('midtrans.is_sanitized');
             Config::$is3ds = config('midtrans.is_3ds');
+
+            // Bypass SSL verification in local environment to prevent cURL error: unable to get local issuer certificate
+            if (!config('midtrans.is_production') && app()->environment('local')) {
+                  Config::$curlOptions[CURLOPT_SSL_VERIFYHOST] = 0;
+                  Config::$curlOptions[CURLOPT_SSL_VERIFYPEER] = 0;
+                  Config::$curlOptions[CURLOPT_HTTPHEADER] = [];
+            }
       }
 
       // ========= create payment & snap token ===========
@@ -204,6 +211,14 @@ class PaymentService
                               Log::info("Payment confirmation email sent to: {$booking->customer_email}");
                         } catch (\Exception $e) {
                               Log::error('Error sending payment confirmation email: ' . $e->getMessage());
+                        }
+
+                        // Kirim notifikasi in-app & email ke Admin
+                        try {
+                              \App\Services\NotificationService::newPaidBooking($booking);
+                              Log::info("Admin new paid booking notification triggered for booking: {$booking->booking_token}");
+                        } catch (\Exception $e) {
+                              Log::error('Error sending admin notification: ' . $e->getMessage());
                         }
                   } elseif ($paymentStatus === 'pending') {
                         try {

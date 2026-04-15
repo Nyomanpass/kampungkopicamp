@@ -5,6 +5,9 @@ namespace App\Services;
 
 use App\Models\Notification;
 use App\Models\Booking;
+use App\Models\User;
+use App\Mail\AdminNewBookingMail;
+use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
 class NotificationService
@@ -14,9 +17,15 @@ class NotificationService
        */
       public static function newPaidBooking(Booking $booking)
       {
+            // Send email to all admins
+            $admins = User::admins()->get();
+            if ($admins->isNotEmpty()) {
+                  Mail::to($admins)->send(new AdminNewBookingMail($booking));
+            }
+
             return Notification::create([
                   'type' => 'new_booking',
-                  'title' => 'Booking Baru Terbayar!',
+                  'title' => 'Booking' . $booking->booking_token . ' Terbayar!',
                   'message' => "Booking baru dari {$booking->customer_name} telah dibayar sebesar Rp " . number_format($booking->total_price, 0, ',', '.'),
                   'data' => [
                         'booking_id' => $booking->id,
