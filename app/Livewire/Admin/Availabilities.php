@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Product;
 use App\Models\Availability;
+use App\Services\NotificationService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -342,12 +343,20 @@ class Availabilities extends Component
                     ];
                 }
 
+                $notesChanged = false;
                 if (($availability->notes ?? '') !== ($data['notes'] ?? '')) {
                     $updateData['notes'] = $data['notes'];
+                    $notesChanged = true;
                 }
 
                 if (!empty($updateData)) {
                     $availability->update($updateData);
+
+                    // Trigger notification if notes are added or changed
+                    if ($notesChanged && !empty($data['notes'])) {
+                        $userName = Auth::user()->name;
+                        NotificationService::calendarNote($availability, $userName);
+                    }
 
                     Log::info('Availability updated manually', [
                         'availability_id' => $availId,
@@ -355,7 +364,7 @@ class Availabilities extends Component
                         'date' => $availability->date,
                         'new_units' => $data['available_unit'],
                         'new_seats' => $data['available_seat'],
-                        'notes_changed' => array_key_exists('notes', $updateData),
+                        'notes_changed' => $notesChanged,
                     ]);
                 }
             }

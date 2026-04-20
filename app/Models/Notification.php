@@ -40,7 +40,7 @@ class Notification extends Model
     {
         return $query->where(function ($q) {
             $q->whereNull('expires_at')
-              ->orWhere('expires_at', '>', now());
+                ->orWhere('expires_at', '>', now());
         });
     }
 
@@ -70,6 +70,7 @@ class Notification extends Model
     {
         return match ($this->type) {
             'new_booking' => 'fa-calendar-check',
+            'calendar_note' => 'fa-sticky-note',
             'check_in_reminder' => 'fa-door-open',
             'check_out_reminder' => 'fa-door-closed',
             'no_show' => 'fa-exclamation-triangle',
@@ -85,6 +86,7 @@ class Notification extends Model
     {
         return match ($this->type) {
             'new_booking' => 'success',
+            'calendar_note' => 'info',
             'check_in_reminder' => 'info',
             'check_out_reminder' => 'warning',
             'no_show' => 'danger',
@@ -100,6 +102,7 @@ class Notification extends Model
     {
         return match ($this->type) {
             'new_booking' => 'bg-green-100',
+            'calendar_note' => 'bg-blue-100',
             'check_in_reminder' => 'bg-blue-100',
             'check_out_reminder' => 'bg-yellow-100',
             'no_show' => 'bg-red-100',

@@ -6,17 +6,17 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    public function up()
-    {
-        Schema::table('availability', function (Blueprint $table) {
-            $table->text('notes')->nullable()->after('override_reason');
-        });
-    }
+      public function up()
+      {
+            Schema::table('availability', function (Blueprint $table) {
+                  $table->text('notes')->nullable()->after('override_reason');
+            });
+      }
 
-    public function down()
-    {
-        Schema::table('availability', function (Blueprint $table) {
-            $table->dropColumn('notes');
-        });
-    }
+      public function down()
+      {
+            Schema::table('availability', function (Blueprint $table) {
+                  $table->dropColumn('notes');
+            });
+      }
 };

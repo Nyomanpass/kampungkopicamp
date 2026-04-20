@@ -108,12 +108,12 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-1">
                                     Catatan Tambahan
                                 </label>
-                                <textarea rows="3"
-                                    wire:model="editingAvailability.{{ $availId }}.notes"
+                                <textarea rows="3" wire:model="editingAvailability.{{ $availId }}.notes"
                                     class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary"
                                     placeholder="Tuliskan catatan untuk tanggal ini..."></textarea>
                                 @if (!empty($availability['notes']))
-                                    <button type="button" wire:click.prevent="clearAvailabilityNote({{ $availId }})"
+                                    <button type="button"
+                                        wire:click.prevent="clearAvailabilityNote({{ $availId }})"
                                         class="mt-2 text-sm text-danger hover:text-danger/80 font-semibold flex items-center gap-1">
                                         <i class="fas fa-trash-alt"></i>
                                         Hapus Catatan

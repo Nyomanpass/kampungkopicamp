@@ -6,7 +6,9 @@ namespace App\Services;
 use App\Models\Notification;
 use App\Models\Booking;
 use App\Models\User;
+use App\Models\Availability;
 use App\Mail\AdminNewBookingMail;
+use App\Mail\CalendarNoteMail;
 use Illuminate\Support\Facades\Mail;
 use Carbon\Carbon;
 
@@ -35,6 +37,35 @@ class NotificationService
                   ],
                   'action_url' => route('admin.bookings') . '?view=detail&id=' . $booking->id,
                   'expires_at' => now()->addDays(7), // Auto-delete after 7 days
+            ]);
+      }
+
+      /**
+       * Create notification for calendar note
+       */
+      public static function calendarNote(Availability $availability, string $userName)
+      {
+            // Send email to all admins
+            $admins = User::admins()->get();
+            if ($admins->isNotEmpty()) {
+                  Mail::to($admins)->send(new CalendarNoteMail($availability, $userName));
+            }
+
+            $dateFormatted = Carbon::parse($availability->date)->format('d M Y');
+
+            return Notification::create([
+                  'type' => 'calendar_note',
+                  'title' => "Catatan Ketersediaan: {$availability->product->name}",
+                  'message' => "Catatan baru ditambahkan untuk {$availability->product->name} pada {$dateFormatted}.",
+                  'data' => [
+                        'availability_id' => $availability->id,
+                        'product_id' => $availability->product_id,
+                        'product_name' => $availability->product->name,
+                        'date' => $dateFormatted,
+                        'notes' => $availability->notes,
+                  ],
+                  'action_url' => route('admin.availabilities'),
+                  'expires_at' => now()->addDays(14), // Auto-delete after 14 days
             ]);
       }
 
