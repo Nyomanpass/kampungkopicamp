@@ -16,6 +16,7 @@ class Availability extends Model
         'available_seat',
         'is_overridden',
         'override_reason',
+        'notes',
         'overridden_by',
         'overridden_at',
     ];

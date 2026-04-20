@@ -6,7 +6,6 @@ use Livewire\Component;
 use Livewire\Attributes\Layout;
 use App\Models\Product;
 use App\Models\Availability;
-use App\Models\Booking;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -118,6 +117,7 @@ class Availabilities extends Component
             });
         }
 
+        /** @var \Illuminate\Database\Eloquent\Collection|\App\Models\Availability[] $availabilities */
         $availabilities = $query->with('product')->get();
 
         if ($availabilities->isEmpty()) {
@@ -139,7 +139,13 @@ class Availabilities extends Component
 
         $products = [];
 
+        $notesCount = 0;
+
         foreach ($availabilities as $availability) {
+            if (!empty($availability->notes)) {
+                $notesCount++;
+            }
+
             // Determine status
             if ($availability->is_overridden && ($availability->available_unit == 0 && $availability->available_seat == 0)) {
                 $status = 'blocked';
@@ -194,6 +200,7 @@ class Availabilities extends Component
             'label' => $label,
             'products' => $products,
             'counts' => $statusCounts,
+            'notes_count' => $notesCount,
         ];
     }
 
@@ -299,6 +306,7 @@ class Availabilities extends Component
                 'available_seat' => $avail['available_seat'],
                 'is_overridden' => $avail['is_overridden'],
                 'override_reason' => $avail['override_reason'] ?? '',
+                'notes' => $avail['notes'] ?? '',
             ];
         }
 
@@ -318,26 +326,36 @@ class Availabilities extends Component
 
                 if (!$availability) continue;
 
-                // Check if values changed
-                $hasChanged = $availability->available_unit != $data['available_unit']
-                    || $availability->available_seat != $data['available_seat'];
+                $updateData = [];
+                $stockChanged = $availability->available_unit != $data['available_unit']
+                    || $availability->available_seat != $data['available_seat']
+                    || ($availability->override_reason ?? '') !== ($data['override_reason'] ?? '');
 
-                if ($hasChanged) {
-                    $availability->update([
+                if ($stockChanged) {
+                    $updateData = [
                         'available_unit' => $data['available_unit'],
                         'available_seat' => $data['available_seat'],
                         'is_overridden' => true,
                         'override_reason' => $data['override_reason'],
                         'overridden_by' => Auth::id(),
                         'overridden_at' => now(),
-                    ]);
+                    ];
+                }
 
-                    Log::info("Availability updated manually", [
+                if (($availability->notes ?? '') !== ($data['notes'] ?? '')) {
+                    $updateData['notes'] = $data['notes'];
+                }
+
+                if (!empty($updateData)) {
+                    $availability->update($updateData);
+
+                    Log::info('Availability updated manually', [
                         'availability_id' => $availId,
                         'product_id' => $availability->product_id,
                         'date' => $availability->date,
                         'new_units' => $data['available_unit'],
                         'new_seats' => $data['available_seat'],
+                        'notes_changed' => array_key_exists('notes', $updateData),
                     ]);
                 }
             }
@@ -371,6 +389,22 @@ class Availabilities extends Component
         } catch (\Exception $e) {
             session()->flash('error', 'Failed to reset override.');
         }
+    }
+
+    public function clearAvailabilityNote($availId)
+    {
+        $availability = Availability::find($availId);
+
+        if (!$availability) {
+            session()->flash('error', 'Note not found.');
+            return;
+        }
+
+        $availability->update(['notes' => null]);
+        $this->editingAvailability[$availId]['notes'] = '';
+
+        session()->flash('success', 'Catatan berhasil dihapus.');
+        $this->openDateModal($this->selectedDate);
     }
 
     // ===== OPEN BULK MODAL =====
@@ -439,7 +473,7 @@ class Availabilities extends Component
 
                 // ✅ Find existing availability with proper date query
                 $availability = Availability::where('product_id', $product->id)
-                    ->whereDate('date', $dateString)
+                    ->whereRaw('DATE(date) = ?', [$dateString])
                     ->first();
 
                 // ✅ Create if not exists

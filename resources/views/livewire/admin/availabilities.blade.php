@@ -251,7 +251,15 @@
                                 {{ $dateInfo['day'] }}
                             </span>
                             @if ($summary['status'] !== 'no-data')
-                                <span class="w-2 h-2 rounded-fulavl {{ $bgColor }}"></span>
+                                <div class="flex items-center gap-1">
+                                    <span class="w-2 h-2 rounded-full {{ $bgColor }}"></span>
+                                    @if (!empty($summary['notes_count']))
+                                        <span class="text-xs text-info flex items-center gap-1">
+                                            <i class="fas fa-sticky-note"></i>
+                                            {{ $summary['notes_count'] }}
+                                        </span>
+                                    @endif
+                                </div>
                             @endif
                         </div>
 
